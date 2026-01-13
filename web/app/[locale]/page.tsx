@@ -50,7 +50,7 @@ export default function LandingPage() {
                 </span>
                 <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
                   {t.rich('heroTitle', {
-                    highlight: (chunks) => <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">{chunks}</span>,
+                    highlight: (chunks) => <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent animate-pulse [animation-duration:3s]">{chunks}</span>,
                     br: () => <br className="hidden md:block" />
                   })}
                 </h1>
