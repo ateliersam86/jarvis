@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
-import { auth } from '@/auth'
+import { auth } from '@/lib/auth'
 import crypto from 'crypto'
 
 const prisma = new PrismaClient()
