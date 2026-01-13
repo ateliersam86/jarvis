@@ -4,7 +4,7 @@
 REMOTE_USER="root"
 REMOTE_HOST="${JARVIS_SERVER_IP}"
 REMOTE_PATH="/mnt/user/websites/jarvis-nexus"
-LOCAL_PATH="/Users/samuelmuselet/Jarvis"
+LOCAL_PATH="$(pwd)"
 
 echo "⬇️  Pulling JARVIS memory from Server ($REMOTE_HOST)..."
 
