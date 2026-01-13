@@ -121,7 +121,7 @@ async function isCliInstalled(cli) {
 }
 
 // Check if CLI is authenticated (quick test with timeout)
-async function isCliAuthenticated(provider) {
+async function isCliAuthenticated(provider, silent = false) {
     // Check cache first
     if (CLI_AUTH_CACHE.has(provider)) {
         return CLI_AUTH_CACHE.get(provider);
@@ -148,7 +148,7 @@ async function isCliAuthenticated(provider) {
         const timeout = setTimeout(() => {
             if (!resolved) {
                 resolved = true;
-                console.log(`⚠️ ${provider} CLI timeout during auth check`);
+                if (!silent) console.log(`⚠️ ${provider} CLI timeout during auth check`);
                 CLI_AUTH_CACHE.set(provider, false);
                 resolve(false);
             }
@@ -185,7 +185,7 @@ async function isCliAuthenticated(provider) {
 
             CLI_AUTH_CACHE.set(provider, isAuthenticated);
 
-            if (!isAuthenticated) {
+            if (!isAuthenticated && !silent) {
                 console.log(`⚠️ ${provider} CLI not authenticated (run: ${cli} /login or set API key)`);
             }
 
@@ -251,6 +251,64 @@ async function getAuthenticatedProviders() {
     }
 
     return authenticated;
+}
+
+// COLORS and printStatus are defined below
+
+// ANSI Colors for terminal output
+const COLORS = {
+    reset: "\x1b[0m",
+    green: "\x1b[32m",
+    red: "\x1b[31m",
+    yellow: "\x1b[33m",
+    cyan: "\x1b[36m",
+    gray: "\x1b[90m",
+    bold: "\x1b[1m"
+};
+
+/**
+ * Print the current status of all Jarvis CLI providers
+ */
+async function printStatus() {
+    const providers = [
+        { id: 'gemini', name: 'Gemini CLI', cli: 'gemini', default: 'gemini:pro' },
+        { id: 'claude', name: 'Claude CLI', cli: 'claude', default: 'claude:sonnet' },
+        { id: 'openai', name: 'Codex CLI', cli: 'codex', default: 'openai:codex' }
+    ];
+
+    process.stdout.write(`\n${COLORS.bold}🚀 JARVIS SYSTEM STATUS${COLORS.reset}\n\n`);
+
+    for (const p of providers) {
+        const installed = await isCliInstalled(p.cli);
+        let statusText = '';
+        let color = '';
+        let icon = installed ? '●' : '○';
+        let modelName = '';
+
+        try {
+            const resolved = await resolveModel(p.default);
+            modelName = resolved.modelName;
+        } catch (e) {
+            modelName = 'unknown';
+        }
+
+        if (!installed) {
+            statusText = `not found (run: jarvis setup)`;
+            color = COLORS.red;
+        } else {
+            const authenticated = await isCliAuthenticated(p.id, true);
+            if (authenticated) {
+                statusText = `connected (${modelName})`;
+                color = COLORS.green;
+            } else {
+                statusText = `not authenticated (${modelName})`;
+                color = COLORS.yellow;
+            }
+        }
+
+        process.stdout.write(`${p.name.padEnd(12)} ${color}${icon} ${statusText}${COLORS.reset}\n`);
+    }
+    process.stdout.write('\n');
 }
 
 // Enhance prompt with agent directives
@@ -902,6 +960,11 @@ async function executeViaClaude(prompt, modelName, options = {}) {
 
 // Main delegate function
 async function delegate(prompt, options = {}) {
+    // Show status on initial connection (unless silent)
+    if (!options.silent && !options.noStatusDisplay) {
+        await printStatus();
+    }
+
     try {
         let activePrompt = prompt;
 
@@ -1114,6 +1177,7 @@ Options:
   --swarm                🐝 Break task into parallel sub-tasks (Swarm Mode)
   --no-parse             Disable intent parsing and context enrichment
   --silent               Suppress CLI output
+  --status               Show Jarvis system status (CLIs, models, auth)
   --list-models          Show available models
   --help                 Show this help
 
@@ -1136,6 +1200,11 @@ Model Aliases:
 
     if (args.includes('--list-models')) {
         await listModels();
+        process.exit(0);
+    }
+
+    if (args.includes('--status')) {
+        await printStatus();
         process.exit(0);
     }
 
@@ -1307,7 +1376,7 @@ Create a comprehensive, cohesive final response that addresses the original goal
 }
 
 
-export { delegate, delegateWithConsensus, delegateSwarm, delegateReflect, listModels, resolveModel };
+export { delegate, delegateWithConsensus, delegateSwarm, delegateReflect, listModels, resolveModel, printStatus };
 
 /**
  * REFLECT MODE - Multiple agents respond to the same prompt, results compared
