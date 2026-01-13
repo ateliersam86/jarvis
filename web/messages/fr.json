@@ -1,7 +1,6 @@
 {
   "Landing": {
     "versionBadge": "CLI v1.0 - Open Source",
-    "heroTitle": "Orchestrez vos <highlight>agents IA</highlight> <br />depuis un seul terminal",
     "heroDescription": "Déléguez intelligemment à Gemini, Claude ou Codex. Parallélisez vos tâches avec le mode Swarm. Suivez vos quotas en temps réel.",
     "startBuilding": "Installer le CLI",
     "readDocs": "Documentation",
@@ -15,7 +14,10 @@
     "feature3Title": "Suivi des Quotas",
     "feature3Desc": "Visualisez votre consommation Gemini, Claude et OpenAI en temps réel. Plus de surprises de facturation.",
     "ctaTitle": "Prêt à orchestrer vos agents ?",
-    "ctaButton": "npm install -g @jarvis/cli"
+    "ctaButton": "npm install -g @jarvis/cli",
+    "heroTitleLine1": "Orchestrez vos",
+    "heroTitleHighlight": "agents IA",
+    "heroTitleLine2": "depuis un seul terminal"
   },
   "Dashboard": {
     "loading": "Connexion au hub...",
