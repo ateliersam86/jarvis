@@ -1,0 +1,47 @@
+{
+  "Landing": {
+    "versionBadge": "v2.0 Now Available",
+    "heroTitle": "Orchestrate AI Agents <br /> with Surgical Precision",
+    "heroDescription": "Jarvis is the advanced orchestration platform for managing autonomous multi-agent systems. Deploy, monitor, and scale your AI workforce.",
+    "startBuilding": "Start Building",
+    "readDocs": "Read Documentation",
+    "trustedBy": "POWERED BY NEXT-GEN MODELS",
+    "featuresTitle": "Engineered for Control",
+    "featuresDescription": "Everything you need to manage complex agent swarms without losing track.",
+    "feature1Title": "Parallel Execution",
+    "feature1Desc": "Run multiple agent chains simultaneously with our optimized specialized workers.",
+    "feature2Title": "Global Context",
+    "feature2Desc": "Shared memory architecture allows agents to access project-wide context instantly.",
+    "feature3Title": "Sandboxed Environments",
+    "feature3Desc": "Secure execution environments ensure your system stays safe while agents work.",
+    "ctaTitle": "Ready to deploy your swarm?",
+    "ctaButton": "Get Started Now"
+  },
+  "Dashboard": {
+    "loading": "Loading Neural Interface...",
+    "title": "Dashboard",
+    "welcome": "Welcome back, {name}. System is fully operational.",
+    "newProject": "New Project",
+    "recentProjects": "Recent Projects",
+    "viewAll": "View All",
+    "quickActions": "Quick Actions",
+    "actions": {
+      "deploy": "Deploy Agent",
+      "deployDesc": "Spin up a new worker",
+      "logs": "View Logs",
+      "logsDesc": "Check system health",
+      "auth": "Manage Keys",
+      "authDesc": "Update API access"
+    },
+    "systemOnline": "System Online",
+    "tabs": {
+      "overview": "Overview",
+      "tasks": "Tasks",
+      "performance": "Performance",
+      "terminal": "Terminal"
+    }
+  },
+  "Common": {
+    "language": "Language"
+  }
+}

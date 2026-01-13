@@ -1,0 +1,47 @@
+{
+  "Landing": {
+    "versionBadge": "v2.0 Maintenant Disponible",
+    "heroTitle": "Orchestrez vos Agents IA <br /> avec une Précision Chirurgicale",
+    "heroDescription": "Jarvis est la plateforme d'orchestration avancée pour gérer des systèmes multi-agents autonomes. Déployez, surveillez et faites évoluer votre main-d'œuvre IA.",
+    "startBuilding": "Commencer",
+    "readDocs": "Documentation",
+    "trustedBy": "PROPULSÉ PAR DES MODÈLES DE NOUVELLE GÉNÉRATION",
+    "featuresTitle": "Conçu pour le Contrôle",
+    "featuresDescription": "Tout ce dont vous avez besoin pour gérer des essaims d'agents complexes sans perdre le fil.",
+    "feature1Title": "Exécution Parallèle",
+    "feature1Desc": "Exécutez plusieurs chaînes d'agents simultanément avec nos workers spécialisés optimisés.",
+    "feature2Title": "Contexte Global",
+    "feature2Desc": "L'architecture à mémoire partagée permet aux agents d'accéder instantanément au contexte du projet.",
+    "feature3Title": "Environnements Sandbox",
+    "feature3Desc": "Des environnements d'exécution sécurisés garantissent la sécurité de votre système pendant que les agents travaillent.",
+    "ctaTitle": "Prêt à déployer votre essaim ?",
+    "ctaButton": "Commencer Maintenant"
+  },
+  "Dashboard": {
+    "loading": "Chargement de l'Interface Neurale...",
+    "title": "Tableau de Bord",
+    "welcome": "Bon retour, {name}. Le système est pleinement opérationnel.",
+    "newProject": "Nouveau Projet",
+    "recentProjects": "Projets Récents",
+    "viewAll": "Voir Tout",
+    "quickActions": "Actions Rapides",
+    "actions": {
+      "deploy": "Déployer un Agent",
+      "deployDesc": "Lancer un nouveau worker",
+      "logs": "Voir les Logs",
+      "logsDesc": "Vérifier la santé du système",
+      "auth": "Gérer les Clés",
+      "authDesc": "Mettre à jour l'accès API"
+    },
+    "systemOnline": "Système En Ligne",
+    "tabs": {
+      "overview": "Vue d'ensemble",
+      "tasks": "Tâches",
+      "performance": "Performance",
+      "terminal": "Terminal"
+    }
+  },
+  "Common": {
+    "language": "Langue"
+  }
+}

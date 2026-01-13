@@ -1,0 +1,213 @@
+# Model Registry - ChatGPT 5.x, Gemini 3 & Claude 4 Models
+# Last updated: 2026-01-12T18:15:00Z
+
+## Claude 4 Models (Anthropic)
+claude:
+  haiku:
+    name: "claude-sonnet-4-20250514"
+    description: "Fast, efficient"
+    quota: "high"
+  
+  sonnet:
+    name: "claude-sonnet-4-20250514"
+    description: "Balanced performance"
+    quota: "medium"
+  
+  opus:
+    name: "claude-opus-4-20250514"
+    description: "Maximum intelligence"
+    quota: "low"
+
+## Gemini 3 Models (All Thinking Levels)
+gemini:
+  flash-low:
+    name: "gemini-3-flash-preview"
+    thinking_mode: "low"
+    description: "Ultra-fast, minimal reasoning"
+    quota: "unlimited"
+    
+  flash:
+    name: "gemini-3-flash-preview"
+    thinking_mode: "standard"
+    description: "Fast, standard reasoning"
+    quota: "unlimited"
+    
+  flash-high:
+    name: "gemini-3-flash-preview"
+    thinking_mode: "high"
+    description: "Fast with deeper reasoning"
+    quota: "unlimited"
+  
+  pro-low:
+    name: "gemini-3-pro-preview"
+    thinking_mode: "low"
+    description: "Pro with quick responses"
+    quota: "unlimited"
+    
+  pro:
+    name: "gemini-3-pro-preview"
+    thinking_mode: "standard"
+    description: "Pro standard reasoning"
+    quota: "unlimited"
+    
+  pro-high:
+    name: "gemini-3-pro-preview"
+    thinking_mode: "high"
+    description: "Pro high reasoning"
+    quota: "unlimited"
+    
+  pro-deep:
+    name: "gemini-3-pro-preview"
+    thinking_mode: "deep"
+    description: "Pro maximum depth"
+    quota: "unlimited"
+
+## ChatGPT 5.1 Series (All Thinking Levels)
+openai:
+  # 5.1 Codex Mini (All levels)
+  mini-low:
+    name: "gpt-5.1-codex-mini"
+    thinking_mode: "low"
+    description: "Mini ultra-fast"
+    quota: "high"
+    
+  mini:
+    name: "gpt-5.1-codex-mini"
+    thinking_mode: "standard"
+    description: "Mini standard"
+    quota: "high"
+    
+  mini-high:
+    name: "gpt-5.1-codex-mini"
+    thinking_mode: "high"
+    description: "Mini high reasoning"
+    quota: "high"
+
+  # 5.1 Codex Standard (All levels)
+  codex-5.1-low:
+    name: "gpt-5.1-codex"
+    thinking_mode: "low"
+    description: "5.1 quick mode"
+    quota: "medium"
+    
+  codex-5.1:
+    name: "gpt-5.1-codex"
+    thinking_mode: "standard"
+    description: "5.1 standard"
+    quota: "medium"
+    
+  codex-5.1-high:
+    name: "gpt-5.1-codex"
+    thinking_mode: "high"
+    description: "5.1 high reasoning"
+    quota: "medium"
+    
+  # 5.1 Codex Max (All levels)
+  codex-max-low:
+    name: "gpt-5.1-codex-max"
+    thinking_mode: "low"
+    description: "Max quick mode"
+    quota: "low"
+    
+  codex-max:
+    name: "gpt-5.1-codex-max"
+    thinking_mode: "standard"
+    description: "Max standard"
+    quota: "low"
+    
+  codex-max-high:
+    name: "gpt-5.1-codex-max"
+    thinking_mode: "high"
+    description: "Max high reasoning"
+    quota: "low"
+    
+  codex-max-very-high:
+    name: "gpt-5.1-codex-max"
+    thinking_mode: "very-high"
+    description: "Max maximum depth"
+    quota: "low"
+
+  # 5.2 Codex (All levels) - Current Best
+  codex-low:
+    name: "gpt-5.2-codex"
+    thinking_mode: "low"
+    description: "5.2 quick mode"
+    quota: "medium"
+    
+  codex:
+    name: "gpt-5.2-codex"
+    thinking_mode: "standard"
+    description: "5.2 standard (recommended)"
+    quota: "medium"
+    
+  codex-high:
+    name: "gpt-5.2-codex"
+    thinking_mode: "high"
+    description: "5.2 high reasoning"
+    quota: "medium"
+    
+  codex-very-high:
+    name: "gpt-5.2-codex"
+    thinking_mode: "very-high"
+    description: "5.2 maximum depth"
+    quota: "medium"
+    
+  # 5.2 Pro (All levels) - Maximum Power
+  pro-low:
+    name: "gpt-5.2-pro"
+    thinking_mode: "low"
+    description: "Pro quick mode"
+    quota: "low"
+    
+  pro:
+    name: "gpt-5.2-pro"
+    thinking_mode: "standard"
+    description: "Pro standard"
+    quota: "low"
+    
+  pro-high:
+    name: "gpt-5.2-pro"
+    thinking_mode: "high"
+    description: "Pro high reasoning"
+    quota: "low"
+    
+  pro-very-high:
+    name: "gpt-5.2-pro"
+    thinking_mode: "very-high"
+    description: "Pro maximum precision"
+    quota: "low"
+
+## Aliases (Human-Friendly)
+aliases:
+  fastest: "gemini:pro-low"
+  fast: "gemini:pro"
+  quick: "openai:mini"
+  standard: "openai:codex"
+  smart: "gemini:pro-high"
+  advanced: "claude:sonnet"           # Changed: Claude for advanced tasks
+  genius: "claude:opus"               # Changed: Claude Opus for genius-level
+  premium: "claude:opus"              # Changed: Claude Opus as premium option
+  architect: "claude:opus"            # NEW: Architecture decisions
+
+## Defaults by Task Type (Optimized Assignment)
+defaults:
+  # FAST TASKS - Gemini Flash (Free, Fast)
+  lint: "gemini:pro-low"
+  typecheck: "gemini:pro"
+  format: "gemini:pro-low"
+  docs: "gemini:pro"
+  explain: "gemini:pro"
+  
+  # MEDIUM TASKS - OpenAI Codex (Balanced)
+  test: "openai:codex"
+  feature: "openai:codex-high"
+  refactor: "openai:codex-max"
+  
+  # COMPLEX TASKS - Claude (High Intelligence)
+  architecture: "claude:opus"          # Architecture decisions → Claude Opus
+  debug: "claude:sonnet"               # Debugging → Claude Sonnet
+  critical: "claude:opus"              # Critical tasks → Claude Opus
+  production: "claude:opus"            # Production code → Claude Opus
+  security: "claude:opus"              # Security review → Claude Opus
+  design: "claude:sonnet"              # Design patterns → Claude Sonnet
+

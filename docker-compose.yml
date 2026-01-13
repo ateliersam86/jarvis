@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # 🧠 JARVIS CORE - Dashboard + Orchestration Engine
+  jarvis-core:
+    build: .
+    container_name: jarvis-core
+    restart: unless-stopped
+    ports:
+      - "9000:3000" # Dashboard Access
+      - "4000:4000" # Terminal PTY Access
+    environment:
+      # AI Keys
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      
+      # Integration Keys
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - STRAVA_CLIENT_ID=${STRAVA_CLIENT_ID}
+      
+      # Database Connection (Unraid Host)
+      - DATABASE_URL=${DATABASE_URL}
+      
+      # System Config
+      - REDIS_URL=redis://jarvis-redis:6379
+      - NODE_ENV=development
+      # Critical for Unraid/NFS Hot Reload
+      - WATCHPACK_POLLING=true
+    # Use start-all.sh to launch both Next.js and PTY Server
+    command: sh -c "cd web && chmod +x start-all.sh && ./start-all.sh"
+    volumes:
+      # Code Hot Reloading
+      - .:/app
+      - /app/web/node_modules # Prevent host node_modules from overriding container's
+      
+      # Persistent Brain (Long Term Memory)
+      - ./brain:/app/brain
+      
+      # Project Access (Mount your Unraid shares here)
+      - /mnt/user/websites:/projects 
+
+    depends_on:
+      - jarvis-redis
+    networks:
+      - jarvis-net
+
+  # ⚡ JARVIS MEMORY - Fast Context Cache
+  jarvis-redis:
+    image: redis:alpine
+    container_name: jarvis-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - jarvis-net
+
+  # 🚀 WORKER: GEMINI (Flash/Pro) - Linter & Docs
+  jarvis-worker-gemini:
+    build: .
+    container_name: jarvis-worker-gemini
+    restart: unless-stopped
+    environment:
+      - WORKER_TYPE=GEMINI
+      - MODEL_ID=gemini-1.5-flash
+      - REDIS_URL=redis://jarvis-redis:6379
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    command: node swarm/worker.js
+    volumes:
+      # SMARTER MOUNTING: Only mount the script, preserving node_modules
+      - ./swarm:/app/swarm
+      - /mnt/user/websites:/projects
+    depends_on:
+      - jarvis-redis
+    networks:
+      - jarvis-net
+
+  # 🧠 WORKER: CLAUDE (Sonnet) - Architect & Logic
+  jarvis-worker-claude:
+    build: .
+    container_name: jarvis-worker-claude
+    restart: unless-stopped
+    environment:
+      - WORKER_TYPE=CLAUDE
+      - MODEL_ID=claude-3-5-sonnet-20240620
+      - REDIS_URL=redis://jarvis-redis:6379
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    command: node swarm/worker.js
+    volumes:
+      # SMARTER MOUNTING
+      - ./swarm:/app/swarm
+      - /mnt/user/websites:/projects
+    depends_on:
+      - jarvis-redis
+    networks:
+      - jarvis-net
+
+  # ⚡ WORKER: CHATGPT (4o-Mini) - Scripter & Tests
+  jarvis-worker-chatgpt:
+    build: .
+    container_name: jarvis-worker-chatgpt
+    restart: unless-stopped
+    environment:
+      - WORKER_TYPE=CHATGPT
+      - MODEL_ID=gpt-4o-mini
+      - REDIS_URL=redis://jarvis-redis:6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    command: node swarm/worker.js
+    volumes:
+      # SMARTER MOUNTING
+      - ./swarm:/app/swarm
+      - /mnt/user/websites:/projects
+    depends_on:
+      - jarvis-redis
+    networks:
+      - jarvis-net
+
+volumes:
+  redis_data:
+
+networks:
+  jarvis-net:
+    driver: bridge

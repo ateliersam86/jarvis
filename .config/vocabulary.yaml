@@ -1,0 +1,102 @@
+# Project Vocabulary - Synonyms & Aliases
+# Used by Intent Parser to understand natural language requests
+
+## Component Synonyms
+components:
+  # Dashboard
+  "tableau de bord": "DashboardClient"
+  "dashboard": "DashboardClient"
+  "accueil": "page.tsx"
+  
+  # Agent Cards
+  "carte agent": "AgentCard"
+  "agent card": "AgentCard"
+  "carte": "AgentCard"
+  
+  # Swarm
+  "grille": "SwarmGrid"
+  "swarm": "SwarmGrid"
+  "essaim": "SwarmGrid"
+  
+  # Panels
+  "panneau cockpit": "CockpitPanel"
+  "cockpit": "CockpitPanel"
+  "terminal": "TerminalChat"
+  "chat": "TerminalChat"
+  
+  # Selectors
+  "sélecteur": "AgentSelector"
+  "selector": "AgentSelector"
+  "project switcher": "ProjectSwitcher"
+
+## API Synonyms
+api:
+  "status api": "api/agents/status"
+  "api status": "api/agents/status"
+  "quota api": "api/agents/quota"
+  "chat api": "api/agents/chat"
+  "events api": "api/agents/events"
+  "memory api": "api/memory"
+
+## Database Models
+database:
+  "agent": "Agent"
+  "conversation": "Conversation"
+  "message": "Message"
+  "usage": "ResourceUsage"
+  "utilisateur": "Agent"
+
+## Action Verbs
+actions:
+  # Create
+  "ajoute": "add"
+  "crée": "create"
+  "add": "add"
+  "create": "create"
+  
+  # Modify
+  "modifie": "modify"
+  "change": "modify"
+  "update": "modify"
+  "met à jour": "modify"
+  
+  # Delete
+  "supprime": "delete"
+  "enlève": "delete"
+  "remove": "delete"
+  
+  # Fix
+  "corrige": "fix"
+  "répare": "fix"
+  "fix": "fix"
+  
+  # Refactor
+  "refactorise": "refactor"
+  "refactor": "refactor"
+  "restructure": "refactor"
+  
+  # Style
+  "style": "style"
+  "design": "style"
+  "css": "style"
+  "animation": "style"
+
+## Intent Types
+intents:
+  "add": "add_feature"
+  "create": "add_feature"
+  "modify": "modify"
+  "style": "modify_style"
+  "fix": "fix_bug"
+  "refactor": "refactor"
+  "explain": "explain"
+  "delete": "delete"
+
+## File Extensions
+extensions:
+  "composant": ".tsx"
+  "component": ".tsx"
+  "api": "route.ts"
+  "style": ".css"
+  "config": ".yaml"
+  "script": ".mjs"

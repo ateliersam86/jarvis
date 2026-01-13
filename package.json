@@ -1,0 +1,38 @@
+{
+    "name": "jarvis-ai-nexus",
+    "version": "1.0.0",
+    "description": "Centralized AI Orchestration Nexus for Antigravity, Gemini, and Codex",
+    "main": "healer.js",
+    "type": "module",
+    "scripts": {
+        "setup": "node scripts/init.mjs",
+        "dev": "cd web && npm run dev",
+        "build": "cd web && npm run build",
+        "start": "cd web && npm run start",
+        "delegate": "node scripts/masterscript.mjs",
+        "delegate:dry": "node scripts/masterscript.mjs --dry-run",
+        "multi": "node scripts/query-multi.mjs",
+        "parallel": "node scripts/parallel-agents.mjs",
+        "healer": "node scripts/auto-healer.mjs",
+        "healer:watch": "node scripts/auto-healer.mjs --watch",
+        "healer:fix": "node scripts/auto-healer.mjs --heal",
+        "verify": "node scripts/auto-verify.mjs",
+        "health": "node -e \"import('./scripts/lib/project-intelligence.mjs').then(m => m.ProjectIntelligence.updateHealthState())\"",
+        "brain:sync": "./sync-brain-tasks.sh",
+        "brain:watch": "./watch-brain-tasks.sh"
+    },
+    "dependencies": {
+        "@anthropic-ai/sdk": "^0.71.2",
+        "@google/gemini-cli": "^0.23.0",
+        "@google/generative-ai": "^0.24.1",
+        "@openai/codex": "^0.80.0",
+        "dotenv": "^16.4.5",
+        "glob": "^13.0.0",
+        "js-yaml": "^4.1.1",
+        "node-pty": "^1.1.0",
+        "openai": "^6.16.0",
+        "prisma-json-schema-generator": "^5.1.5",
+        "redis": "^5.10.0",
+        "uuid": "^9.0.1"
+    }
+}

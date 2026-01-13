@@ -1,0 +1,55 @@
+# Codex CLI Configuration
+# Location: ~/.codex/config.toml or .codex/config.toml
+
+# Default Model
+model = "o3-mini"
+
+# Approval Policy
+# Options: untrusted, on-failure, on-request, never
+ask_for_approval = "on-request"
+
+# Sandbox Mode
+# Options: read-only, workspace-write, danger-full-access
+sandbox = "workspace-write"
+
+# Project-Specific Settings
+[project]
+name = "Jarvis AI Nexus"
+description = "Swarm architecture with Next.js frontend and Node.js workers"
+
+# Directories
+workspace_dirs = [
+  "/Users/samuelmuselet/Jarvis/web",
+  "/Users/samuelmuselet/Jarvis/swarm"
+]
+
+# Test Configuration
+[testing]
+framework = "jest"
+test_dir = "__tests__"
+coverage = true
+
+# Commit Message Templates
+[git]
+commit_template = """
+{type}({scope}): {subject}
+
+{body}
+
+{footer}
+"""
+
+commit_types = [
+  "feat",     # New feature
+  "fix",      # Bug fix
+  "docs",     # Documentation
+  "style",    # Formatting
+  "refactor", # Code restructuring
+  "test",     # Tests
+  "chore"     # Maintenance
+]
+
+# Features
+[features]
+web_search = false
+mcp_servers = true

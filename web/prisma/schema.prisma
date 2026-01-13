@@ -1,0 +1,278 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ============================================
+// NextAuth.js Models (Authentication)
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  image         String?
+  password      String?   // For email/password auth (hashed)
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  accounts      Account[]
+  sessions      AuthSession[]
+  projects      Project[]
+  apiKeys       ApiKey[]
+  settings      UserSettings?
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String  // "google", "github", "credentials"
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model AuthSession {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  name      String
+  key       String   @unique // Hashed key
+  prefix    String   // First 8 chars for display "jarvis_abc123..."
+  userId    String
+  createdAt DateTime @default(now())
+  lastUsed  DateTime?
+  expiresAt DateTime?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserSettings {
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  
+  // AI Environment Preferences
+  preferredModel  String  @default("gemini:pro")
+  theme           String  @default("dark")
+  locale          String  @default("en")
+  
+  // Connected Environments
+  geminiConnected Boolean @default(false)
+  claudeConnected Boolean @default(false)
+  openaiConnected Boolean @default(false)
+  
+  // Notifications
+  emailNotifications Boolean @default(true)
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ============================================
+// Project & Task Models
+// ============================================
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String
+  description String?
+  color       String?  @default("#3b82f6")
+  userId      String
+  
+  // Sync metadata
+  localPath   String?  // User's local project path
+  repoUrl     String?  // GitHub/GitLab URL
+  lastSynced  DateTime?
+  
+  // Memory & Context (JSON stored as text for SQLite)
+  memory      String?  // JSON string
+  context     String?  // JSON string
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taskSessions TaskSession[]
+  tasks       Task[]
+  
+  @@unique([userId, slug])
+}
+
+// ============================================
+// Agent/Worker Models (Existing)
+// ============================================
+
+model Agent {
+  id            String          @id @default(cuid())
+  name          String          @unique
+  role          String
+  model         String
+  color         String
+  avatar        String?
+  
+  // Hierarchy & Type
+  type          String          @default("assistant") // "assistant", "manager", "worker"
+  parentId      String?
+  parent        Agent?          @relation("AgentHierarchy", fields: [parentId], references: [id])
+  children      Agent[]         @relation("AgentHierarchy")
+  
+  // Configuration
+  capabilities  String?         // JSON list of capabilities
+  metadata      String?         // JSON configuration
+  
+  // Plugin Relation
+  pluginId      String?
+  plugin        Plugin?         @relation(fields: [pluginId], references: [id])
+  
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  
+  conversations Conversation[]
+  resourceUsage ResourceUsage[]
+  assignedTasks Task[]
+}
+
+model Plugin {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  version     String
+  description String?
+  enabled     Boolean  @default(true)
+  config      String?  // JSON
+  agents      Agent[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  status      String    @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, FAILED
+  priority    Int       @default(0)
+  
+  // Hierarchy
+  parentId    String?
+  parent      Task?     @relation("TaskHierarchy", fields: [parentId], references: [id])
+  subtasks    Task[]    @relation("TaskHierarchy")
+
+  // Assignment
+  agentId     String?
+  agent       Agent?    @relation(fields: [agentId], references: [id])
+  
+  // Context
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id])
+  
+  sessionId   String?
+  session     TaskSession? @relation(fields: [sessionId], references: [id])
+  
+  output      String?   // Result of the task
+  metadata    String?   // JSON for extra data
+  
+  // GitHub Sync
+  githubIssueId Int?
+  githubHtmlUrl String?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  history     TaskHistory[]
+}
+
+model TaskHistory {
+  id        String   @id @default(cuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  oldStatus String?
+  newStatus String
+  changedBy String?  // "system", "user", or agent name
+  diff      String?  // JSON diff or description of change
+  timestamp DateTime @default(now())
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  agentId   String
+  title     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  agent     Agent     @relation(fields: [agentId], references: [id])
+  messages  Message[]
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  role           String
+  content        String
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+}
+
+model ResourceUsage {
+  id        String   @id @default(cuid())
+  agentId   String
+  tokensIn  Int
+  tokensOut Int
+  cost      Float    @default(0.0)
+  timestamp DateTime @default(now())
+  agent     Agent    @relation(fields: [agentId], references: [id])
+}
+
+// ============================================
+// Task Session Models (Renamed from Session)
+// ============================================
+
+model TaskSession {
+  id        String         @id @default(cuid())
+  projectId String?
+  project   Project?       @relation(fields: [projectId], references: [id])
+  title     String?
+  status    String         @default("active")
+  startTime DateTime       @default(now())
+  endTime   DateTime?
+  events    SessionEvent[]
+  tasks     Task[]
+}
+
+model SessionEvent {
+  id             String      @id @default(cuid())
+  sessionId      String
+  type           String      // USER, AGENT_MSG, AGENT_THOUGHT, TOOL_CALL, TOOL_RESULT, SYSTEM, PROPOSAL
+  agentName      String?
+  content        String
+  metadata       String?     // JSON for tool args, proposal details
+  isProposal     Boolean     @default(false)
+  approvalStatus String?     // PENDING, APPROVED, REJECTED
+  timestamp      DateTime    @default(now())
+  session        TaskSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}

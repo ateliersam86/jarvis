@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Jarvis Unified CLI Entry Point
+
+function show_help {
+    echo "🤖 Jarvis CLI"
+    echo "Usage: ./jarvis <command>"
+    echo ""
+    echo "Commands:"
+    echo "  setup    - Initialize the environment (Zero-Config)"
+    echo "  dev      - Start the Web Dashboard & PTY Server"
+    echo "  fix      - Run the Auto-Healer to fix code issues"
+    echo "  agent    - Launch the Masterscript to delegate tasks"
+    echo "  help     - Show this help message"
+    echo ""
+}
+
+case "$1" in
+    setup)
+        npm run setup
+        ;;
+    dev)
+        npm run dev
+        ;;
+    fix)
+        npm run healer
+        ;;
+    agent)
+        npm run delegate
+        ;;
+    *)
+        show_help
+        ;;
+esac
