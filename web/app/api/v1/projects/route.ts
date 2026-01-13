@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import crypto from 'crypto'
+import { auth } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
@@ -41,7 +42,17 @@ async function authenticateToken(req: NextRequest) {
  */
 export async function GET(req: NextRequest) {
     try {
-        const user = await authenticateToken(req)
+        // 1. Try Bearer Token
+        let user = await authenticateToken(req)
+
+        // 2. Fallback to Session Auth
+        if (!user) {
+            const session = await auth()
+            if (session?.user?.id) {
+                // Mock a user object with just the ID, as that's all we need
+                user = { id: session.user.id } as any
+            }
+        }
 
         if (!user) {
             return NextResponse.json(
@@ -90,7 +101,14 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
     try {
-        const user = await authenticateToken(req)
+        let user = await authenticateToken(req)
+
+        if (!user) {
+            const session = await auth()
+            if (session?.user?.id) {
+                user = { id: session.user.id } as any
+            }
+        }
 
         if (!user) {
             return NextResponse.json(
