@@ -45,7 +45,7 @@
 1. Code locally on Mac
 2. Auto-healer detects errors automatically
 3. Delegates to appropriate CLI (Gemini/Codex/Claude)
-4. Sync to Server via `./sync-to-unraid.sh`
+4. Sync to Server via `./sync.sh`
 5. Workers on Server process tasks via Redis
 
 ## 🧠 AI Consultation Workflow (MANDATORY)
@@ -66,11 +66,11 @@
 ## Multi-Machine Setup
 - **Source of Truth:** Server server (`${JARVIS_SERVER_IP}`)
 - **Shared Memory:** This file + `.conductor/state.json`
-- **Sync:** `./pull-from-unraid.sh` on new machines
+- **Sync:** `./pull.sh` on new machines
 
 ## Important Paths
 - **Server:** `/mnt/user/websites/jarvis-nexus`
-- **Local:** `/Users/samuelmuselet/Jarvis`
+- **Local:** `/Users/your-username/Jarvis`
 - **Redis:** `redis://jarvis-redis:6379`
 - **Dashboard:** `https://jarvis.atelier-sam.fr`
 

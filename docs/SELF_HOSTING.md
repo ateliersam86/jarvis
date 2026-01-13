@@ -6,7 +6,7 @@ Jarvis is designed to be self-hosted, allowing you to maintain full control over
 
 Jarvis typically runs in a hybrid environment:
 1.  **Local Development Machine:** Runs the CLI and Development Dashboard.
-2.  **Central Server (Unraid/VPS):** Hosts the production Dashboard, Redis (Memory), and acts as the synchronization hub.
+2.  **Central Server (VPS/Home Lab):** Hosts the production Dashboard, Redis (Memory), and acts as the synchronization hub.
 
 ## Docker Deployment
 
@@ -39,14 +39,13 @@ services:
       - "6379:6379"
 ```
 
-## Unraid Setup
+## Server Setup (Generic)
 
-1.  **Redis:** Install the Redis docker container from the Community Apps store.
+1.  **Redis:** Ensure a Redis instance is running and accessible.
 2.  **Jarvis:**
-    *   Use the "Custom Docker" option.
-    *   Point the repository to your build or local image.
-    *   Map the `/app/.memory` volume to a share on your array (e.g., `/mnt/user/appdata/jarvis/memory`).
-    *   Set the `REDIS_URL` to point to your Unraid Redis IP.
+    *   Deploy using Docker Compose (recommended).
+    *   Map the `/app/.memory` volume to a persistent location on your host.
+    *   Set the `REDIS_URL` to point to your Redis instance.
 
 ## Troubleshooting
 

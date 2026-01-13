@@ -138,5 +138,5 @@ codex → claude → gemini
 ## 🗂️ Projet Jarvis
 
 - **GitHub**: https://github.com/ateliersam86/jarvis
-- **Dashboard**: jarvis.atelier-sam.fr
+- **Dashboard**: http://localhost:3000
 - **Server**: ${JARVIS_SERVER_IP}

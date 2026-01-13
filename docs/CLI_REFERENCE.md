@@ -33,10 +33,10 @@ node scripts/masterscript.mjs delegate "Analyze the entire src folder and genera
 
 ## Utility Scripts
 
-### `sync-to-unraid.sh`
-Synchronizes your local workspace state and `GEMINI.md` memory to the remote Unraid server (if configured).
+### `sync.sh`
+Synchronizes your local workspace state and `GEMINI.md` memory to the remote Server server (if configured).
 
-### `pull-from-unraid.sh`
+### `pull.sh`
 Retrieves the latest state from the remote server, ensuring you are working with the most up-to-date context.
 
 ### `auto-healer.mjs`

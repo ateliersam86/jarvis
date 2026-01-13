@@ -17,7 +17,7 @@
 ### 3. Multi-Project Architecture ✅
 - **5 projets** : Jarvis, Atelier-Web, Photographie, Travels, Aventures
 - **Mémoire isolée** : `.memory/projects/<project>/`
-- **Sync Unraid** : Continuité multi-machine
+- **Sync Server** : Continuité multi-machine
 
 ### 4. Scripts Disponibles ✅
 ```bash

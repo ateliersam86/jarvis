@@ -143,7 +143,7 @@ Tu me demandes directement, je lis automatiquement le projet actif.
 - Stats de performance par worker
 
 ✅ **Multi-Machine**
-- Sync via Unraid
+- Sync via Server
 - Continuité garantie
 
 ✅ **Automatique**

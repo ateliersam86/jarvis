@@ -9,11 +9,11 @@
 - **Mode Switch** - Toggle CLIs Locaux / Workers Docker
 
 ### 2. 🗂️ Architecture Multi-Projet (5 Projets)
-- **Jarvis** (`/Users/samuelmuselet/Jarvis`) - Orchestration
-- **Atelier-Web** (`/Users/samuelmuselet/atelier-web`) - Home + Cuisine
-- **Photographie** (`/Users/samuelmuselet/photographie`) - Portfolio photo
-- **Travels** (`/Users/samuelmuselet/atelier-web-travels`) - Journal voyage
-- **Aventures** (`/Users/samuelmuselet/atelier-web-aventures`) - Aventures
+- **Jarvis** (`/Users/your-username/Jarvis`) - Orchestration
+- **Atelier-Web** (`/Users/your-username/atelier-web`) - Home + Cuisine
+- **Photographie** (`/Users/your-username/photographie`) - Portfolio photo
+- **Travels** (`/Users/your-username/atelier-web-travels`) - Journal voyage
+- **Aventures** (`/Users/your-username/atelier-web-aventures`) - Aventures
 
 ### 3. 🌐 Sous-Domaines par Projet
 - `jarvis.atelier-sam.fr` → Jarvis
@@ -84,7 +84,7 @@
 4. ⏳ Tester délégation avec tâches réelles
 
 ### Phase Court Terme
-1. ⏳ Configurer DNS sur Unraid (sous-domaines)
+1. ⏳ Configurer DNS sur Server (sous-domaines)
 2. ⏳ Setup Nginx reverse proxy
 3. ⏳ Tester accès multi-projet simultané
 4. ⏳ Créer scripts de sync par projet
@@ -117,11 +117,11 @@ npm run delegate "Translate pages" --parallel --model gpt-5.1-codex-mini
 ### Multi-Projet
 ```bash
 # Jarvis
-cd /Users/samuelmuselet/Jarvis
+cd /Users/your-username/Jarvis
 npm run delegate "Fix workers"
 
 # Atelier-Web
-cd /Users/samuelmuselet/atelier-web
+cd /Users/your-username/atelier-web
 npm run delegate "Update homepage"
 ```
 
@@ -129,7 +129,7 @@ npm run delegate "Update homepage"
 
 ```
 ┌─────────────────────────────────────────┐
-│         UNRAID SERVER (Hub)              │
+│         SERVER SERVER (Hub)              │
 │  ┌────────────────────────────────────┐ │
 │  │  Redis (Real-time sync)            │ │
 │  │  .memory/projects/ (5 projets)     │ │

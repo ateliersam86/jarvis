@@ -49,7 +49,7 @@ Get your AI orchestration up and running in moments.
 ## ✨ Key Features
 
 *   **🧠 Centralized Shared Memory**
-    `GEMINI.md` acts as the single source of truth, synced across all your devices via Unraid/Redis. Never lose context again.
+    `GEMINI.md` acts as the single source of truth, synced across all your devices via Server/Redis. Never lose context again.
 
 *   **🔄 Multi-Machine Sync**
     Seamlessly switch between Mac, PC, and Laptop. Your project state, chat history, and context follow you automatically.
@@ -83,7 +83,7 @@ graph TD
         Dashboard -->|Reads/Writes| DB[(Prisma / SQLite)]
     end
     
-    subgraph "Infrastructure (Unraid)"
+    subgraph "Infrastructure (Server)"
         Redis[(Redis Cache)]
         SharedMem[GEMINI.md / Files]
     end
@@ -109,8 +109,8 @@ graph TD
 | `npm run delegate` | Launches the Masterscript to delegate tasks to agents. |
 | `npm run healer:watch` | Starts the auto-healer in watch mode. |
 | `npm run verify` | Runs a comprehensive health check on the codebase. |
-| `./sync-to-unraid.sh` | Pushes local changes and context to the central server. |
-| `./pull-from-unraid.sh` | Pulls the latest memory and state from the central server. |
+| `./sync.sh` | Pushes local changes and context to the central server. |
+| `./pull.sh` | Pulls the latest memory and state from the central server. |
 
 ---
 

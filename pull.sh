@@ -6,7 +6,7 @@ REMOTE_HOST="${JARVIS_SERVER_IP}"
 REMOTE_PATH="/mnt/user/websites/jarvis-nexus"
 LOCAL_PATH="/Users/samuelmuselet/Jarvis"
 
-echo "⬇️  Pulling JARVIS memory from Unraid ($REMOTE_HOST)..."
+echo "⬇️  Pulling JARVIS memory from Server ($REMOTE_HOST)..."
 
 # Pull shared memory files
 rsync -avz --progress \
@@ -31,7 +31,7 @@ rsync -avz --progress \
 #   "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/brain/" \
 #   "$LOCAL_PATH/brain/"
 
-echo "✅ Pull Complete! Shared memory synced from Unraid."
+echo "✅ Pull Complete! Shared memory synced from Server."
 echo ""
 echo "📋 Files updated:"
 echo "  - PROJECT_MEMORY.md (Unified Project Memory)"

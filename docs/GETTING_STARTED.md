@@ -10,7 +10,7 @@ Before you begin, ensure you have the following installed:
 - **npm**: v9 or higher
 - **Git**: Latest version
 - **Docker**: (Optional) For containerized deployments
-- **Unraid Server**: (Optional) For sync features, though local mode is supported.
+- **Server Server**: (Optional) For sync features, though local mode is supported.
 
 ## Installation
 
@@ -70,4 +70,4 @@ npm run healer:watch
 ## Next Steps
 
 - Explore the [CLI Reference](./CLI_REFERENCE.md) to master the command line.
-- Learn about [Self Hosting](./SELF_HOSTING.md) if you plan to deploy on Unraid or a VPS.
+- Learn about [Self Hosting](./SELF_HOSTING.md) if you plan to deploy on Server or a VPS.

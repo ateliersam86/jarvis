@@ -2,13 +2,13 @@
 
 ## Vision Globale
 
-Jarvis sert de **pont centralisé** entre plusieurs machines de développement, avec Server comme source de vérité pour la mémoire partagée.
+Jarvis sert de **pont centralisé** entre plusieurs machines de développement, avec un Server comme source de vérité pour la mémoire partagée.
 
 ## Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                    UNRAID SERVER (Hub Central)                │
+│                    CENTRAL SERVER (Hub Central)               │
 │  ┌────────────────────────────────────────────────────────┐  │
 │  │  Redis (Context Sync)                                   │  │
 │  │  ├─ jarvis:auth:google:tokens                          │  │
@@ -31,7 +31,7 @@ Jarvis sert de **pont centralisé** entre plusieurs machines de développement, 
 └──────────────────────────────────────────────────────────────┘
            ↕ Sync bidirectionnel (rsync + Redis)
 ┌──────────────────────────────────────────────────────────────┐
-│                    MAC LOCAL (Machine Dev 1)                  │
+│                    LOCAL MACHINE (Machine Dev 1)              │
 │  ┌────────────────────────────────────────────────────────┐  │
 │  │  Antigravity Opus 4.5 (Orchestrateur Principal)        │  │
 │  │  ├─ Architecture & Design                              │  │
@@ -45,9 +45,9 @@ Jarvis sert de **pont centralisé** entre plusieurs machines de développement, 
 │  │  └─ Auto-Healer (Détection automatique)                │  │
 │  └────────────────────────────────────────────────────────┘  │
 │  ┌────────────────────────────────────────────────────────┐  │
-│  │  Sync Local                                             │  │
-│  │  ├─ ./sync-to-unraid.sh (Push changes)                 │  │
-│  │  ├─ ./pull-from-unraid.sh (Pull memory)                │  │
+│  │  Sync Local                                            │  │
+│  │  ├─ ./sync.sh (Push changes)                           │  │
+│  │  ├─ ./pull.sh (Pull memory)                            │  │
 │  │  └─ Auto-sync on save (optionnel)                      │  │
 │  └────────────────────────────────────────────────────────┘  │
 └──────────────────────────────────────────────────────────────┘
@@ -56,7 +56,7 @@ Jarvis sert de **pont centralisé** entre plusieurs machines de développement, 
 │              AUTRE MACHINE (Bureau, Laptop, etc.)             │
 │  ┌────────────────────────────────────────────────────────┐  │
 │  │  1. Pull depuis Server                                  │  │
-│  │     rsync -avz root@${JARVIS_SERVER_IP}:/mnt/user/...         │  │
+│  │     ./pull.sh                                          │  │
 │  │                                                          │  │
 │  │  2. Récupère automatiquement:                           │  │
 │  │     ✅ GEMINI.md (Shared Memory)                        │  │
@@ -94,7 +94,7 @@ cd web && npm run dev
 ```bash
 # Sur nouvelle machine
 git clone <repo>
-./pull-from-unraid.sh  # Récupère GEMINI.md, brain/, etc.
+./pull.sh  # Récupère GEMINI.md, brain/, etc.
 
 # Maintenant tu as:
 # ✅ Même mémoire partagée (GEMINI.md)
@@ -106,7 +106,7 @@ git clone <repo>
 ### 3. Utilisation des Workers Jarvis (via Web UI)
 
 ```
-1. Ouvre https://jarvis.atelier-sam.fr
+1. Ouvre votre instance Jarvis (ex: http://localhost:3000)
 2. Chat avec Gemini/ChatGPT workers
 3. Historique sauvegardé dans Redis + SQLite
 4. Accessible depuis n'importe quelle machine
@@ -115,13 +115,13 @@ git clone <repo>
 ## Fichiers Clés
 
 ### GEMINI.md (Shared Memory)
-- **Location:** `/Users/samuelmuselet/Jarvis/GEMINI.md`
-- **Syncé vers:** `/mnt/user/websites/jarvis-nexus/GEMINI.md`
+- **Location:** `./GEMINI.md`
+- **Syncé vers:** Server Central
 - **Utilisé par:** Gemini CLI, Workers Gemini
 - **Contenu:** Context projet, rôle, tech stack
 
 ### .codex/config.toml
-- **Location:** `/Users/samuelmuselet/Jarvis/.codex/config.toml`
+- **Location:** `./.codex/config.toml`
 - **Utilisé par:** Codex CLI
 - **Contenu:** Config tests, commits, sandbox
 
@@ -143,8 +143,8 @@ npm run auto-heal:watch    # Continuous monitoring
 npm run auto-heal:fix      # Fix detected errors
 
 # Sync
-./sync-to-unraid.sh        # Push local → Server
-./pull-from-unraid.sh      # Pull Server → local
+./sync.sh                  # Push local → Server
+./pull.sh                  # Pull Server → local
 ```
 
 ## Avantages de cette Architecture
@@ -174,6 +174,6 @@ npm run auto-heal:fix      # Fix detected errors
 1. ✅ Masterscript créé
 2. ✅ GEMINI.md syncé
 3. ✅ Workers Jarvis online (Gemini + ChatGPT)
-4. 🔄 Créer `pull-from-unraid.sh`
+4. 🔄 Créer `pull.sh`
 5. 🔄 Tester auto-healer
 6. 🔄 Ajouter `context7/conductor` (optionnel)

@@ -26,8 +26,8 @@ Antigravity + Opus 4.5 (Orchestrator)
 
 ### 1. CLIs Already Installed ✅
 ```bash
-which gemini  # /Users/samuelmuselet/.nvm/versions/node/v20.19.5/bin/gemini
-which codex   # /Users/samuelmuselet/.nvm/versions/node/v20.19.5/bin/codex
+which gemini  # /Users/your-username/.nvm/versions/node/v20.19.5/bin/gemini
+which codex   # /Users/your-username/.nvm/versions/node/v20.19.5/bin/codex
 ```
 
 ### 2. Configuration Files Created ✅
@@ -124,7 +124,7 @@ This is a Next.js 15 project for a professional web designer...
 You are a code healer - fix lint errors, type errors...
 ```
 
-**Location:** `/Users/samuelmuselet/Jarvis/GEMINI.md`
+**Location:** `/Users/your-username/Jarvis/GEMINI.md`
 
 ## Codex Configuration
 
@@ -139,7 +139,7 @@ sandbox = "workspace-write"
 name = "Jarvis AI Nexus"
 ```
 
-**Location:** `/Users/samuelmuselet/Jarvis/.codex/config.toml`
+**Location:** `/Users/your-username/Jarvis/.codex/config.toml`
 
 ## Quota Savings
 

@@ -53,7 +53,7 @@
    ↓
 6. Résultat → Mise à jour .conductor/state.json
    ↓
-7. Sync vers Unraid
+7. Sync vers Server
 ```
 
 ## Installation Conductor
@@ -83,4 +83,4 @@ code --install-extension context7.conductor
 3. ✅ Mettre à jour scripts (masterscript, pull)
 4. 🔄 Installer extension Conductor
 5. 🔄 Tester workflow complet
-6. 🔄 Sync vers Unraid
+6. 🔄 Sync vers Server
