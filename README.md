@@ -14,6 +14,10 @@
 
 ## 📸 Dashboard
 
+<p align="center">
+  <img src="./assets/dashboard-preview.png" alt="Jarvis Dashboard" width="100%" style="border-radius: 10px;">
+</p>
+
 > 🚀 **Live Demo:** [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr)
 
 ---
