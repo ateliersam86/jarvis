@@ -8,6 +8,9 @@ npm install
 node pty-server.mjs &
 PTY_PID=$!
 
+# Clear Next.js cache for fresh compilation
+rm -rf .next
+
 # Start Next.js (Bind to all interfaces for Docker access)
 npm run dev -- -H 0.0.0.0
 
