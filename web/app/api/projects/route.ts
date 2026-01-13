@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { auth } from '@/auth';
+import { auth } from '@/lib/auth';
 
 // Proxy to /api/v1/projects - returns same data but from this endpoint
 // This maintains backward compatibility for any legacy code calling /api/projects
