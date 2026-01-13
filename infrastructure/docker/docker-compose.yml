@@ -18,7 +18,12 @@ services:
       - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
       - STRAVA_CLIENT_ID=${STRAVA_CLIENT_ID}
       
-      # Database Connection (Unraid Host)
+      # Auth (NextAuth)
+      - AUTH_SECRET=${AUTH_SECRET}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=https://jarvis.atelier-sam.fr
+      
+      # Database Connection
       - DATABASE_URL=${DATABASE_URL}
       
       # System Config

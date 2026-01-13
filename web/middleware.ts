@@ -16,22 +16,26 @@ export default auth((req) => {
         'portfolio.atelier-sam.fr': 'atelier-sam',
         'esprit.atelier-sam.fr': 'esprit-chalet',
         'localhost:9000': 'jarvis',
-        process.env.JARVIS_SERVER_IP || 'localhost': 'jarvis',
+        'localhost:3000': 'jarvis',
     };
+    // Add server IP if configured
+    const serverIp = process.env.JARVIS_SERVER_IP;
+    if (serverIp) projectMap[serverIp] = 'jarvis';
+
     const hostnameWithoutPort = hostname.split(':')[0];
     const projectId = projectMap[hostname] || projectMap[hostnameWithoutPort] || 'jarvis';
 
     // --- Path Analysis ---
     const pathname = nextUrl.pathname;
-    
+
     // Check if path is an API route or public file (should skip intl logic usually, but here we handle API explicitly)
     const isApiRoute = pathname.startsWith('/api');
-    
+
     // Normalize path for auth checks (remove locale prefix)
     // Regex: Start with slash, optionally 'en' or 'fr', then optional slash, then rest
     const localeMatch = pathname.match(/^\/(en|fr)(\/|$)/);
     const locale = localeMatch ? localeMatch[1] : routing.defaultLocale;
-    
+
     let pathWithoutLocale = pathname;
     if (localeMatch) {
         pathWithoutLocale = pathname.replace(/^\/(en|fr)/, '') || '/';
@@ -48,17 +52,17 @@ export default auth((req) => {
         // Let's include specific API paths if needed, or rely on them being handled by route handlers
         // But here we block access at middleware level
     ];
-    
+
     const protectedApiPaths = [
         "/api/user",
         "/api/projects"
     ];
 
     const isProtectedPage = protectedPaths.some((path) =>
-        pathWithoutLocale.startsWith(path) && pathWithoutLocale !== '/' 
+        pathWithoutLocale.startsWith(path) && pathWithoutLocale !== '/'
     );
-    
-    const isProtectedApi = protectedApiPaths.some((path) => 
+
+    const isProtectedApi = protectedApiPaths.some((path) =>
         pathWithoutLocale.startsWith(path)
     );
 
@@ -67,7 +71,7 @@ export default auth((req) => {
         if (isApiRoute) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
-        
+
         const loginUrl = new URL(`/${locale}/login`, nextUrl.origin);
         loginUrl.searchParams.set("callbackUrl", nextUrl.pathname);
         return NextResponse.redirect(loginUrl);
@@ -92,14 +96,14 @@ export default auth((req) => {
 
     // --- Inject Project ID Header ---
     response.headers.set('X-Project-ID', projectId);
-    
+
     return response;
 });
 
 export const config = {
     matcher: [
-        "/", 
+        "/",
         "/(fr|en)/:path*",
-        "/((?!_next/static|_next/image|favicon.ico|logo.png|grid.svg|api/auth).*)", 
+        "/((?!_next/static|_next/image|favicon.ico|logo.png|grid.svg|api/auth).*)",
     ],
 };
