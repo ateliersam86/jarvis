@@ -15,6 +15,7 @@
 import { spawn } from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
+import os from 'os';
 import yaml from 'js-yaml';
 
 // Load model registry
@@ -512,42 +513,80 @@ async function updateMemory(projectId, workerId, taskData) {
 
 // Sync task with Dashboard API for real-time updates
 async function syncWithDashboard(projectId, workerId, taskData) {
-    // Try both local and Unraid Dashboard URLs
-    const dashboardUrls = [
-        'http://localhost:3000/api/tasks/sync',
-        'http://${process.env.JARVIS_SERVER_IP || "localhost"}:9000/api/tasks/sync'
-    ];
+    const JARVIS_API = process.env.JARVIS_API_URL || 'https://jarvis.atelier-sam.fr';
 
-    const payload = {
-        projectId,
-        agentId: workerId,
-        task: taskData.input?.slice(0, 1000) || '',
-        status: taskData.success ? 'success' : 'failed',
-        output: taskData.output?.slice(0, 2000) || '',
-        model: taskData.model || 'unknown',
-        responseTime: taskData.responseTime || 0,
-        filesModified: taskData.filesModified || []
-    };
-
-    for (const url of dashboardUrls) {
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-                signal: AbortSignal.timeout(5000) // 5s timeout
-            });
-
-            if (response.ok) {
-                console.log(`🔄 Dashboard synced (${new URL(url).hostname})`);
-                return;
-            }
-        } catch {
-            // Silently continue to next URL
-        }
+    // Load token from config
+    let token = null;
+    try {
+        const configPath = path.join(os.homedir(), '.jarvis', 'config.json');
+        const configData = await fs.readFile(configPath, 'utf-8');
+        const config = JSON.parse(configData);
+        token = config.token;
+    } catch {
+        // No config file, skip sync
     }
-    // If all fail, just log a warning (non-blocking)
-    console.log('⚠️ Dashboard sync unavailable (offline or unreachable)');
+
+    if (!token) {
+        // Not logged in, skip silently
+        return;
+    }
+
+    // First sync the project
+    const cwd = process.cwd();
+    let pkgName = projectId;
+    try {
+        const pkgPath = path.join(cwd, 'package.json');
+        const pkgData = await fs.readFile(pkgPath, 'utf-8');
+        const pkg = JSON.parse(pkgData);
+        pkgName = pkg.name || path.basename(cwd);
+    } catch {
+        pkgName = path.basename(cwd);
+    }
+
+    try {
+        // Sync project
+        const projResponse = await fetch(`${JARVIS_API}/api/v1/projects/sync`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: pkgName,
+                localPath: cwd,
+            }),
+            signal: AbortSignal.timeout(5000)
+        });
+
+        if (!projResponse.ok) {
+            return;
+        }
+
+        const projData = await projResponse.json();
+
+        // Sync task
+        await fetch(`${JARVIS_API}/api/v1/tasks/sync`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                projectId: projData.project?.id,
+                tasks: [{
+                    title: taskData.input?.slice(0, 100) || 'Task',
+                    description: `${workerId}: ${taskData.output?.slice(0, 200) || ''}`,
+                    status: taskData.success ? 'COMPLETED' : 'PENDING',
+                }]
+            }),
+            signal: AbortSignal.timeout(5000)
+        });
+
+        console.log(`🔄 Dashboard synced`);
+
+    } catch {
+        // Silent fail - dashboard sync is optional
+    }
 }
 
 
