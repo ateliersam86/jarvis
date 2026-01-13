@@ -698,20 +698,26 @@ async function syncWithDashboard(projectId, workerId, taskData) {
     }
 }
 
-
 // Execute via Gemini CLI
 async function executeViaGemini(prompt, modelName, options = {}) {
     console.log(`\n🔷 Gemini CLI (${modelName})...\n`);
 
     const startTime = Date.now();
     const projectId = await detectProject();
+    const projectDir = process.cwd();
 
-    // Enhance prompt with agent directives from GEMINI.md (skip in silent mode for speed)
+    // Enhance prompt with agent directives from agent-gemini.md (skip in silent mode for speed)
     const enhancedPrompt = options.silent ? prompt : await enhancePromptWithDirectives(prompt, 'gemini');
 
     return new Promise((resolve, reject) => {
-        const gemini = spawn('gemini', ['-y'], {
-            cwd: process.cwd(),
+        // Launch Gemini CLI from /tmp to avoid auto-reading GEMINI.md at project root
+        // Use --include-directories to give it access to project files
+        const gemini = spawn('gemini', [
+            '-y',
+            '-m', modelName,
+            '--include-directories', projectDir
+        ], {
+            cwd: '/tmp',  // Run from /tmp to avoid GEMINI.md auto-read
             stdio: ['pipe', 'pipe', 'pipe'],
             env: { ...process.env, GEMINI_MODEL: modelName }
         });
