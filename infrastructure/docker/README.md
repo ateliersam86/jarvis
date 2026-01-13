@@ -1,5 +1,14 @@
 # Docker Workers (Optional)
 
+> **🚧 ALPHA / WORK IN PROGRESS - NOT FUNCTIONAL YET**
+>
+> Docker workers are an experimental feature in development.
+> They do NOT work in the current release.
+> 
+> The CLI-based approach (`masterscript.mjs`) is the only supported method.
+
+---
+
 > **⚠️ This is an ADVANCED feature for self-hosters who clone the project.**
 > 
 > The main Jarvis site uses visitors' local CLI installations (Gemini CLI, Claude CLI, Codex).
