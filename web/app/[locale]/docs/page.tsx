@@ -1,12 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, ReactNode } from 'react'
 import { Navbar } from '@/components/shared/Navbar'
-import { Footer } from '@/components/shared/Footer'
 import { CodeBlock } from '@/components/docs/CodeBlock'
 import { cn } from '@/lib/utils'
 import { Search, ChevronRight } from 'lucide-react'
-import Link from 'next/link'
+
+interface TocItem {
+  label: string
+  href: string
+}
+
+interface SectionContent {
+  group: string
+  title: string
+  content: ReactNode
+  toc: TocItem[]
+}
 
 export default function DocsPage() {
   const [activeSection, setActiveSection] = useState('getting-started')
@@ -37,6 +47,96 @@ export default function DocsPage() {
       ]
     },
   ]
+
+  const getSectionContent = (id: string): SectionContent => {
+    switch (id) {
+      case 'getting-started':
+        return {
+          group: 'Introduction',
+          title: 'Getting Started',
+          content: (
+            <>
+              <h1>Getting Started with Jarvis</h1>
+              <p className="lead text-lg text-muted">
+                Jarvis is a powerful orchestration engine for managing autonomous AI agents. This guide will help you set up your first swarm in minutes.
+              </p>
+
+              <h2>Installation</h2>
+              <p>
+                You can install the Jarvis CLI tool globally using npm or yarn. This will give you access to the `jarvis` command in your terminal.
+              </p>
+              <CodeBlock 
+                language="bash" 
+                code="npm install -g @jarvis/cli" 
+              />
+
+              <h2>Initializing a Project</h2>
+              <p>
+                Create a new directory for your project and initialize it. This will create a `jarvis.config.json` file and a basic directory structure.
+              </p>
+              <CodeBlock 
+                language="bash" 
+                code="mkdir my-swarm && cd my-swarm
+jarvis init" 
+              />
+
+              <h2>Your First Agent</h2>
+              <p>
+                Define your first agent in `agents/researcher.ts`. Jarvis agents are built on top of standard LLM interfaces but enhanced with long-term memory and tool access.
+              </p>
+              <CodeBlock 
+                language="typescript" 
+                filename="agents/researcher.ts"
+                code={`import { Agent } from '@jarvis/sdk'
+
+export const researcher = new Agent({
+  name: 'researcher',
+  role: 'Information Gatherer',
+  model: 'gemini-pro',
+  tools: ['web-search', 'read-file'],
+  instructions: 'You are an expert researcher. detailed and factual.'
+})`} 
+              />
+
+              <h2>Running the Swarm</h2>
+              <p>
+                Start the orchestration engine to bring your agents to life.
+              </p>
+              <CodeBlock 
+                language="bash" 
+                code="jarvis start" 
+              />
+            </>
+          ),
+          toc: [
+            { label: 'Installation', href: '#' },
+            { label: 'Initializing a Project', href: '#' },
+            { label: 'Your First Agent', href: '#' },
+            { label: 'Running the Swarm', href: '#' },
+          ]
+        }
+      default:
+        // Generic fallback for other sections
+        const group = sidebarItems.find(g => g.items.some(i => i.id === id))
+        const item = group?.items.find(i => i.id === id)
+        return {
+          group: group?.section || 'Docs',
+          title: item?.label || 'Documentation',
+          content: (
+            <>
+              <h1>{item?.label}</h1>
+              <p className="lead text-lg text-muted">
+                Detailed documentation for <strong>{item?.label}</strong> is currently being written.
+                Check back soon for updates.
+              </p>
+            </>
+          ),
+          toc: []
+        }
+    }
+  }
+
+  const activeData = getSectionContent(activeSection)
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -85,83 +185,28 @@ export default function DocsPage() {
           <div className="mb-4 flex items-center gap-2 text-sm text-muted">
             <span>Docs</span>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-foreground">Introduction</span>
+            <span className="text-foreground">{activeData.group}</span>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-foreground">Getting Started</span>
+            <span className="text-foreground">{activeData.title}</span>
           </div>
 
-          <h1>Getting Started with Jarvis</h1>
-          <p className="lead text-lg text-muted">
-            Jarvis is a powerful orchestration engine for managing autonomous AI agents. This guide will help you set up your first swarm in minutes.
-          </p>
-
-          <h2>Installation</h2>
-          <p>
-            You can install the Jarvis CLI tool globally using npm or yarn. This will give you access to the `jarvis` command in your terminal.
-          </p>
-          <CodeBlock 
-            language="bash" 
-            code="npm install -g @jarvis/cli" 
-          />
-
-          <h2>Initializing a Project</h2>
-          <p>
-            Create a new directory for your project and initialize it. This will create a `jarvis.config.json` file and a basic directory structure.
-          </p>
-          <CodeBlock 
-            language="bash" 
-            code="mkdir my-swarm && cd my-swarm
-jarvis init" 
-          />
-
-          <h2>Your First Agent</h2>
-          <p>
-            Define your first agent in `agents/researcher.ts`. Jarvis agents are built on top of standard LLM interfaces but enhanced with long-term memory and tool access.
-          </p>
-          <CodeBlock 
-            language="typescript" 
-            filename="agents/researcher.ts"
-            code={`import { Agent } from '@jarvis/sdk'
-
-export const researcher = new Agent({
-  name: 'researcher',
-  role: 'Information Gatherer',
-  model: 'gemini-pro',
-  tools: ['web-search', 'read-file'],
-  instructions: 'You are an expert researcher. detailed and factual.'
-})`} 
-          />
-
-          <h2>Running the Swarm</h2>
-          <p>
-            Start the orchestration engine to bring your agents to life.
-          </p>
-          <CodeBlock 
-            language="bash" 
-            code="jarvis start" 
-          />
+          {activeData.content}
         </main>
 
         {/* Table of Contents */}
         <aside className="w-64 hidden xl:block pl-8 border-l border-border shrink-0 fixed right-0 top-24 h-[calc(100vh-6rem)]">
-          <h4 className="font-semibold text-sm mb-4 text-foreground">On this page</h4>
-          <ul className="space-y-2 text-sm text-muted">
-            <li><a href="#" className="hover:text-primary transition-colors">Installation</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Initializing a Project</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Your First Agent</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Running the Swarm</a></li>
-          </ul>
+          {activeData.toc.length > 0 && (
+            <>
+              <h4 className="font-semibold text-sm mb-4 text-foreground">On this page</h4>
+              <ul className="space-y-2 text-sm text-muted">
+                {activeData.toc.map((item, i) => (
+                  <li key={i}><a href={item.href} className="hover:text-primary transition-colors">{item.label}</a></li>
+                ))}
+              </ul>
+            </>
+          )}
         </aside>
       </div>
-      
-      {/* Footer is outside the flex container to stay at bottom if content is short, 
-          but here min-h-screen handles it. 
-          Actually, with fixed sidebars, footer might behave oddly if main content is long.
-          Ideally main content should scroll, sidebar fixed.
-          Current CSS: body scrolls. Sidebars fixed. This is fine.
-      */}
-      {/* <Footer /> */} 
-      {/* Removed Footer from docs page usually to maximize reading space, or keep it minimal */}
     </div>
   )
 }
