@@ -1,0 +1,67 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Jarvis i18n Configuration",
+    "type": "object",
+    "properties": {
+        "i18n": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable automatic translation"
+                },
+                "sourceLang": {
+                    "type": "string",
+                    "default": "fr",
+                    "description": "Source language code"
+                },
+                "targetLangs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "en",
+                        "es",
+                        "de",
+                        "it",
+                        "pt",
+                        "ja",
+                        "zh"
+                    ],
+                    "description": "Target language codes to translate to"
+                },
+                "watchMode": {
+                    "type": "string",
+                    "enum": [
+                        "fs-watch",
+                        "git-hook",
+                        "manual"
+                    ],
+                    "default": "manual",
+                    "description": "How to detect changes"
+                },
+                "autoCommit": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically commit translated files"
+                },
+                "translationModel": {
+                    "type": "string",
+                    "default": "gemini:flash",
+                    "description": "AI model to use for translations"
+                },
+                "validationLevel": {
+                    "type": "string",
+                    "enum": [
+                        "strict",
+                        "relaxed"
+                    ],
+                    "default": "strict",
+                    "description": "Validation strictness level"
+                }
+            }
+        }
+    }
+}
