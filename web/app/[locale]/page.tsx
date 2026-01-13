@@ -49,10 +49,9 @@ export default function LandingPage() {
                   {t('versionBadge')}
                 </span>
                 <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                  {t.rich('heroTitle', {
-                    br: () => <br className="hidden md:block" />,
-                    highlight: (chunks) => <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">{chunks}</span>
-                  })}
+                  Orchestrez vos <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">agents IA</span>
+                  <br className="hidden md:block" />
+                  depuis un seul terminal
                 </h1>
                 <p className="text-lg md:text-xl text-muted mb-8 max-w-2xl mx-auto leading-relaxed">
                   {t('heroDescription')}

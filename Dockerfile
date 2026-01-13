@@ -10,17 +10,27 @@ WORKDIR /app
 # Copy package files
 COPY package.json ./
 
-# Install dependencies
+# Install root dependencies
 RUN npm install
 
-# Install CLIs globally to be safe
+# Install CLIs globally
 RUN npm install -g @google/gemini-cli @openai/codex
 
 # Copy source code
 COPY . .
 
-# Expose potential ports (if we add a web server later)
-EXPOSE 3000
+# Install web dependencies
+# Use --ignore-scripts to avoid unrs-resolver issue, then rebuild native modules
+WORKDIR /app/web
+RUN npm install --ignore-scripts || true
+RUN cd node_modules/node-pty && npm run install 2>/dev/null || true
+RUN npx prisma generate
 
-# Keep container alive
-CMD ["tail", "-f", "/dev/null"]
+# Back to root
+WORKDIR /app
+
+# Expose ports
+EXPOSE 3000 4000
+
+# Start script
+CMD ["./start-all.sh"]

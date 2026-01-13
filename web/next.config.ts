@@ -7,8 +7,10 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
+
+  // Fix Turbopack root directory (avoid looking in /app instead of /app/web)
+  turbopack: {
+    root: __dirname,
   },
 
   // Security headers
