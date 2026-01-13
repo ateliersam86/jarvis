@@ -184,6 +184,149 @@ async function logout() {
     console.log('✅ Logged out');
 }
 
+// Detect project from current directory
+async function detectProject() {
+    const cwd = process.cwd();
+
+    // Try to find package.json
+    try {
+        const pkgPath = path.join(cwd, 'package.json');
+        const pkgData = await fs.readFile(pkgPath, 'utf-8');
+        const pkg = JSON.parse(pkgData);
+        return {
+            name: pkg.name || path.basename(cwd),
+            localPath: cwd,
+            description: pkg.description || null,
+        };
+    } catch {
+        // No package.json, use directory name
+        return {
+            name: path.basename(cwd),
+            localPath: cwd,
+            description: null,
+        };
+    }
+}
+
+// Parse task.md to extract tasks
+async function parseTasks() {
+    const cwd = process.cwd();
+    const possiblePaths = [
+        path.join(cwd, '.gemini', 'brain', 'task.md'),
+        path.join(cwd, 'brain', 'task.md'),
+        path.join(cwd, 'task.md'),
+    ];
+
+    for (const taskPath of possiblePaths) {
+        try {
+            const content = await fs.readFile(taskPath, 'utf-8');
+            const tasks = [];
+            const lines = content.split('\n');
+
+            for (const line of lines) {
+                // Match: - [ ] Task, - [x] Task, - [/] Task
+                const match = line.match(/^-\s*\[([ x\/])\]\s*\*?\*?(.+?)\*?\*?\s*$/);
+                if (match) {
+                    const checked = match[1];
+                    const title = match[2].replace(/\*\*/g, '').trim();
+                    let status = 'PENDING';
+
+                    if (checked === 'x') status = 'COMPLETED';
+                    else if (checked === '/') status = 'IN_PROGRESS';
+
+                    tasks.push({ title, status });
+                }
+            }
+
+            return { tasks, path: taskPath };
+        } catch {
+            continue;
+        }
+    }
+
+    return { tasks: [], path: null };
+}
+
+// Sync command - syncs current project to dashboard
+async function sync() {
+    const config = await loadConfig();
+
+    if (!config.token) {
+        console.log('❌ Not logged in. Run: jarvis-config login <token>');
+        process.exit(1);
+    }
+
+    console.log('🔄 Syncing project to dashboard...\n');
+
+    // Detect project
+    const project = await detectProject();
+    console.log(`📁 Project: ${project.name}`);
+    console.log(`📍 Path: ${project.localPath}`);
+
+    // Sync project
+    try {
+        const projResponse = await fetch(`${JARVIS_API}/api/v1/projects/sync`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${config.token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(project)
+        });
+
+        const projData = await projResponse.json();
+
+        if (projData.error) {
+            console.error(`❌ Project sync failed: ${projData.error}`);
+            process.exit(1);
+        }
+
+        console.log(`✅ Project ${projData.action}: ${projData.project.name}`);
+
+        // Parse and sync tasks
+        const { tasks, path: taskPath } = await parseTasks();
+
+        if (tasks.length === 0) {
+            console.log('\n📋 No tasks found (no task.md)');
+        } else {
+            console.log(`\n📋 Found ${tasks.length} tasks in ${taskPath}`);
+
+            const taskResponse = await fetch(`${JARVIS_API}/api/v1/tasks/sync`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${config.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    projectId: projData.project.id,
+                    tasks: tasks
+                })
+            });
+
+            const taskData = await taskResponse.json();
+
+            if (taskData.error) {
+                console.error(`❌ Tasks sync failed: ${taskData.error}`);
+            } else {
+                console.log(`✅ Tasks synced: ${taskData.results.created} created, ${taskData.results.updated} updated`);
+            }
+        }
+
+        console.log('\n🎉 Sync complete!');
+        console.log(`🔗 View at: ${JARVIS_API}/dashboard`);
+
+    } catch (error) {
+        console.error('❌ Sync failed:', error.message);
+        process.exit(1);
+    }
+}
+
+// Init command - initialize project and sync
+async function init() {
+    console.log('🚀 Initializing Jarvis for this project...\n');
+    await sync();
+}
+
 // CLI Entry
 const args = process.argv.slice(2);
 const command = args[0];
@@ -201,19 +344,28 @@ switch (command) {
     case 'logout':
         await logout();
         break;
+    case 'sync':
+        await sync();
+        break;
+    case 'init':
+        await init();
+        break;
     default:
         console.log(`
-🤖 JARVIS CONFIG - CLI Authentication
+🤖 JARVIS CONFIG - CLI Authentication & Sync
 
 Commands:
   login <token>   Authenticate with Jarvis server
   status          Show connection status
   projects        List your projects
+  sync            Sync current project & tasks to dashboard
+  init            Initialize project and sync
   logout          Remove authentication
 
 Example:
   jarvis-config login jarvis_abc123...
-  jarvis-config status
+  jarvis-config sync
   jarvis-config projects
     `);
 }
+
