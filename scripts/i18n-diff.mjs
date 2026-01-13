@@ -11,13 +11,15 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { loadConfig, getMessagesDir, printConfig } from './i18n-config.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const MESSAGES_DIR = path.join(__dirname, '../web/messages');
 
-// Configuration
-const SOURCE_LANG = 'fr';
-const TARGET_LANGS = ['en', 'es', 'de', 'it', 'pt', 'ja', 'zh'];
+// Load configuration from jarvis.config.json
+const config = loadConfig();
+const MESSAGES_DIR = getMessagesDir(config);
+const SOURCE_LANG = config.i18n.sourceLang;
+const TARGET_LANGS = config.i18n.targetLangs;
 
 /**
  * Flatten nested JSON to dot notation keys

@@ -12,11 +12,15 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { loadConfig, getMessagesDir } from './i18n-config.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const MESSAGES_DIR = path.join(__dirname, '../web/messages');
-const SOURCE_LANG = 'fr';
-const ALL_LANGS = ['fr', 'en', 'es', 'de', 'it', 'pt', 'ja', 'zh'];
+
+// Load configuration
+const config = loadConfig();
+const MESSAGES_DIR = getMessagesDir(config);
+const SOURCE_LANG = config.i18n.sourceLang;
+const ALL_LANGS = [config.i18n.sourceLang, ...config.i18n.targetLangs];
 
 /**
  * Flatten nested JSON to dot notation keys

@@ -12,22 +12,16 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
+import { loadConfig, getMessagesDir, getLangName } from './i18n-config.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const MESSAGES_DIR = path.join(__dirname, '../web/messages');
 const CACHE_DIR = path.join(__dirname, '../.cache');
 
-// Configuration
-const SOURCE_LANG = 'fr';
-const LANG_NAMES = {
-    en: 'English',
-    es: 'Spanish',
-    de: 'German',
-    it: 'Italian',
-    pt: 'Portuguese',
-    ja: 'Japanese',
-    zh: 'Chinese (Simplified)'
-};
+// Load configuration from jarvis.config.json
+const config = loadConfig();
+const MESSAGES_DIR = getMessagesDir(config);
+const SOURCE_LANG = config.i18n.sourceLang;
+const TRANSLATION_MODEL = config.i18n.translationModel || 'gemini:flash';
 
 /**
  * Load diff results from cache
@@ -63,17 +57,18 @@ function runCommand(cmd, args) {
 }
 
 /**
- * Translate keys using Gemini CLI
+ * Translate keys using AI agent (configurable model)
  */
 async function translateWithAgent(lang, missingKeys) {
-    const langName = LANG_NAMES[lang] || lang;
+    const langName = getLangName(lang);
+    const sourceLangName = getLangName(SOURCE_LANG);
     const keysJson = JSON.stringify(missingKeys, null, 2);
 
-    const prompt = `Translate the following JSON key-value pairs from French to ${langName}.
+    const prompt = `Translate the following JSON key-value pairs from ${sourceLangName} to ${langName}.
 Keep the exact same JSON structure. Only translate the string values, not the keys.
 Preserve any HTML tags, placeholders like {name}, and formatting.
 
-French source:
+${sourceLangName} source:
 ${keysJson}
 
 Return ONLY the translated JSON object, no explanation.`;

@@ -11,10 +11,14 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
+import { loadConfig, getMessagesDir, printConfig } from './i18n-config.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const MESSAGES_DIR = path.join(__dirname, '../web/messages');
-const SOURCE_FILE = path.join(MESSAGES_DIR, 'fr.json');
+
+// Load configuration
+const config = loadConfig();
+const MESSAGES_DIR = getMessagesDir(config);
+const SOURCE_FILE = path.join(MESSAGES_DIR, `${config.i18n.sourceLang}.json`);
 
 // Debounce timeout (ms)
 const DEBOUNCE_MS = 2000;
