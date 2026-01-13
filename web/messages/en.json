@@ -1,39 +1,39 @@
 {
   "Landing": {
-    "versionBadge": "v2.0 Now Available",
-    "heroTitle": "Orchestrate AI Agents <br /> with Surgical Precision",
-    "heroDescription": "Jarvis is the advanced orchestration platform for managing autonomous multi-agent systems. Deploy, monitor, and scale your AI workforce.",
-    "startBuilding": "Start Building",
-    "readDocs": "Read Documentation",
-    "trustedBy": "POWERED BY NEXT-GEN MODELS",
-    "featuresTitle": "Engineered for Control",
-    "featuresDescription": "Everything you need to manage complex agent swarms without losing track.",
-    "feature1Title": "Parallel Execution",
-    "feature1Desc": "Run multiple agent chains simultaneously with our optimized specialized workers.",
-    "feature2Title": "Global Context",
-    "feature2Desc": "Shared memory architecture allows agents to access project-wide context instantly.",
-    "feature3Title": "Sandboxed Environments",
-    "feature3Desc": "Secure execution environments ensure your system stays safe while agents work.",
-    "ctaTitle": "Ready to deploy your swarm?",
-    "ctaButton": "Get Started Now"
+    "versionBadge": "CLI v1.0 - Open Source",
+    "heroTitle": "Orchestrate your AI CLIs <br />from a single terminal",
+    "heroDescription": "Intelligently delegate to Gemini, Claude or Codex. Parallelize your tasks with Swarm mode. Track your quotas in real-time.",
+    "startBuilding": "Install CLI",
+    "readDocs": "Documentation",
+    "trustedBy": "COMPATIBLE WITH YOUR LOCAL CLIs",
+    "featuresTitle": "Simplified Orchestration",
+    "featuresDescription": "One CLI to manage all your local AI agents.",
+    "feature1Title": "Smart Delegation",
+    "feature1Desc": "Jarvis analyzes your task and delegates to the optimal agent: Gemini for UI, Claude for logic, Codex for tests.",
+    "feature2Title": "Swarm Mode",
+    "feature2Desc": "Automatically decompose a complex task into parallel subtasks executed by multiple agents simultaneously.",
+    "feature3Title": "Quota Tracking",
+    "feature3Desc": "Visualize your Gemini, Claude and OpenAI usage in real-time. No more billing surprises.",
+    "ctaTitle": "Ready to orchestrate your agents?",
+    "ctaButton": "npm install -g @jarvis/cli"
   },
   "Dashboard": {
-    "loading": "Loading Neural Interface...",
+    "loading": "Connecting to hub...",
     "title": "Dashboard",
-    "welcome": "Welcome back, {name}. System is fully operational.",
+    "welcome": "Welcome back, {name}. Your agents are ready.",
     "newProject": "New Project",
     "recentProjects": "Recent Projects",
     "viewAll": "View All",
     "quickActions": "Quick Actions",
     "actions": {
-      "deploy": "Deploy Agent",
-      "deployDesc": "Spin up a new worker",
+      "deploy": "New Task",
+      "deployDesc": "Delegate to an agent",
       "logs": "View Logs",
-      "logsDesc": "Check system health",
+      "logsDesc": "Execution history",
       "auth": "Manage Keys",
-      "authDesc": "Update API access"
+      "authDesc": "Configure APIs"
     },
-    "systemOnline": "System Online",
+    "systemOnline": "Agents Connected",
     "tabs": {
       "overview": "Overview",
       "tasks": "Tasks",
@@ -43,5 +43,22 @@
   },
   "Common": {
     "language": "Language"
+  },
+  "Nav": {
+    "features": "Features",
+    "docs": "Docs",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "register": "Sign Up"
+  },
+  "Footer": {
+    "tagline": "Multi-agent orchestration for developers",
+    "resources": "Resources",
+    "docs": "Documentation",
+    "github": "GitHub",
+    "cli": "CLI Reference",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms"
   }
 }

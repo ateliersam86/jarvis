@@ -1,90 +1,93 @@
-# 🧠 Jarvis - AI Orchestration Platform
+# 🧠 Jarvis - Multi-Agent AI Orchestrator
 
-![Status](https://img.shields.io/badge/status-active-success.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+> **Orchestrez, déléguez et parallélisez vos tâches IA avec Gemini, Claude et Codex.**
 
-> **Orchestrez vos agents IA locaux (Gemini, Claude, Codex) depuis une plateforme unifiée.**
-> 
-> Jarvis se connecte à vos CLIs installés localement et vous offre un dashboard centralisé pour suivre vos quotas, projets et tâches.
+[![Status](https://img.shields.io/badge/status-active-success.svg)](https://jarvis.atelier-sam.fr)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 ---
 
-## 🚀 Quick Start (3 minutes)
+## ⚡ Pourquoi Jarvis ?
 
-### 1. Installez le SDK Jarvis
+**Vous utilisez plusieurs CLIs AI ?** Gemini CLI, Claude CLI, Codex... Chacun a ses forces, mais les gérer séparément est fastidieux.
+
+**Jarvis résout ça :**
+- 🎯 **Délégation intelligente** - Chaque tâche est assignée au meilleur agent
+- 🐝 **Mode Swarm** - Parallélisez vos tâches sur plusieurs agents simultanément  
+- 📊 **Suivi centralisé** - Quotas, statuts et historique en un seul endroit
+
+---
+
+## 🚀 Quick Start
 
 ```bash
+# 1. Installez le CLI Jarvis
 npm install -g @jarvis/cli
+
+# 2. Connectez vos agents locaux
+jarvis setup
+# → Détecte et configure Gemini CLI, Claude CLI, Codex
+
+# 3. Déléguez votre première tâche
+jarvis delegate "Refactor auth.ts" --model gemini:pro
 ```
 
-### 2. Connectez-vous à la plateforme
+---
+
+## 🎯 Délégation Intelligente
+
+Jarvis choisit automatiquement l'agent optimal selon la tâche :
 
 ```bash
-jarvis login
-# Ouvre votre navigateur vers jarvis.atelier-sam.fr pour l'authentification
+# UI/CSS → Gemini (rapide, créatif)
+jarvis delegate "Create a modern login form" --auto
+
+# Architecture/Logic → Claude (analytique)
+jarvis delegate "Refactor the API structure" --auto
+
+# Tests/Debug → Codex (précis, technique)
+jarvis delegate "Write unit tests for utils.ts" --auto
 ```
 
-### 3. Vérifiez vos CLIs locaux
+**Ou spécifiez manuellement :**
+```bash
+jarvis delegate "..." --model gemini:flash
+jarvis delegate "..." --model claude:sonnet
+jarvis delegate "..." --model codex
+```
+
+---
+
+## 🐝 Mode Swarm (Parallélisation)
+
+Décomposez une tâche complexe en sous-tâches parallèles :
 
 ```bash
-jarvis status
+jarvis delegate "Complete site redesign" --swarm
 ```
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  🧠 JARVIS STATUS                                   │
+│  🐝 SWARM MODE - 4 agents en parallèle              │
 ├─────────────────────────────────────────────────────┤
-│  Gemini CLI    ● Connected    (Flash/Pro ready)    │
-│  Claude CLI    ● Connected    (Sonnet ready)       │
-│  Codex CLI     ○ Not found    (run: jarvis setup)  │
+│  Agent 1 (Gemini)  → Header + Navigation    ✓ Done  │
+│  Agent 2 (Claude)  → Auth refactoring       ● 78%   │
+│  Agent 3 (Gemini)  → Footer + Responsive    ● 45%   │
+│  Agent 4 (Codex)   → Unit tests             ○ Queue │
 ├─────────────────────────────────────────────────────┤
-│  Quotas: 89% Gemini | 72% Claude | -- OpenAI       │
-│  Dashboard: jarvis.atelier-sam.fr                  │
+│  Overall: 56% complete                              │
 └─────────────────────────────────────────────────────┘
 ```
 
-### 4. Déléguez votre première tâche
-
-```bash
-jarvis delegate "Fix the login bug in auth.ts" --model gemini:pro
-```
-
 ---
 
-## ✨ Ce que Jarvis vous offre
+## 📊 Dashboard (Optionnel)
 
-### 🎛️ Dashboard Centralisé
-Accédez à [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr) pour :
-- **Voir vos projets** et leur état de synchronisation
-- **Suivre vos quotas** Gemini, Claude et OpenAI en temps réel
-- **Gérer vos tâches** et leur historique
-- **Visualiser vos CLIs** connectés ou non
-
-### 🔄 Délégation Intelligente
-```bash
-jarvis delegate "Refactor the API routes" --model claude:sonnet
-jarvis delegate "Write unit tests" --model codex
-jarvis delegate "Generate documentation" --model gemini:flash
-```
-
-### 🐝 Mode Swarm (Parallélisation)
-```bash
-jarvis delegate "Complete site redesign" --swarm
-# Décompose automatiquement en sous-tâches parallèles
-```
-
-### 📊 Suivi des Quotas
-Ne soyez plus jamais surpris par vos limites API. Le dashboard affiche en temps réel votre consommation Gemini, Claude et OpenAI.
-
----
-
-## 📸 Dashboard
+Visualisez vos projets et quotas sur [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr) :
 
 <p align="center">
-  <img src="./assets/dashboard-preview.png" alt="Jarvis Dashboard" width="100%" style="border-radius: 10px;">
+  <img src="./assets/dashboard-preview.png" alt="Jarvis Dashboard" width="100%">
 </p>
-
-> 🚀 **Live Demo:** [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr)
 
 ---
 
@@ -92,35 +95,26 @@ Ne soyez plus jamais surpris par vos limites API. Le dashboard affiche en temps 
 
 | Commande | Description |
 | :--- | :--- |
-| `jarvis login` | Connecte votre machine à la plateforme |
-| `jarvis status` | Affiche l'état de vos CLIs et quotas |
-| `jarvis setup` | Installe automatiquement les CLIs manquants |
-| `jarvis delegate "<task>"` | Délègue une tâche à un agent IA |
-| `jarvis sync` | Synchronise votre projet avec le dashboard |
+| `jarvis setup` | Détecte et installe les CLIs manquants |
+| `jarvis status` | Affiche l'état des agents et quotas |
+| `jarvis delegate "<task>"` | Délègue une tâche (--auto, --swarm) |
+| `jarvis login` | Connecte au dashboard (optionnel) |
 
 ---
 
 ## 📋 Prérequis
 
-- **Node.js 18+** 
-- **Au moins un CLI AI installé :**
-  - [Gemini CLI](https://github.com/google/gemini-cli) - `npm i -g @google/gemini-cli`
-  - [Claude CLI](https://github.com/anthropics/claude-cli) - Via Homebrew ou pip
-  - [Codex CLI](https://github.com/openai/codex-cli) - `npm i -g @openai/codex`
-
-> 💡 **Astuce :** Utilisez `jarvis setup` pour installer automatiquement les CLIs manquants !
+- **Node.js 18+**
+- **Au moins un CLI AI local :**
+  - [Gemini CLI](https://github.com/google/gemini-cli) 
+  - [Claude CLI](https://github.com/anthropics/claude-cli)
+  - [Codex CLI](https://github.com/openai/codex-cli)
 
 ---
 
-## 🏢 Pour les utilisateurs avancés
+## � License
 
-Vous souhaitez héberger votre propre instance Jarvis ? Consultez notre [Guide d'auto-hébergement](./docs/SELF_HOSTING.md).
-
----
-
-## 📄 License
-
-MIT License - Voir [LICENSE](./LICENSE)
+MIT - [LICENSE](./LICENSE)
 
 ---
 
