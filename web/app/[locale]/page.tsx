@@ -35,7 +35,7 @@ export default function LandingPage() {
           </div>
 
           <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <motion.div 
+            <motion.div
               style={{ y: yHero, opacity: opacityHero }}
               className="text-center max-w-4xl mx-auto mb-16"
             >
@@ -144,11 +144,20 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
           <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-8">{t('ctaTitle')}</h2>
-            <Link href="/register">
-              <Button size="lg" className="h-14 px-10 text-lg rounded-full">
-                {t('ctaButton')}
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              className="h-14 px-10 text-lg rounded-full font-mono"
+              onClick={() => {
+                navigator.clipboard.writeText('npm install -g @jarvis/cli');
+                const btn = document.activeElement as HTMLButtonElement;
+                const original = btn.innerText;
+                btn.innerText = '✓ Copié !';
+                setTimeout(() => btn.innerText = original, 2000);
+              }}
+            >
+              {t('ctaButton')}
+            </Button>
+            <p className="mt-4 text-sm text-muted">Cliquez pour copier la commande</p>
           </div>
         </section>
       </main>

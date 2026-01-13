@@ -60,5 +60,9 @@
     "legal": "Legal",
     "privacy": "Privacy",
     "terms": "Terms"
+  },
+  "Features": {
+    "pageTitle": "Features",
+    "pageDescription": "Jarvis isn't just a chatbot wrapper. It's a multi-agent orchestrator designed to maximize the efficiency of your AI CLIs."
   }
 }
