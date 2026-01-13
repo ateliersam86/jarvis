@@ -14,11 +14,7 @@
 
 ## 📸 Dashboard
 
-<p align="center">
-  <img src="./temp_cockpit/assets/dashboard_card_grouped.png" alt="Jarvis Dashboard Overview" width="100%" style="border-radius: 10px; border: 1px solid #333;">
-  <br>
-  <em>Real-time agent monitoring and task delegation dashboard.</em>
-</p>
+> 🚀 **Live Demo:** [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr)
 
 ---
 
@@ -136,5 +132,5 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by Atelier Sam & the AI Swarm</sub>
+  <sub>🏔️❤️ En train de faire une côte, vive l'aventure 🏔️❤️</sub>
 </div>
