@@ -1,7 +1,7 @@
 {
   "Landing": {
     "versionBadge": "CLI v1.0 - Open Source",
-    "heroTitle": "Orchestrate your <highlight>AI agents</highlight><br />from a single terminal",
+    "heroTitle": "Orchestrate your <highlight>AI agents</highlight><br></br>from a single terminal",
     "heroDescription": "Intelligently delegate to Gemini, Claude, or Codex. Parallelize tasks with Swarm Mode. Track quotas in real-time.",
     "startBuilding": "Install CLI",
     "readDocs": "Read Docs",
