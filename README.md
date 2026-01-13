@@ -133,4 +133,6 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 
 <div align="center">
   <sub>🏔️❤️ En train de faire une côte, vive l'aventure 🏔️❤️</sub>
+  <br>
+  <sub>par Sam Sam</sub>
 </div>
