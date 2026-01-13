@@ -8,8 +8,10 @@ import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 import { Menu, X } from 'lucide-react'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { useTranslations } from 'next-intl'
 
 export function Navbar() {
+  const t = useTranslations('Nav')
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
@@ -23,9 +25,9 @@ export function Navbar() {
   }, [])
 
   const navLinks = [
-    { name: 'Features', href: '/features' },
-    { name: 'Docs', href: '/docs' },
-    { name: 'Dashboard', href: '/dashboard' },
+    { name: t('features'), href: '/features' },
+    { name: t('docs'), href: '/docs' },
+    { name: t('dashboard'), href: '/dashboard' },
   ]
 
   return (
@@ -42,7 +44,7 @@ export function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
-              key={link.name}
+              key={link.href}
               href={link.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
@@ -57,35 +59,35 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-4">
           <LanguageSwitcher />
           <Link href="/login">
-            <Button variant="ghost" size="sm">Log in</Button>
+            <Button variant="ghost" size="sm">{t('login')}</Button>
           </Link>
           <Link href="/register">
-            <Button variant="primary" size="sm">Get Started</Button>
+            <Button variant="primary" size="sm">{t('register')}</Button>
           </Link>
         </div>
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 md:hidden">
-            <LanguageSwitcher />
-            <button 
+          <LanguageSwitcher />
+          <button
             className="text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
+          >
             {isMobileMenuOpen ? <X /> : <Menu />}
-            </button>
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-white/5 p-4 flex flex-col gap-4"
         >
           {navLinks.map((link) => (
             <Link
-              key={link.name}
+              key={link.href}
               href={link.href}
               onClick={() => setIsMobileMenuOpen(false)}
               className={cn(
@@ -98,10 +100,10 @@ export function Navbar() {
           ))}
           <div className="flex flex-col gap-2 pt-4 border-t border-white/5">
             <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button variant="ghost" className="w-full justify-start">Log in</Button>
+              <Button variant="ghost" className="w-full justify-start">{t('login')}</Button>
             </Link>
             <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button variant="primary" className="w-full">Get Started</Button>
+              <Button variant="primary" className="w-full">{t('register')}</Button>
             </Link>
           </div>
         </motion.div>
