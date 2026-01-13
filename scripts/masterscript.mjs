@@ -103,8 +103,11 @@ const FALLBACK_CHAINS = {
     'openai': ['claude', 'gemini']
 };
 
-// Check if CLI is available
-async function isCliAvailable(cli) {
+// Cache for CLI auth status (reset on script restart)
+const CLI_AUTH_CACHE = new Map();
+
+// Check if CLI is installed
+async function isCliInstalled(cli) {
     const { exec } = await import('child_process');
     const { promisify } = await import('util');
     const execAsync = promisify(exec);
@@ -117,31 +120,137 @@ async function isCliAvailable(cli) {
     }
 }
 
-// Get available provider with fallback
-async function getAvailableProvider(preferredProvider) {
+// Check if CLI is authenticated (quick test with timeout)
+async function isCliAuthenticated(provider) {
+    // Check cache first
+    if (CLI_AUTH_CACHE.has(provider)) {
+        return CLI_AUTH_CACHE.get(provider);
+    }
+
     const cliMap = {
         'gemini': 'gemini',
         'claude': 'claude',
         'openai': 'codex'
     };
 
+    const cli = cliMap[provider];
+    if (!cli) return false;
+
+    // Check if installed first
+    if (!await isCliInstalled(cli)) {
+        CLI_AUTH_CACHE.set(provider, false);
+        return false;
+    }
+
+    // Quick auth test with 10s timeout
+    return new Promise((resolve) => {
+        let resolved = false;
+        const timeout = setTimeout(() => {
+            if (!resolved) {
+                resolved = true;
+                console.log(`⚠️ ${provider} CLI timeout during auth check`);
+                CLI_AUTH_CACHE.set(provider, false);
+                resolve(false);
+            }
+        }, 10000);
+
+        // Provider-specific auth checks
+        const testCommand = getAuthTestCommand(provider);
+
+        const child = spawn(testCommand.cmd, testCommand.args, {
+            stdio: ['ignore', 'pipe', 'pipe'],
+            cwd: process.cwd()
+        });
+
+        let stderr = '';
+        child.stderr.on('data', (data) => { stderr += data.toString(); });
+
+        child.on('close', (code) => {
+            clearTimeout(timeout);
+            if (resolved) return;
+            resolved = true;
+
+            // Check for auth errors in output
+            const authErrors = [
+                'not have access',
+                'login',
+                'authenticate',
+                'unauthorized',
+                'API key',
+                'not authenticated'
+            ];
+
+            const hasAuthError = authErrors.some(e => stderr.toLowerCase().includes(e.toLowerCase()));
+            const isAuthenticated = code === 0 && !hasAuthError;
+
+            CLI_AUTH_CACHE.set(provider, isAuthenticated);
+
+            if (!isAuthenticated) {
+                console.log(`⚠️ ${provider} CLI not authenticated (run: ${cli} /login or set API key)`);
+            }
+
+            resolve(isAuthenticated);
+        });
+
+        child.on('error', () => {
+            clearTimeout(timeout);
+            if (resolved) return;
+            resolved = true;
+            CLI_AUTH_CACHE.set(provider, false);
+            resolve(false);
+        });
+    });
+}
+
+// Get provider-specific auth test command
+function getAuthTestCommand(provider) {
+    switch (provider) {
+        case 'gemini':
+            // Quick prompt test with minimal output
+            return { cmd: 'gemini', args: ['-m', 'gemini-3-flash-preview', '-y', 'say ok'] };
+        case 'claude':
+            return { cmd: 'claude', args: ['-p', 'say ok', '--print', '--max-tokens', '5'] };
+        case 'openai':
+            // Codex version check is enough - it fails if not configured
+            return { cmd: 'codex', args: ['--version'] };
+        default:
+            return { cmd: 'echo', args: ['fail'] };
+    }
+}
+
+// Get available provider with fallback (checks auth status)
+async function getAvailableProvider(preferredProvider) {
     // Check preferred first
-    if (await isCliAvailable(cliMap[preferredProvider])) {
+    if (await isCliAuthenticated(preferredProvider)) {
         return preferredProvider;
     }
 
     // Try fallbacks
     const fallbacks = FALLBACK_CHAINS[preferredProvider] || [];
     for (const fallback of fallbacks) {
-        if (await isCliAvailable(cliMap[fallback])) {
+        if (await isCliAuthenticated(fallback)) {
             console.log(`⚠️ ${preferredProvider} unavailable, falling back to ${fallback}`);
             return fallback;
         }
     }
 
     // No CLI available
-    console.error(`❌ No CLI available for ${preferredProvider} or fallbacks`);
+    console.error(`❌ No authenticated CLI available for ${preferredProvider} or fallbacks`);
     return null;
+}
+
+// Get list of all authenticated CLIs (for REFLECT mode)
+async function getAuthenticatedProviders() {
+    const providers = ['gemini', 'claude', 'openai'];
+    const authenticated = [];
+
+    for (const provider of providers) {
+        if (await isCliAuthenticated(provider)) {
+            authenticated.push(provider);
+        }
+    }
+
+    return authenticated;
 }
 
 // Enhance prompt with agent directives
@@ -597,8 +706,8 @@ async function executeViaGemini(prompt, modelName, options = {}) {
     const startTime = Date.now();
     const projectId = await detectProject();
 
-    // Enhance prompt with agent directives from GEMINI.md
-    const enhancedPrompt = await enhancePromptWithDirectives(prompt, 'gemini');
+    // Enhance prompt with agent directives from GEMINI.md (skip in silent mode for speed)
+    const enhancedPrompt = options.silent ? prompt : await enhancePromptWithDirectives(prompt, 'gemini');
 
     return new Promise((resolve, reject) => {
         const gemini = spawn('gemini', ['-y'], {
@@ -723,16 +832,18 @@ async function executeViaClaude(prompt, modelName, options = {}) {
     const startTime = Date.now();
     const projectId = await detectProject();
 
+    // Claude CLI args: -p for prompt, --print for non-interactive output
     const args = [
+        '-p', prompt,
         '--model', modelName,
-        '--allowed-tools', 'View,Edit,Write,Bash,Glob,Grep',
+        '--allowedTools', 'View,Edit,Write,Bash,Glob,Grep',
         '--print',
         '--dangerously-skip-permissions'
     ];
 
     return new Promise((resolve, reject) => {
-        const claude = spawn('claude', [...args, prompt], {
-            stdio: ['pipe', 'pipe', 'pipe'],
+        const claude = spawn('claude', args, {
+            stdio: ['ignore', 'pipe', 'pipe'],  // No stdin needed with -p
             cwd: process.cwd()
         });
 
@@ -741,13 +852,13 @@ async function executeViaClaude(prompt, modelName, options = {}) {
 
         claude.stdout.on('data', (data) => {
             const text = data.toString();
-            process.stdout.write(text);
+            if (!options.silent) process.stdout.write(text);
             output += text;
         });
 
         claude.stderr.on('data', (data) => {
             const text = data.toString();
-            process.stderr.write(text);
+            if (!options.silent) process.stderr.write(text);
             errorOutput += text;
         });
 
@@ -775,6 +886,10 @@ async function executeViaClaude(prompt, modelName, options = {}) {
                 console.error('\n❌ Failed\n');
                 reject(new Error(errorOutput || 'Unknown error'));
             }
+        });
+
+        claude.on('error', (err) => {
+            reject(new Error(`Claude CLI error: ${err.message}`));
         });
     });
 }
@@ -1196,22 +1311,40 @@ export { delegate, delegateWithConsensus, delegateSwarm, delegateReflect, listMo
  *   masterscript "prompt" --reflect --agents=3   # 3 agents
  */
 async function delegateReflect(prompt, options = {}) {
-    const agentCount = options.agents || 2;
+    const requestedAgents = options.agents || 2;
     const timeout = options.timeout || 60; // seconds
 
     console.clear();
-    console.log(`\n🪞 REFLECT MODE: ${agentCount} agents analyzing same prompt...\n`);
+    console.log(`\n🪞 REFLECT MODE: Checking available agents...\n`);
+
+    // Get only authenticated CLIs
+    const authenticatedProviders = await getAuthenticatedProviders();
+
+    if (authenticatedProviders.length === 0) {
+        console.error('❌ No authenticated CLI available. Run one of:');
+        console.error('   gemini /login');
+        console.error('   claude /login');
+        console.error('   Set OPENAI_API_KEY');
+        return { success: false, error: 'No authenticated CLI' };
+    }
+
+    // Map providers to model configs
+    const providerModels = {
+        'gemini': { name: 'gemini', alias: 'gemini:pro', icon: '🔷' },
+        'claude': { name: 'claude', alias: 'claude:sonnet', icon: '🟣' },
+        'openai': { name: 'codex', alias: 'openai:codex', icon: '🔶' }
+    };
+
+    // Filter to only authenticated ones
+    const availableModels = authenticatedProviders
+        .map(p => providerModels[p])
+        .filter(Boolean);
+
+    // Select agents based on count (max what's available)
+    const selectedModels = availableModels.slice(0, Math.min(requestedAgents, availableModels.length));
+
+    console.log(`✅ ${selectedModels.length} authenticated agent(s) available`);
     console.log(`⏱️  Timeout: ${timeout}s per agent\n`);
-
-    // Available models for reflection
-    const availableModels = [
-        { name: 'gemini', alias: 'gemini:pro', icon: '🔷' },
-        { name: 'claude', alias: 'claude:sonnet', icon: '🟣' },
-        { name: 'codex', alias: 'openai:codex', icon: '🔶' }
-    ];
-
-    // Select agents based on count
-    const selectedModels = availableModels.slice(0, Math.min(agentCount, 3));
 
     console.log('🤖 Agents selected:');
     selectedModels.forEach(m => console.log(`   ${m.icon} ${m.name}`));
