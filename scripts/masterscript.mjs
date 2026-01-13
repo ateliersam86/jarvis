@@ -984,19 +984,23 @@ Usage:
   masterscript --list-models
 
 Options:
-  --model <alias>      Model alias (e.g., gemini:flash, openai:codex, claude:sonnet)
-  --task-type <type>   Task type for auto model selection
-  --consensus          🧠 Query 2 AIs in parallel (gemini + claude) for best answer
-  --swarm              🐝 Break task into parallel sub-tasks (Swarm Mode)
-  --no-parse           Disable intent parsing and context enrichment
-  --silent             Suppress CLI output
-  --list-models        Show available models
-  --help               Show this help
+  --model <alias>        Model alias (e.g., gemini:flash, openai:codex, claude:sonnet)
+  --task-type <type>     Task type for auto model selection
+  --consensus            🧠 Query 2 AIs in parallel (gemini + claude) for best answer
+  --reflect              🪞 REFLECT: 2-3 agents analyze same prompt, compare results
+  --agents=N             Number of agents for reflect mode (default: 2, max: 3)
+  --timeout=N            Timeout per agent in seconds (default: 60)
+  --swarm                🐝 Break task into parallel sub-tasks (Swarm Mode)
+  --no-parse             Disable intent parsing and context enrichment
+  --silent               Suppress CLI output
+  --list-models          Show available models
+  --help                 Show this help
 
 Examples:
   masterscript "fix lint errors"                        # Uses default (gemini:flash)
   masterscript "research crypto" --swarm                # Launch parallel research agents
   masterscript "architecture question" --consensus      # Query 2 AIs for consensus
+  masterscript "code review" --reflect --agents=3       # 3 AIs analyze same code
   masterscript "write tests" --model openai:codex       # Specific model
   masterscript "debug issue" --model claude:opus        # Use Claude Opus
 
@@ -1019,6 +1023,15 @@ Model Aliases:
         taskType: args.includes('--task-type') ? args[args.indexOf('--task-type') + 1] : null,
         consensus: args.includes('--consensus'),
         swarm: args.includes('--swarm'),
+        reflect: args.includes('--reflect'),
+        agents: (() => {
+            const agentArg = args.find(a => a.startsWith('--agents='));
+            return agentArg ? parseInt(agentArg.split('=')[1], 10) : 2;
+        })(),
+        timeout: (() => {
+            const timeoutArg = args.find(a => a.startsWith('--timeout='));
+            return timeoutArg ? parseInt(timeoutArg.split('=')[1], 10) : 60;
+        })(),
         noParse: args.includes('--no-parse'),
         silent: args.includes('--silent')
     };
@@ -1033,6 +1046,7 @@ Model Aliases:
     let delegateFunc = delegate;
     if (options.consensus) delegateFunc = delegateWithConsensus;
     if (options.swarm) delegateFunc = delegateSwarm;
+    if (options.reflect) delegateFunc = delegateReflect;
 
     delegateFunc(prompt, options)
         .then(result => {
@@ -1171,5 +1185,195 @@ Create a comprehensive, cohesive final response that addresses the original goal
     });
 }
 
-export { delegate, delegateWithConsensus, delegateSwarm, listModels, resolveModel };
 
+export { delegate, delegateWithConsensus, delegateSwarm, delegateReflect, listModels, resolveModel };
+
+/**
+ * REFLECT MODE - Multiple agents respond to the same prompt, results compared
+ * 
+ * Usage:
+ *   masterscript "prompt" --reflect              # Default 2 agents
+ *   masterscript "prompt" --reflect --agents=3   # 3 agents
+ */
+async function delegateReflect(prompt, options = {}) {
+    const agentCount = options.agents || 2;
+    const timeout = options.timeout || 60; // seconds
+
+    console.clear();
+    console.log(`\n🪞 REFLECT MODE: ${agentCount} agents analyzing same prompt...\n`);
+    console.log(`⏱️  Timeout: ${timeout}s per agent\n`);
+
+    // Available models for reflection
+    const availableModels = [
+        { name: 'gemini', alias: 'gemini:pro', icon: '🔷' },
+        { name: 'claude', alias: 'claude:sonnet', icon: '🟣' },
+        { name: 'codex', alias: 'openai:codex', icon: '🔶' }
+    ];
+
+    // Select agents based on count
+    const selectedModels = availableModels.slice(0, Math.min(agentCount, 3));
+
+    console.log('🤖 Agents selected:');
+    selectedModels.forEach(m => console.log(`   ${m.icon} ${m.name}`));
+    console.log('');
+
+    // Create timeout wrapper
+    const withTimeout = (promise, ms, agentName) => {
+        return Promise.race([
+            promise,
+            new Promise((_, reject) =>
+                setTimeout(() => reject(new Error(`${agentName} timed out after ${ms / 1000}s`)), ms)
+            )
+        ]);
+    };
+
+    // Launch all agents in parallel
+    const startTime = Date.now();
+    const results = await Promise.allSettled(
+        selectedModels.map(async (m) => {
+            console.log(`   ${m.icon} ${m.name}: Starting...`);
+            try {
+                const result = await withTimeout(
+                    delegate(prompt, {
+                        ...options,
+                        model: m.alias,
+                        silent: true,
+                        noParse: true
+                    }),
+                    timeout * 1000,
+                    m.name
+                );
+                console.log(`   ${m.icon} ${m.name}: ✅ Done`);
+                return { model: m.name, icon: m.icon, ...result };
+            } catch (error) {
+                console.log(`   ${m.icon} ${m.name}: ❌ ${error.message}`);
+                return { model: m.name, icon: m.icon, success: false, error: error.message };
+            }
+        })
+    );
+
+    const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+    console.log(`\n⏱️ All agents responded in ${duration}s\n`);
+
+    // Collect successful responses
+    const successfulResults = results
+        .filter(r => r.status === 'fulfilled' && r.value.success)
+        .map(r => r.value);
+
+    const failedResults = results
+        .filter(r => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.success));
+
+    if (successfulResults.length === 0) {
+        console.error('❌ All agents failed');
+        failedResults.forEach(r => {
+            const val = r.status === 'fulfilled' ? r.value : { model: 'unknown', error: r.reason };
+            console.error(`   - ${val.model}: ${val.error}`);
+        });
+        return { success: false, error: 'All agents failed' };
+    }
+
+    // Display results comparison
+    console.log('═'.repeat(70));
+    console.log('📊 REFLECT COMPARISON');
+    console.log('═'.repeat(70));
+
+    for (const result of successfulResults) {
+        console.log(`\n${result.icon} ${result.model.toUpperCase()}:`);
+        console.log('─'.repeat(50));
+        const output = result.output?.slice(0, 2000) || '[No output]';
+        console.log(output);
+        if (result.output?.length > 2000) console.log('...[truncated]');
+    }
+
+    // Metrics
+    console.log('\n' + '═'.repeat(70));
+    console.log('📈 METRICS');
+    console.log('═'.repeat(70));
+    console.log(`   Agents queried: ${selectedModels.length}`);
+    console.log(`   Successful: ${successfulResults.length}`);
+    console.log(`   Failed: ${failedResults.length}`);
+    console.log(`   Total time: ${duration}s`);
+    console.log(`   Avg per agent: ${(parseFloat(duration) / selectedModels.length).toFixed(1)}s`);
+
+    // If multiple successful responses, calculate similarity
+    if (successfulResults.length >= 2) {
+        console.log('\n' + '═'.repeat(70));
+        console.log('🔍 ANALYSIS');
+        console.log('═'.repeat(70));
+
+        // Simple word overlap analysis
+        const outputs = successfulResults.map(r =>
+            (r.output || '').toLowerCase().split(/\s+/).filter(w => w.length > 4)
+        );
+
+        if (outputs.length >= 2 && outputs[0].length > 0 && outputs[1].length > 0) {
+            const set0 = new Set(outputs[0]);
+            const set1 = new Set(outputs[1]);
+            const intersection = [...set0].filter(x => set1.has(x));
+            const union = new Set([...set0, ...set1]);
+            const similarity = ((intersection.length / union.size) * 100).toFixed(0);
+
+            console.log(`   Word overlap: ${similarity}% (higher = more agreement)`);
+
+            if (similarity > 70) {
+                console.log('   → Strong consensus between agents');
+            } else if (similarity > 40) {
+                console.log('   → Partial agreement, some divergent perspectives');
+            } else {
+                console.log('   → Significant differences, consider reviewing both');
+            }
+        }
+
+        // Offer synthesis if requested
+        if (options.synthesize !== false) {
+            console.log('\n' + '═'.repeat(70));
+            console.log('🧬 SYNTHESIS');
+            console.log('═'.repeat(70));
+
+            const synthesisPrompt = `You are analyzing responses from ${successfulResults.length} AI agents to the same prompt.
+
+ORIGINAL PROMPT:
+${prompt}
+
+${successfulResults.map(r => `--- ${r.model.toUpperCase()} RESPONSE ---
+${r.output?.slice(0, 3000) || 'N/A'}`).join('\n\n')}
+
+YOUR TASK:
+1. Identify KEY AGREEMENTS between agents
+2. Identify KEY DIFFERENCES or unique insights
+3. Provide a SYNTHESIS that combines the best from each
+4. Note any CONTRADICTIONS that need resolution
+
+Be concise but comprehensive.`;
+
+            try {
+                const synthesisResult = await delegate(synthesisPrompt, {
+                    model: 'gemini:pro',
+                    noParse: true,
+                    silent: false
+                });
+
+                return {
+                    success: true,
+                    mode: 'reflect',
+                    agentCount: successfulResults.length,
+                    synthesis: synthesisResult.output,
+                    rawResults: successfulResults,
+                    duration: parseFloat(duration)
+                };
+            } catch (e) {
+                console.warn('⚠️ Synthesis failed, returning raw results');
+            }
+        }
+    }
+
+    // Return first successful result if no synthesis
+    return {
+        success: true,
+        mode: 'reflect',
+        agentCount: successfulResults.length,
+        output: successfulResults[0].output,
+        rawResults: successfulResults,
+        duration: parseFloat(duration)
+    };
+}
