@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
-import { getServerSession } from 'next-auth'
+import { auth } from '@/auth'
 import crypto from 'crypto'
 
 const prisma = new PrismaClient()
@@ -12,7 +12,7 @@ const prisma = new PrismaClient()
 export async function POST(req: NextRequest) {
     try {
         // Get user session
-        const session = await getServerSession()
+        const session = await auth()
 
         if (!session?.user?.email) {
             return NextResponse.json(
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
  */
 export async function GET(req: NextRequest) {
     try {
-        const session = await getServerSession()
+        const session = await auth()
 
         if (!session?.user?.email) {
             return NextResponse.json(
@@ -128,7 +128,7 @@ export async function GET(req: NextRequest) {
  */
 export async function DELETE(req: NextRequest) {
     try {
-        const session = await getServerSession()
+        const session = await auth()
 
         if (!session?.user?.email) {
             return NextResponse.json(
