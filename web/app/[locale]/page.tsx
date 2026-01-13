@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { Navbar } from '@/components/shared/Navbar'
 import { Footer } from '@/components/shared/Footer'
 import { TerminalMockup } from '@/components/landing/TerminalMockup'
+import { CopyInstallButton } from '@/components/landing/CopyInstallButton'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { ArrowRight, Cpu, Globe, Shield } from 'lucide-react'
@@ -144,20 +145,9 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
           <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-8">{t('ctaTitle')}</h2>
-            <Button
-              size="lg"
-              className="h-14 px-10 text-lg rounded-full font-mono"
-              onClick={() => {
-                navigator.clipboard.writeText('npm install -g @jarvis/cli');
-                const btn = document.activeElement as HTMLButtonElement;
-                const original = btn.innerText;
-                btn.innerText = '✓ Copié !';
-                setTimeout(() => btn.innerText = original, 2000);
-              }}
-            >
-              {t('ctaButton')}
-            </Button>
-            <p className="mt-4 text-sm text-muted">Cliquez pour copier la commande</p>
+            <div className="flex justify-center">
+              <CopyInstallButton />
+            </div>
           </div>
         </section>
       </main>
