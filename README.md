@@ -1,89 +1,105 @@
 # 🧠 Jarvis - Multi-Agent AI Orchestrator
 
-> **Orchestrez, déléguez et parallélisez vos tâches IA avec Gemini, Claude et Codex.**
+> **Parlez naturellement, Jarvis orchestre intelligemment.**
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)](https://jarvis.atelier-sam.fr)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 ---
 
-## ⚡ Pourquoi Jarvis ?
+## ⚡ La Puissance de l'Orchestration
 
-**Vous utilisez plusieurs CLIs AI ?** Gemini CLI, Claude CLI, Codex... Chacun a ses forces, mais les gérer séparément est fastidieux.
+**Dites simplement ce que vous voulez accomplir.**
 
-**Jarvis résout ça :**
-- 🎯 **Délégation intelligente** - Chaque tâche est assignée au meilleur agent
-- 🐝 **Mode Swarm** - Parallélisez vos tâches sur plusieurs agents simultanément  
-- 📊 **Suivi centralisé** - Quotas, statuts et historique en un seul endroit
+```
+"Refactore le module d'authentification et ajoute des tests"
+```
+
+Jarvis analyse votre demande et :
+- 🎯 **Décompose** la tâche en sous-tâches logiques
+- 🔀 **Délègue** chaque partie à l'agent le plus adapté
+- ⚡ **Parallélise** quand c'est possible pour aller plus vite
+- ✅ **Agrège** les résultats en une réponse cohérente
+
+**Vous parlez, Jarvis réfléchit et agit.**
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Comment ça marche ?
+
+### 1. Installez le CLI
 
 ```bash
-# 1. Installez le CLI Jarvis
 npm install -g @jarvis/cli
-
-# 2. Connectez vos agents locaux
-jarvis setup
-# → Détecte et configure Gemini CLI, Claude CLI, Codex
-
-# 3. Déléguez votre première tâche
-jarvis delegate "Refactor auth.ts" --model gemini:pro
+jarvis setup  # Détecte vos CLIs (Gemini, Claude, Codex)
 ```
 
----
-
-## 🎯 Délégation Intelligente
-
-Jarvis choisit automatiquement l'agent optimal selon la tâche :
+### 2. Parlez naturellement
 
 ```bash
-# UI/CSS → Gemini (rapide, créatif)
-jarvis delegate "Create a modern login form" --auto
-
-# Architecture/Logic → Claude (analytique)
-jarvis delegate "Refactor the API structure" --auto
-
-# Tests/Debug → Codex (précis, technique)
-jarvis delegate "Write unit tests for utils.ts" --auto
+jarvis "Analyse ce projet et propose une architecture améliorée"
 ```
 
-**Ou spécifiez manuellement :**
+Ou utilisez le mode interactif :
 ```bash
-jarvis delegate "..." --model gemini:flash
-jarvis delegate "..." --model claude:sonnet
-jarvis delegate "..." --model codex
+jarvis chat
+> Crée une landing page moderne pour mon SaaS
+> Ajoute des animations subtiles
+> Optimise pour mobile
+```
+
+### 3. Jarvis orchestre automatiquement
+
+```
+┌─────────────────────────────────────────────────────┐
+│  🧠 JARVIS ORCHESTRATION                            │
+├─────────────────────────────────────────────────────┤
+│  Analyse: "Landing page SaaS + animations + mobile" │
+│                                                     │
+│  → Sous-tâche 1: Structure HTML/Layout → Gemini    │
+│  → Sous-tâche 2: Animations CSS        → Gemini    │
+│  → Sous-tâche 3: Responsive design     → Claude    │
+│                                                     │
+│  Mode: Swarm (parallèle) - 3 agents actifs         │
+└─────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 🐝 Mode Swarm (Parallélisation)
 
-Décomposez une tâche complexe en sous-tâches parallèles :
+Pour les tâches complexes, Jarvis active automatiquement le mode Swarm :
+
+- **Plusieurs agents travaillent en parallèle**
+- **Chaque agent sur sa spécialité** (UI, logique, tests...)
+- **Résultats fusionnés intelligemment**
 
 ```bash
-jarvis delegate "Complete site redesign" --swarm
+# Force le mode swarm pour une tâche
+jarvis "Redesign complet du site" --swarm
 ```
 
-```
-┌─────────────────────────────────────────────────────┐
-│  🐝 SWARM MODE - 4 agents en parallèle              │
-├─────────────────────────────────────────────────────┤
-│  Agent 1 (Gemini)  → Header + Navigation    ✓ Done  │
-│  Agent 2 (Claude)  → Auth refactoring       ● 78%   │
-│  Agent 3 (Gemini)  → Footer + Responsive    ● 45%   │
-│  Agent 4 (Codex)   → Unit tests             ○ Queue │
-├─────────────────────────────────────────────────────┤
-│  Overall: 56% complete                              │
-└─────────────────────────────────────────────────────┘
+---
+
+## 🎯 Délégation Intelligente
+
+| Type de tâche | Agent optimal | Pourquoi |
+|:---|:---|:---|
+| UI, CSS, design | Gemini | Rapide, créatif |
+| Architecture, logique | Claude | Analytique, précis |
+| Tests, debug | Codex | Technique, rigoureux |
+
+Jarvis choisit automatiquement. Ou forcez manuellement :
+```bash
+jarvis "..." --model gemini:pro
+jarvis "..." --model claude:sonnet
 ```
 
 ---
 
 ## 📊 Dashboard (Optionnel)
 
-Visualisez vos projets et quotas sur [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr) :
+Suivez vos projets et quotas sur [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr)
 
 <p align="center">
   <img src="./assets/dashboard-preview.png" alt="Jarvis Dashboard" width="100%">
@@ -91,28 +107,17 @@ Visualisez vos projets et quotas sur [jarvis.atelier-sam.fr](https://jarvis.atel
 
 ---
 
-## 🛠️ Commandes CLI
-
-| Commande | Description |
-| :--- | :--- |
-| `jarvis setup` | Détecte et installe les CLIs manquants |
-| `jarvis status` | Affiche l'état des agents et quotas |
-| `jarvis delegate "<task>"` | Délègue une tâche (--auto, --swarm) |
-| `jarvis login` | Connecte au dashboard (optionnel) |
-
----
-
 ## 📋 Prérequis
 
 - **Node.js 18+**
-- **Au moins un CLI AI local :**
-  - [Gemini CLI](https://github.com/google/gemini-cli) 
+- **Au moins un CLI AI :**
+  - [Gemini CLI](https://github.com/google/gemini-cli)
   - [Claude CLI](https://github.com/anthropics/claude-cli)
   - [Codex CLI](https://github.com/openai/codex-cli)
 
 ---
 
-## � License
+## 📝 License
 
 MIT - [LICENSE](./LICENSE)
 
