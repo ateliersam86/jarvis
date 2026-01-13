@@ -9,6 +9,25 @@ services:
     ports:
       - "9000:3000" # Dashboard Access
       - "4000:4000" # Terminal PTY Access
+    
+    # 🛡️ Resource Limits - Protect server from crashes
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    
+    # Health check to auto-restart if unresponsive
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
     environment:
       # AI Keys
       - GEMINI_API_KEY=${GEMINI_API_KEY}
@@ -31,6 +50,9 @@ services:
       - NODE_ENV=development
       # Critical for Unraid/NFS Hot Reload
       - WATCHPACK_POLLING=true
+      # Limit Node.js memory
+      - NODE_OPTIONS=--max-old-space-size=1536
+    
     # Use start-all.sh to launch both Next.js and PTY Server
     command: sh -c "cd web && chmod +x start-all.sh && ./start-all.sh"
     volumes:

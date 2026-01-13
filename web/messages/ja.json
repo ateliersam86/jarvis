@@ -1,0 +1,60 @@
+{
+    "Landing": {
+        "versionBadge": "CLI v1.0 - オープンソース",
+        "heroTitle": "AI CLIを<br />1つのターミナルから操作",
+        "heroDescription": "Gemini、Claude、Codexにインテリジェントに委任。Swarmモードでタスクを並列化。クォータをリアルタイムで監視。",
+        "startBuilding": "CLIをインストール",
+        "readDocs": "ドキュメント",
+        "trustedBy": "ローカルCLIと互換性あり",
+        "featuresTitle": "シンプルなオーケストレーション",
+        "featuresDescription": "すべてのローカルAIエージェントを管理する1つのCLI。",
+        "feature1Title": "スマート委任",
+        "feature1Desc": "Jarvisがタスクを分析し、最適なエージェントに割り当て：UIはGemini、ロジックはClaude、テストはCodex。",
+        "feature2Title": "Swarmモード",
+        "feature2Desc": "複雑なタスクを自動的に並列サブタスクに分解し、複数のエージェントが同時に実行。",
+        "feature3Title": "クォータ追跡",
+        "feature3Desc": "Gemini、Claude、OpenAIの使用量をリアルタイムで可視化。請求の驚きなし。",
+        "ctaTitle": "エージェントをオーケストレーションする準備はできましたか？",
+        "ctaButton": "npm install -g @jarvis/cli"
+    },
+    "Dashboard": {
+        "loading": "ハブに接続中...",
+        "title": "ダッシュボード",
+        "welcome": "おかえりなさい、{name}。エージェントは準備完了です。",
+        "newProject": "新規プロジェクト",
+        "recentProjects": "最近のプロジェクト",
+        "viewAll": "すべて表示",
+        "quickActions": "クイックアクション",
+        "actions": {
+            "deploy": "新規タスク",
+            "deployDesc": "エージェントに委任",
+            "logs": "ログを表示",
+            "logsDesc": "実行履歴",
+            "auth": "キー管理",
+            "authDesc": "API設定"
+        },
+        "systemOnline": "接続済みエージェント",
+        "tabs": {
+            "overview": "概要",
+            "tasks": "タスク",
+            "performance": "パフォーマンス",
+            "terminal": "ターミナル"
+        }
+    },
+    "Common": {
+        "language": "言語"
+    },
+    "Nav": {
+        "features": "機能",
+        "docs": "ドキュメント",
+        "dashboard": "ダッシュボード",
+        "login": "ログイン",
+        "register": "登録"
+    },
+    "Footer": {
+        "tagline": "開発者向けマルチエージェントオーケストレーション",
+        "resources": "リソース",
+        "docs": "ドキュメント",
+        "github": "GitHub"
+    }
+}

@@ -1,0 +1,60 @@
+{
+    "Landing": {
+        "versionBadge": "CLI v1.0 - Open Source",
+        "heroTitle": "Orquestre seus CLIs de IA <br />a partir de um único terminal",
+        "heroDescription": "Delegue inteligentemente para Gemini, Claude ou Codex. Paralelise tarefas com o modo Swarm. Monitore suas cotas em tempo real.",
+        "startBuilding": "Instalar CLI",
+        "readDocs": "Documentação",
+        "trustedBy": "COMPATÍVEL COM SEUS CLIs LOCAIS",
+        "featuresTitle": "Orquestração Simplificada",
+        "featuresDescription": "Um único CLI para gerenciar todos os seus agentes de IA locais.",
+        "feature1Title": "Delegação Inteligente",
+        "feature1Desc": "Jarvis analisa sua tarefa e delega ao agente ideal: Gemini para UI, Claude para lógica, Codex para testes.",
+        "feature2Title": "Modo Swarm",
+        "feature2Desc": "Decomponha automaticamente tarefas complexas em subtarefas paralelas executadas por múltiplos agentes simultaneamente.",
+        "feature3Title": "Rastreamento de Cotas",
+        "feature3Desc": "Visualize seu uso de Gemini, Claude e OpenAI em tempo real. Sem surpresas na cobrança.",
+        "ctaTitle": "Pronto para orquestrar seus agentes?",
+        "ctaButton": "npm install -g @jarvis/cli"
+    },
+    "Dashboard": {
+        "loading": "Conectando ao hub...",
+        "title": "Painel",
+        "welcome": "Bem-vindo de volta, {name}. Seus agentes estão prontos.",
+        "newProject": "Novo Projeto",
+        "recentProjects": "Projetos Recentes",
+        "viewAll": "Ver Todos",
+        "quickActions": "Ações Rápidas",
+        "actions": {
+            "deploy": "Nova Tarefa",
+            "deployDesc": "Delegar a um agente",
+            "logs": "Ver Logs",
+            "logsDesc": "Histórico de execução",
+            "auth": "Gerenciar Chaves",
+            "authDesc": "Configurar APIs"
+        },
+        "systemOnline": "Agentes Conectados",
+        "tabs": {
+            "overview": "Visão Geral",
+            "tasks": "Tarefas",
+            "performance": "Desempenho",
+            "terminal": "Terminal"
+        }
+    },
+    "Common": {
+        "language": "Idioma"
+    },
+    "Nav": {
+        "features": "Recursos",
+        "docs": "Docs",
+        "dashboard": "Painel",
+        "login": "Entrar",
+        "register": "Cadastrar"
+    },
+    "Footer": {
+        "tagline": "Orquestração multi-agente para desenvolvedores",
+        "resources": "Recursos",
+        "docs": "Documentação",
+        "github": "GitHub"
+    }
+}
