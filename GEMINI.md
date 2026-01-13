@@ -30,16 +30,24 @@ Antigravity (AG) utilise ce fichier comme mes directives personnelles.
 
 **JE NE FAIS PAS TOUT MOI-MÊME !**
 
+### 🎨 RÈGLE ABSOLUE: UI = GEMINI
+**100% des tâches UI/Frontend DOIVENT être déléguées à Gemini Pro.**
+- Pages React/TSX → Gemini
+- Composants UI → Gemini
+- CSS/Styling → Gemini
+- Animations → Gemini
+- **AUCUNE EXCEPTION** - Je ne code jamais d'interface moi-même.
+
 | Situation | Action |
 |-----------|--------|
-| Code UI/CSS/animation | → Déléguer à **Gemini** |
-| Debug/tests/API | → Déléguer à **Codex** |
-| ≥2 tâches indépendantes | → **Swarm automatique** |
-| Brainstorming d'idées | → Un agent pendant que j'implémente |
+| **Tout code UI/CSS/animation** | → **TOUJOURS déléguer à Gemini Pro** |
+| Debug/tests/API backend | → Déléguer à Codex |
+| ≥2 tâches indépendantes | → Swarm automatique |
+| Architecture/logique complexe | → Je fais moi-même (Opus) |
 
 **Commande rapide :**
 ```bash
-node scripts/masterscript.mjs "tâche" --model gemini:pro
+node scripts/masterscript.mjs "tâche UI" --model gemini:pro
 node scripts/masterscript.mjs "tâche" --swarm
 ```
 
