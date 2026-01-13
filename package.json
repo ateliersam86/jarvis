@@ -19,7 +19,9 @@
         "verify": "node scripts/auto-verify.mjs",
         "health": "node -e \"import('./scripts/lib/project-intelligence.mjs').then(m => m.ProjectIntelligence.updateHealthState())\"",
         "brain:sync": "./sync-brain-tasks.sh",
-        "brain:watch": "./watch-brain-tasks.sh"
+        "brain:watch": "./watch-brain-tasks.sh",
+        "i18n:watch": "node scripts/i18n-auto.mjs",
+        "i18n:auto": "node scripts/i18n-auto.mjs --once"
     },
     "dependencies": {
         "@anthropic-ai/sdk": "^0.71.2",

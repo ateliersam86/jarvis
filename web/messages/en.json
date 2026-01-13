@@ -2,18 +2,18 @@
   "Landing": {
     "versionBadge": "CLI v1.0 - Open Source",
     "heroTitle": "Orchestrate your <highlight>AI agents</highlight> <br />from a single terminal",
-    "heroDescription": "Intelligently delegate to Gemini, Claude or Codex. Parallelize your tasks with Swarm mode. Track your quotas in real-time.",
+    "heroDescription": "Intelligently delegate to Gemini, Claude, or Codex. Parallelize tasks with Swarm Mode. Track quotas in real-time.",
     "startBuilding": "Install CLI",
-    "readDocs": "Documentation",
-    "trustedBy": "COMPATIBLE WITH YOUR LOCAL CLIs",
+    "readDocs": "Read Docs",
+    "trustedBy": "WORKS WITH YOUR LOCAL CLIs",
     "featuresTitle": "Simplified Orchestration",
-    "featuresDescription": "One CLI to manage all your local AI agents.",
+    "featuresDescription": "A single CLI to manage all your local AI agents.",
     "feature1Title": "Smart Delegation",
-    "feature1Desc": "Jarvis analyzes your task and delegates to the optimal agent: Gemini for UI, Claude for logic, Codex for tests.",
+    "feature1Desc": "Jarvis analyzes your task and assigns it to the optimal agent: Gemini for UI, Claude for logic, Codex for tests.",
     "feature2Title": "Swarm Mode",
-    "feature2Desc": "Automatically decompose a complex task into parallel subtasks executed by multiple agents simultaneously.",
+    "feature2Desc": "Automatically decompose complex tasks into parallel sub-tasks executed by multiple agents simultaneously.",
     "feature3Title": "Quota Tracking",
-    "feature3Desc": "Visualize your Gemini, Claude and OpenAI usage in real-time. No more billing surprises.",
+    "feature3Desc": "Visualize your Gemini, Claude, and OpenAI usage in real-time. No more billing surprises.",
     "ctaTitle": "Ready to orchestrate your agents?",
     "ctaButton": "npm install -g @jarvis/cli"
   },
@@ -33,7 +33,7 @@
       "auth": "Manage Keys",
       "authDesc": "Configure APIs"
     },
-    "systemOnline": "Agents Connected",
+    "systemOnline": "Agents Online",
     "tabs": {
       "overview": "Overview",
       "tasks": "Tasks",
@@ -49,7 +49,7 @@
     "docs": "Docs",
     "dashboard": "Dashboard",
     "login": "Login",
-    "register": "Sign Up"
+    "register": "Register"
   },
   "Footer": {
     "tagline": "Multi-agent orchestration for developers",
@@ -63,6 +63,6 @@
   },
   "Features": {
     "pageTitle": "Features",
-    "pageDescription": "Jarvis isn't just a chatbot wrapper. It's a multi-agent orchestrator designed to maximize the efficiency of your AI CLIs."
+    "pageDescription": "Jarvis is not just another chatbot wrapper. It is a multi-agent orchestrator designed to maximize the efficiency of your AI CLIs."
   }
 }

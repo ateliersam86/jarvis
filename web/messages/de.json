@@ -1,60 +1,68 @@
 {
-    "Landing": {
-        "versionBadge": "CLI v1.0 - Open Source",
-        "heroTitle": "Orchestriere deine KI-CLIs <br />von einem Terminal aus",
-        "heroDescription": "Delegiere intelligent an Gemini, Claude oder Codex. Parallelisiere Aufgaben mit dem Swarm-Modus. Überwache deine Kontingente in Echtzeit.",
-        "startBuilding": "CLI installieren",
-        "readDocs": "Dokumentation",
-        "trustedBy": "KOMPATIBEL MIT DEINEN LOKALEN CLIs",
-        "featuresTitle": "Vereinfachte Orchestrierung",
-        "featuresDescription": "Ein CLI zur Verwaltung aller deiner lokalen KI-Agenten.",
-        "feature1Title": "Intelligente Delegation",
-        "feature1Desc": "Jarvis analysiert deine Aufgabe und delegiert an den optimalen Agenten: Gemini für UI, Claude für Logik, Codex für Tests.",
-        "feature2Title": "Swarm-Modus",
-        "feature2Desc": "Zerlege automatisch komplexe Aufgaben in parallele Unteraufgaben, die von mehreren Agenten gleichzeitig ausgeführt werden.",
-        "feature3Title": "Kontingent-Tracking",
-        "feature3Desc": "Visualisiere deine Gemini-, Claude- und OpenAI-Nutzung in Echtzeit. Keine Überraschungen bei der Abrechnung.",
-        "ctaTitle": "Bereit, deine Agenten zu orchestrieren?",
-        "ctaButton": "npm install -g @jarvis/cli"
+  "Landing": {
+    "versionBadge": "CLI v1.0 - Open Source",
+    "heroTitle": "Orchestriere deine KI-CLIs <br />von einem Terminal aus",
+    "heroDescription": "Delegiere intelligent an Gemini, Claude oder Codex. Parallelisiere Aufgaben mit dem Swarm-Modus. Überwache deine Kontingente in Echtzeit.",
+    "startBuilding": "CLI installieren",
+    "readDocs": "Dokumentation",
+    "trustedBy": "KOMPATIBEL MIT DEINEN LOKALEN CLIs",
+    "featuresTitle": "Vereinfachte Orchestrierung",
+    "featuresDescription": "Ein CLI zur Verwaltung aller deiner lokalen KI-Agenten.",
+    "feature1Title": "Intelligente Delegation",
+    "feature1Desc": "Jarvis analysiert deine Aufgabe und delegiert an den optimalen Agenten: Gemini für UI, Claude für Logik, Codex für Tests.",
+    "feature2Title": "Swarm-Modus",
+    "feature2Desc": "Zerlege automatisch komplexe Aufgaben in parallele Unteraufgaben, die von mehreren Agenten gleichzeitig ausgeführt werden.",
+    "feature3Title": "Kontingent-Tracking",
+    "feature3Desc": "Visualisiere deine Gemini-, Claude- und OpenAI-Nutzung in Echtzeit. Keine Überraschungen bei der Abrechnung.",
+    "ctaTitle": "Bereit, deine Agenten zu orchestrieren?",
+    "ctaButton": "npm install -g @jarvis/cli"
+  },
+  "Dashboard": {
+    "loading": "Verbinde mit Hub...",
+    "title": "Dashboard",
+    "welcome": "Willkommen zurück, {name}. Deine Agenten sind bereit.",
+    "newProject": "Neues Projekt",
+    "recentProjects": "Letzte Projekte",
+    "viewAll": "Alle anzeigen",
+    "quickActions": "Schnellaktionen",
+    "actions": {
+      "deploy": "Neue Aufgabe",
+      "deployDesc": "An Agent delegieren",
+      "logs": "Logs anzeigen",
+      "logsDesc": "Ausführungsverlauf",
+      "auth": "Schlüssel verwalten",
+      "authDesc": "APIs konfigurieren"
     },
-    "Dashboard": {
-        "loading": "Verbinde mit Hub...",
-        "title": "Dashboard",
-        "welcome": "Willkommen zurück, {name}. Deine Agenten sind bereit.",
-        "newProject": "Neues Projekt",
-        "recentProjects": "Letzte Projekte",
-        "viewAll": "Alle anzeigen",
-        "quickActions": "Schnellaktionen",
-        "actions": {
-            "deploy": "Neue Aufgabe",
-            "deployDesc": "An Agent delegieren",
-            "logs": "Logs anzeigen",
-            "logsDesc": "Ausführungsverlauf",
-            "auth": "Schlüssel verwalten",
-            "authDesc": "APIs konfigurieren"
-        },
-        "systemOnline": "Agenten verbunden",
-        "tabs": {
-            "overview": "Übersicht",
-            "tasks": "Aufgaben",
-            "performance": "Leistung",
-            "terminal": "Terminal"
-        }
-    },
-    "Common": {
-        "language": "Sprache"
-    },
-    "Nav": {
-        "features": "Funktionen",
-        "docs": "Docs",
-        "dashboard": "Dashboard",
-        "login": "Anmelden",
-        "register": "Registrieren"
-    },
-    "Footer": {
-        "tagline": "Multi-Agenten-Orchestrierung für Entwickler",
-        "resources": "Ressourcen",
-        "docs": "Dokumentation",
-        "github": "GitHub"
+    "systemOnline": "Agenten verbunden",
+    "tabs": {
+      "overview": "Übersicht",
+      "tasks": "Aufgaben",
+      "performance": "Leistung",
+      "terminal": "Terminal"
     }
+  },
+  "Common": {
+    "language": "Sprache"
+  },
+  "Nav": {
+    "features": "Funktionen",
+    "docs": "Docs",
+    "dashboard": "Dashboard",
+    "login": "Anmelden",
+    "register": "Registrieren"
+  },
+  "Footer": {
+    "tagline": "Multi-Agenten-Orchestrierung für Entwickler",
+    "resources": "Ressourcen",
+    "docs": "Dokumentation",
+    "github": "GitHub",
+    "cli": "CLI Reference",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "Features": {
+    "pageTitle": "Features",
+    "pageDescription": "Jarvis is not just another chatbot wrapper. It is a multi-agent orchestrator designed to maximize the efficiency of your AI CLIs."
+  }
 }

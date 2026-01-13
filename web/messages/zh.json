@@ -1,60 +1,68 @@
 {
-    "Landing": {
-        "versionBadge": "CLI v1.0 - 开源",
-        "heroTitle": "从单一终端<br />编排您的AI CLI",
-        "heroDescription": "智能委派给Gemini、Claude或Codex。使用Swarm模式并行化任务。实时监控配额。",
-        "startBuilding": "安装CLI",
-        "readDocs": "文档",
-        "trustedBy": "兼容您的本地CLI",
-        "featuresTitle": "简化编排",
-        "featuresDescription": "一个CLI管理所有本地AI代理。",
-        "feature1Title": "智能委派",
-        "feature1Desc": "Jarvis分析您的任务并委派给最佳代理：UI用Gemini，逻辑用Claude，测试用Codex。",
-        "feature2Title": "Swarm模式",
-        "feature2Desc": "自动将复杂任务分解为并行子任务，由多个代理同时执行。",
-        "feature3Title": "配额追踪",
-        "feature3Desc": "实时可视化您的Gemini、Claude和OpenAI使用情况。账单无惊喜。",
-        "ctaTitle": "准备好编排您的代理了吗？",
-        "ctaButton": "npm install -g @jarvis/cli"
+  "Landing": {
+    "versionBadge": "CLI v1.0 - 开源",
+    "heroTitle": "从单一终端<br />编排您的AI CLI",
+    "heroDescription": "智能委派给Gemini、Claude或Codex。使用Swarm模式并行化任务。实时监控配额。",
+    "startBuilding": "安装CLI",
+    "readDocs": "文档",
+    "trustedBy": "兼容您的本地CLI",
+    "featuresTitle": "简化编排",
+    "featuresDescription": "一个CLI管理所有本地AI代理。",
+    "feature1Title": "智能委派",
+    "feature1Desc": "Jarvis分析您的任务并委派给最佳代理：UI用Gemini，逻辑用Claude，测试用Codex。",
+    "feature2Title": "Swarm模式",
+    "feature2Desc": "自动将复杂任务分解为并行子任务，由多个代理同时执行。",
+    "feature3Title": "配额追踪",
+    "feature3Desc": "实时可视化您的Gemini、Claude和OpenAI使用情况。账单无惊喜。",
+    "ctaTitle": "准备好编排您的代理了吗？",
+    "ctaButton": "npm install -g @jarvis/cli"
+  },
+  "Dashboard": {
+    "loading": "正在连接到中心...",
+    "title": "仪表板",
+    "welcome": "欢迎回来，{name}。您的代理已就绪。",
+    "newProject": "新项目",
+    "recentProjects": "最近项目",
+    "viewAll": "查看全部",
+    "quickActions": "快速操作",
+    "actions": {
+      "deploy": "新任务",
+      "deployDesc": "委派给代理",
+      "logs": "查看日志",
+      "logsDesc": "执行历史",
+      "auth": "管理密钥",
+      "authDesc": "配置API"
     },
-    "Dashboard": {
-        "loading": "正在连接到中心...",
-        "title": "仪表板",
-        "welcome": "欢迎回来，{name}。您的代理已就绪。",
-        "newProject": "新项目",
-        "recentProjects": "最近项目",
-        "viewAll": "查看全部",
-        "quickActions": "快速操作",
-        "actions": {
-            "deploy": "新任务",
-            "deployDesc": "委派给代理",
-            "logs": "查看日志",
-            "logsDesc": "执行历史",
-            "auth": "管理密钥",
-            "authDesc": "配置API"
-        },
-        "systemOnline": "代理已连接",
-        "tabs": {
-            "overview": "概览",
-            "tasks": "任务",
-            "performance": "性能",
-            "terminal": "终端"
-        }
-    },
-    "Common": {
-        "language": "语言"
-    },
-    "Nav": {
-        "features": "功能",
-        "docs": "文档",
-        "dashboard": "仪表板",
-        "login": "登录",
-        "register": "注册"
-    },
-    "Footer": {
-        "tagline": "面向开发者的多代理编排",
-        "resources": "资源",
-        "docs": "文档",
-        "github": "GitHub"
+    "systemOnline": "代理已连接",
+    "tabs": {
+      "overview": "概览",
+      "tasks": "任务",
+      "performance": "性能",
+      "terminal": "终端"
     }
+  },
+  "Common": {
+    "language": "语言"
+  },
+  "Nav": {
+    "features": "功能",
+    "docs": "文档",
+    "dashboard": "仪表板",
+    "login": "登录",
+    "register": "注册"
+  },
+  "Footer": {
+    "tagline": "面向开发者的多代理编排",
+    "resources": "资源",
+    "docs": "文档",
+    "github": "GitHub",
+    "cli": "CLI Reference",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "Features": {
+    "pageTitle": "Features",
+    "pageDescription": "Jarvis is not just another chatbot wrapper. It is a multi-agent orchestrator designed to maximize the efficiency of your AI CLIs."
+  }
 }
