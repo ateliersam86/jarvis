@@ -8,6 +8,7 @@ export interface Project {
     techStack?: string[];
     activeAgents?: number;
     agentCount?: number;
+    taskCount?: number;
     status?: 'active' | 'idle' | 'Active' | 'Idle';
 }
 

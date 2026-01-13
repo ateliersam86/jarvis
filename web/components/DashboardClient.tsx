@@ -69,9 +69,23 @@ export default function DashboardClient() {
     // Fetch Data
     const fetchData = async () => {
         try {
-            const res = await fetch('/api/projects');
+            const res = await fetch('/api/v1/projects');
             const json = await res.json();
-            setData(json);
+            
+            // Map projects to match Project interface requirements for grid
+            const mappedProjects = (json.projects || []).map((p: any) => ({
+                ...p,
+                icon: p.icon || '📦',
+                status: p.status || 'idle',
+                activeAgents: p.activeAgents || 0,
+                agentCount: p.agentCount || 0
+            }));
+
+            // Ensure projects is always an array
+            setData({
+                projects: mappedProjects,
+                allWorkers: json.allWorkers || []
+            });
         } catch (error) {
             console.error("Failed to fetch dashboard data", error);
         } finally {
@@ -87,13 +101,17 @@ export default function DashboardClient() {
 
     // Global Stats
     const globalStats = useMemo(() => {
-        if (!data?.allWorkers) return { activeAgents: 0, avgResponse: 0, totalErrors: 0 };
+        // Fixed 3 agents as per requirements
+        const activeAgents = 3; 
+        
+        // Calculate total tasks from projects
+        const totalTasks = data?.projects?.reduce((acc, p) => acc + (p.taskCount || 0), 0) || 0;
+        
+        // Mock values for others as we don't have worker data from this endpoint yet
+        const avgResponse = 0; 
+        const totalErrors = 0;
 
-        const activeAgents = data.allWorkers.filter(w => w.status === 'online' || w.status === 'busy').length;
-        const avgResponse = data.allWorkers.reduce((acc, w) => acc + (w.performance?.averageResponseTime || 0), 0) / (data.allWorkers.length || 1);
-        const totalErrors = data.allWorkers.reduce((acc, w) => acc + (w.performance?.errorRate || 0), 0) / (data.allWorkers.length || 1);
-
-        return { activeAgents, avgResponse, totalErrors };
+        return { activeAgents, avgResponse, totalErrors, totalTasks };
     }, [data]);
 
     if (loading) return <div className="min-h-[600px] flex items-center justify-center text-slate-500 font-mono">Loading Neural Interface...</div>;
@@ -216,7 +234,13 @@ export default function DashboardClient() {
                                 <h3 className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-4 flex items-center gap-2">
                                     <Layers className="w-4 h-4" /> Active Projects
                                 </h3>
-                                <ProjectGrid projects={data?.projects} />
+                                {(data?.projects?.length || 0) > 0 ? (
+                                    <ProjectGrid projects={data?.projects} />
+                                ) : (
+                                    <div className="flex items-center justify-center p-8 bg-white/5 rounded-xl border border-white/10 text-slate-400 italic">
+                                        Aucun projet synchronisé
+                                    </div>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6" ref={statsRef}>
@@ -239,11 +263,11 @@ export default function DashboardClient() {
 
                                 <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex items-center gap-4 relative overflow-hidden group">
                                     <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-400 relative z-10">
-                                        <Clock className="w-6 h-6" />
+                                        <ListTodo className="w-6 h-6" />
                                     </div>
                                     <div className="relative z-10">
-                                        <div className="text-2xl font-bold text-white">{Math.round(globalStats.avgResponse)}ms</div>
-                                        <div className="text-[10px] font-bold uppercase text-slate-500">Avg Response</div>
+                                        <div className="text-2xl font-bold text-white">{globalStats.totalTasks}</div>
+                                        <div className="text-[10px] font-bold uppercase text-slate-500">Total Tasks</div>
                                     </div>
 
                                     <motion.div
@@ -255,7 +279,7 @@ export default function DashboardClient() {
 
                                 <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex items-center gap-4 relative overflow-hidden group">
                                     <div className="p-3 bg-purple-500/10 rounded-xl text-purple-400 relative z-10">
-                                        <ListTodo className="w-6 h-6" />
+                                        <ListTree className="w-6 h-6" />
                                     </div>
                                     <div className="relative z-10">
                                         <div className="text-2xl font-bold text-white">{data?.projects?.length || 0}</div>
