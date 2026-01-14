@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.jarvis.task-sync</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/node</string>
+        <string>/Users/samuelmuselet/Jarvis/scripts/sync-task-history.mjs</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/Users/samuelmuselet/Jarvis</string>
+    
+    <key>StartInterval</key>
+    <integer>1800</integer><!-- Every 30 minutes -->
+    
+    <key>StandardErrorPath</key>
+    <string>/tmp/jarvis-task-sync.err</string>
+    
+    <key>StandardOutPath</key>
+    <string>/tmp/jarvis-task-sync.log</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin</string>
+        <key>DATABASE_URL</key>
+        <string>file:./prisma/jarvis.db</string>
+    </dict>
+    
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>

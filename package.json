@@ -21,7 +21,10 @@
         "brain:sync": "./sync-brain-tasks.sh",
         "brain:watch": "./watch-brain-tasks.sh",
         "i18n:watch": "node scripts/i18n-auto.mjs",
-        "i18n:auto": "node scripts/i18n-auto.mjs --once"
+        "i18n:auto": "node scripts/i18n-auto.mjs --once",
+        "test": "node --test tests/",
+        "test:orchestrator": "node --test tests/orchestrator.test.mjs",
+        "task:sync": "node scripts/sync-task-history.mjs"
     },
     "dependencies": {
         "@anthropic-ai/sdk": "^0.71.2",
