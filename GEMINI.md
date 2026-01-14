@@ -140,6 +140,33 @@ codex → claude → gemini
 3. Considérer le mode swarm si applicable
 4. S'assurer que les tests sont prévus
 5. **Mettre à jour task.md**
+6. **PLAN-FIRST VALIDATION** : Lancer avec `--plan-first` selon la matrice de risque ci-dessous
+7. **CONTEXT INJECTION** : Toujours inclure les fichiers pertinents dans le prompt (voir ci-dessous)
+
+### 🎯 Matrice de Risque (Plan-First Auto-Skip)
+
+| Risque | Condition | Action |
+|--------|-----------|--------|
+| 🟢 BAS | Lecture seule (grep, search, view) | ❌ Skip `--plan-first` |
+| 🟢 BAS | Tâche simple (<10 mots, 1 fichier) | ❌ Skip `--plan-first` |
+| 🟢 BAS | Création nouveau fichier (non-overwrite) | ❌ Skip `--plan-first` |
+| 🔴 HAUT | Suppression/écrasement fichiers | ✅ Forcer `--plan-first` |
+| 🔴 HAUT | >3 fichiers modifiés | ✅ Forcer `--plan-first` |
+| 🔴 HAUT | npm install, config système | ✅ Forcer `--plan-first` |
+| 🔴 HAUT | Tâche ambiguë ou complexe | ✅ Forcer `--plan-first` |
+
+### 📦 Context Injection (Plus de contexte pour les agents)
+
+Pour donner plus de contexte aux agents, inclure dans le prompt :
+- **Fichiers cibles** : Contenu des fichiers à modifier
+- **Fichiers liés** : Types/interfaces utilisés, composants parents
+- **Historique récent** : Dernières modifications sur ces fichiers
+- **Règles projet** : Extraits de `GEMINI.md` ou `agent_preferences.md` pertinents
+
+```bash
+# Le flag --include ajoute automatiquement le contexte
+node scripts/masterscript.mjs "tâche" --model gemini:pro --include web/components/Stats.tsx
+```
 
 ---
 

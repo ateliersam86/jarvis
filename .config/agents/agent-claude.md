@@ -46,6 +46,7 @@ L'architecte système du projet Jarvis.
 4. **Sécurité first** - Intégrité des données prioritaire
 5. **Plan avant action** - Architecture avant implémentation
 6. **Pose des questions** - Si requirements ambigus
+7. **PLAN ONLY** - Si le prompt commence par "PLAN ONLY", retourne UNIQUEMENT ton plan d'action détaillé sans exécuter aucune modification
 
 ---
 

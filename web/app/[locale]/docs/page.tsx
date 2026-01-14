@@ -22,24 +22,24 @@ export default function DocsPage() {
   const [activeSection, setActiveSection] = useState('getting-started')
 
   const sidebarItems = [
-    { 
-      section: 'Introduction', 
+    {
+      section: 'Introduction',
       items: [
         { id: 'getting-started', label: 'Getting Started' },
         { id: 'concepts', label: 'Core Concepts' },
         { id: 'architecture', label: 'Architecture' },
       ]
     },
-    { 
-      section: 'Guides', 
+    {
+      section: 'Guides',
       items: [
         { id: 'agents', label: 'Creating Agents' },
         { id: 'tasks', label: 'Task Orchestration' },
         { id: 'memory', label: 'Shared Memory' },
       ]
     },
-    { 
-      section: 'API Reference', 
+    {
+      section: 'API Reference',
       items: [
         { id: 'rest-api', label: 'REST API' },
         { id: 'sdk', label: 'Node.js SDK' },
@@ -65,27 +65,27 @@ export default function DocsPage() {
               <p>
                 You can install the Jarvis CLI tool globally using npm or yarn. This will give you access to the `jarvis` command in your terminal.
               </p>
-              <CodeBlock 
-                language="bash" 
-                code="npm install -g @jarvis/cli" 
+              <CodeBlock
+                language="bash"
+                code="npm install -g @jarvis/cli"
               />
 
               <h2>Initializing a Project</h2>
               <p>
                 Create a new directory for your project and initialize it. This will create a `jarvis.config.json` file and a basic directory structure.
               </p>
-              <CodeBlock 
-                language="bash" 
+              <CodeBlock
+                language="bash"
                 code="mkdir my-swarm && cd my-swarm
-jarvis init" 
+jarvis init"
               />
 
               <h2>Your First Agent</h2>
               <p>
                 Define your first agent in `agents/researcher.ts`. Jarvis agents are built on top of standard LLM interfaces but enhanced with long-term memory and tool access.
               </p>
-              <CodeBlock 
-                language="typescript" 
+              <CodeBlock
+                language="typescript"
                 filename="agents/researcher.ts"
                 code={`import { Agent } from '@jarvis/sdk'
 
@@ -95,16 +95,16 @@ export const researcher = new Agent({
   model: 'gemini-pro',
   tools: ['web-search', 'read-file'],
   instructions: 'You are an expert researcher. detailed and factual.'
-})`} 
+})`}
               />
 
               <h2>Running the Swarm</h2>
               <p>
                 Start the orchestration engine to bring your agents to life.
               </p>
-              <CodeBlock 
-                language="bash" 
-                code="jarvis start" 
+              <CodeBlock
+                language="bash"
+                code="jarvis start"
               />
             </>
           ),
@@ -113,6 +113,61 @@ export const researcher = new Agent({
             { label: 'Initializing a Project', href: '#' },
             { label: 'Your First Agent', href: '#' },
             { label: 'Running the Swarm', href: '#' },
+          ]
+        }
+      case 'cli':
+        return {
+          group: 'API Reference',
+          title: 'CLI Commands',
+          content: (
+            <>
+              <h1>CLI Commands</h1>
+              <p className="lead text-lg text-muted">
+                Reference complète de toutes les commandes disponibles dans le CLI Jarvis.
+              </p>
+
+              <h2>Commandes de Base</h2>
+              <CodeBlock
+                language="bash"
+                code={`jarvis setup    # Configure les CLIs AI (Gemini, Claude, Codex)
+jarvis status   # État des agents + quotas restants
+jarvis chat     # Mode conversation interactif
+jarvis "..."    # Exécution directe d'une tâche`}
+              />
+
+              <h2>Modes Avancés</h2>
+
+              <h3>🐝 Swarm Mode</h3>
+              <p>Décompose automatiquement la tâche et la parallélise sur plusieurs agents.</p>
+              <CodeBlock language="bash" code='jarvis "redesign complet du site" --swarm' />
+
+              <h3>🪞 Reflect Mode</h3>
+              <p>Interroge 2-3 agents en parallèle et compare leurs réponses pour un consensus.</p>
+              <CodeBlock language="bash" code='jarvis "question architecture" --reflect --agents=3' />
+
+              <h3>📋 Plan-First Mode</h3>
+              <p>L'agent décrit son plan avant d'exécuter - pour validation manuelle.</p>
+              <CodeBlock language="bash" code='jarvis "refactor module auth" --plan-first' />
+
+              <h3>📦 Context Injection</h3>
+              <p>Injecte le contenu de fichiers dans le prompt pour plus de contexte.</p>
+              <CodeBlock language="bash" code='jarvis "ajoute loading" --include src/Stats.tsx,src/types.ts' />
+
+              <h2>Modèles Disponibles</h2>
+              <CodeBlock language="bash" code={`--model gemini:flash    # Rapide (défaut)
+--model gemini:pro      # Pro standard
+--model claude:sonnet   # Équilibré
+--model claude:opus     # Intelligence max
+--model openai:codex    # Tests/Debug`} />
+            </>
+          ),
+          toc: [
+            { label: 'Commandes de Base', href: '#' },
+            { label: 'Swarm Mode', href: '#' },
+            { label: 'Reflect Mode', href: '#' },
+            { label: 'Plan-First Mode', href: '#' },
+            { label: 'Context Injection', href: '#' },
+            { label: 'Modèles Disponibles', href: '#' },
           ]
         }
       default:
@@ -147,9 +202,9 @@ export const researcher = new Agent({
         <aside className="w-64 hidden lg:block pr-8 border-r border-border shrink-0 fixed h-[calc(100vh-6rem)] overflow-y-auto">
           <div className="mb-6 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
-            <input 
-              type="text" 
-              placeholder="Search docs..." 
+            <input
+              type="text"
+              placeholder="Search docs..."
               className="w-full bg-surface/50 border border-border rounded-lg py-2 pl-9 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
@@ -165,8 +220,8 @@ export const researcher = new Agent({
                         onClick={() => setActiveSection(item.id)}
                         className={cn(
                           "w-full text-left px-3 py-1.5 rounded-md text-sm transition-colors",
-                          activeSection === item.id 
-                            ? "bg-primary/10 text-primary font-medium" 
+                          activeSection === item.id
+                            ? "bg-primary/10 text-primary font-medium"
                             : "text-muted hover:text-foreground hover:bg-surface"
                         )}
                       >

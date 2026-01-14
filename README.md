@@ -97,6 +97,50 @@ jarvis "..." --model claude:sonnet
 
 ---
 
+## 🛠️ Commandes CLI
+
+### Commandes de base
+```bash
+jarvis setup                    # Installe/configure les CLIs AI
+jarvis status                   # État des agents + quotas restants
+jarvis chat                     # Mode conversation interactif
+jarvis "votre demande"          # Exécution directe
+```
+
+### Modes avancés
+```bash
+# 🐝 Swarm - Parallélisation multi-agents
+jarvis "redesign complet" --swarm
+
+# 🪞 Reflect - Consensus multi-agents (compare réponses)
+jarvis "architecture question" --reflect --agents=3
+
+# 📋 Plan-First - Validation avant exécution
+jarvis "refactor module" --plan-first
+
+# 📦 Context Injection - Injecte du contexte fichier
+jarvis "ajoute loading state" --include src/Stats.tsx,src/types.ts
+```
+
+### Modèles disponibles
+```bash
+--model gemini:flash     # Rapide (défaut)
+--model gemini:pro       # Pro standard
+--model claude:sonnet    # Équilibré  
+--model claude:opus      # Intelligence max
+--model openai:codex     # Tests/Debug
+```
+
+---
+
+## 🔗 Intégration GitHub
+
+Créez des issues GitHub directement depuis le dashboard Jarvis :
+- Lien automatique entre tâches Jarvis et issues GitHub
+- Synchronisation bidirectionnelle du statut
+
+---
+
 ## 📊 Dashboard (Optionnel)
 
 Suivez vos projets et quotas sur [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr)

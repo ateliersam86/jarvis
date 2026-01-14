@@ -203,18 +203,20 @@ async function isCliAuthenticated(provider, silent = false) {
 }
 
 // Get provider-specific auth test command
+// Uses simple non-API commands to check if CLI is configured
 function getAuthTestCommand(provider) {
     switch (provider) {
         case 'gemini':
-            // Quick prompt test with minimal output
-            return { cmd: 'gemini', args: ['-m', 'gemini-3-flash-preview', '-y', 'say ok'] };
+            // Check if config exists - gemini stores creds in ~/.gemini/oauth_creds.json
+            return { cmd: 'test', args: ['-f', `${process.env.HOME}/.gemini/oauth_creds.json`] };
         case 'claude':
-            return { cmd: 'claude', args: ['-p', 'say ok', '--print', '--max-tokens', '5'] };
+            // Claude stores creds in ~/.claude/
+            return { cmd: 'test', args: ['-d', `${process.env.HOME}/.claude`] };
         case 'openai':
-            // Codex version check is enough - it fails if not configured
+            // Codex version check - it fails if not configured
             return { cmd: 'codex', args: ['--version'] };
         default:
-            return { cmd: 'echo', args: ['fail'] };
+            return { cmd: 'false', args: [] };
     }
 }
 
@@ -968,8 +970,43 @@ async function delegate(prompt, options = {}) {
     try {
         let activePrompt = prompt;
 
-        // Stage 1: Intent Analysis & Enrichment (unless disabled)
-        if (!options.noParse) {
+        // Plan-First Mode: Agent describes plan without executing
+        if (options.planFirst) {
+            console.log('\n📋 PLAN-FIRST MODE: Agent will describe plan without executing...\n');
+            activePrompt = `PLAN ONLY - NE PAS EXÉCUTER:
+
+${prompt}
+
+Décris précisément ce que tu vas faire:
+1. Les fichiers que tu vas modifier
+2. Les changements prévus dans chaque fichier
+3. L'ordre des opérations
+
+NE FAIS AUCUNE MODIFICATION - retourne uniquement ton plan d'action.`;
+        }
+
+        // Context Injection: Include specified files in prompt
+        if (options.include && options.include.length > 0) {
+            console.log(`📦 Context Injection: Loading ${options.include.length} file(s)...`);
+            let contextBlock = '\n\n## Contexte Fichiers:\n';
+
+            for (const filePath of options.include) {
+                try {
+                    const fullPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath.trim());
+                    const content = await fs.readFile(fullPath, 'utf-8');
+                    const truncated = content.length > 3000 ? content.slice(0, 3000) + '\n...[truncated]' : content;
+                    contextBlock += `\n### ${filePath}\n\`\`\`\n${truncated}\n\`\`\`\n`;
+                    console.log(`   ✓ ${filePath} (${content.length} chars)`);
+                } catch (e) {
+                    console.log(`   ✗ ${filePath} (not found)`);
+                }
+            }
+
+            activePrompt = activePrompt + contextBlock;
+        }
+
+        // Stage 1: Intent Analysis & Enrichment (unless disabled or plan-first)
+        if (!options.noParse && !options.planFirst) {
             const parsedIntent = await parseIntent(prompt);
             const validation = validateJob(parsedIntent, options);
 
@@ -1175,6 +1212,8 @@ Options:
   --agents=N             Number of agents for reflect mode (default: 2, max: 3)
   --timeout=N            Timeout per agent in seconds (default: 60)
   --swarm                🐝 Break task into parallel sub-tasks (Swarm Mode)
+  --plan-first           📋 Agent returns execution plan without executing (for validation)
+  --include <files>      📦 Include file contents in prompt for more context (comma-separated)
   --no-parse             Disable intent parsing and context enrichment
   --silent               Suppress CLI output
   --status               Show Jarvis system status (CLIs, models, auth)
@@ -1223,7 +1262,9 @@ Model Aliases:
             return timeoutArg ? parseInt(timeoutArg.split('=')[1], 10) : 60;
         })(),
         noParse: args.includes('--no-parse'),
-        silent: args.includes('--silent')
+        silent: args.includes('--silent'),
+        planFirst: args.includes('--plan-first'),
+        include: args.includes('--include') ? args[args.indexOf('--include') + 1]?.split(',') : []
     };
 
     const prompt = args.filter(arg =>
