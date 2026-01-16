@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   keywords: ["AI", "Agents", "Orchestration", "Automation", "Developer Tools", "Jarvis"],
   authors: [{ name: "Samuel Muselet" }],
   creator: "Samuel Muselet",
-  metadataBase: new URL("https://jarvis.atelier-sam.fr"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://jarvis.atelier-sam.fr",
+    url: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
     title: "Jarvis AI Nexus",
     description: "Advanced Multi-Agent Orchestration System",
     siteName: "Jarvis AI Nexus",

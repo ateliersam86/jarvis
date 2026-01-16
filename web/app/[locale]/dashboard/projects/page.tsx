@@ -12,7 +12,8 @@ import {
     Search,
     ListTodo,
     ChevronRight,
-    Terminal
+    Terminal,
+    Plus
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
@@ -117,6 +118,12 @@ export default function ProjectsPage() {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
+                    <Button 
+                        className="bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl px-4 h-10 font-bold mr-2"
+                    >
+                        <Plus className="w-4 h-4 mr-2" />
+                        New Project
+                    </Button>
                     <Button 
                         onClick={handleSyncAll} 
                         disabled={isSyncing}

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { signIn, getCsrfToken } from 'next-auth/react';
 import { useRouter, Link } from '@/i18n/routing';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Github, Loader2, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
@@ -11,27 +12,59 @@ import { Logo } from '@/components/shared/Logo';
 
 export default function LoginPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [csrfToken, setCsrfToken] = useState<string>('');
 
-    const handleEmailLogin = async (e: React.FormEvent) => {
+    // Fetch CSRF token on mount
+    useEffect(() => {
+        getCsrfToken().then(token => setCsrfToken(token || ''));
+    }, []);
+
+    // Check for error in URL params
+    useEffect(() => {
+        const urlError = searchParams.get('error');
+        if (urlError === 'CredentialsSignin') {
+            setError('Invalid credentials. Please try again.');
+        }
+    }, [searchParams]);
+
+    const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
 
-        const result = await signIn('credentials', {
-            email,
-            password,
-            redirect: false,
-        });
+        // Submit form natively to NextAuth endpoint with CSRF
+        const formData = new FormData(e.currentTarget);
 
-        if (result?.error) {
-            setError('Invalid credentials. Please try again.');
+        try {
+            const res = await fetch('/api/auth/callback/credentials', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    csrfToken: formData.get('csrfToken') as string,
+                    email: formData.get('email') as string,
+                    password: formData.get('password') as string,
+                    callbackUrl: '/dashboard',
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'manual',
+            });
+
+            // Check response - NextAuth returns 302 on success
+            if (res.type === 'opaqueredirect' || res.status === 302 || res.ok) {
+                router.push('/dashboard');
+            } else {
+                setError('Invalid credentials. Please try again.');
+                setIsLoading(false);
+            }
+        } catch {
+            setError('An error occurred. Please try again.');
             setIsLoading(false);
-        } else {
-            router.push('/dashboard');
         }
     };
 
@@ -97,8 +130,10 @@ export default function LoginPage() {
                     </div>
 
                     <form onSubmit={handleEmailLogin} className="space-y-4">
+                        <input type="hidden" name="csrfToken" value={csrfToken} />
                         <Input
                             label="Email"
+                            name="email"
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -108,6 +143,7 @@ export default function LoginPage() {
 
                         <Input
                             label="Password"
+                            name="password"
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}

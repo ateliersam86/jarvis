@@ -1,12 +1,13 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import { usePathname } from 'next/navigation'
 import { LayoutDashboard, FolderOpen, Cpu, ListTodo, Settings, LogOut, Brain, User } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import { cn } from '@/lib/utils'
 import { Logo } from '../shared/Logo'
+
 
 interface SidebarProps {
   isOpen: boolean
@@ -19,9 +20,9 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
 
   const navItems = [
     { icon: LayoutDashboard, label: 'Overview', href: '/dashboard' },
-    { icon: FolderOpen, label: 'Projects', href: '#' },
-    { icon: Cpu, label: 'AI Agents', href: '#' },
-    { icon: ListTodo, label: 'Tasks', href: '#' },
+    { icon: FolderOpen, label: 'Projects', href: '/dashboard/projects' },
+    { icon: Cpu, label: 'AI Agents', href: '/dashboard/agents' },
+    { icon: ListTodo, label: 'Tasks', href: '/dashboard/tasks' },
     { icon: Settings, label: 'Settings', href: '/settings' },
   ]
 
@@ -53,17 +54,17 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                     href={item.href}
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group",
-                      isActive 
-                        ? "bg-primary/10 text-primary border border-primary/20" 
+                      isActive
+                        ? "bg-primary/10 text-primary border border-primary/20"
                         : "text-muted hover:text-foreground hover:bg-surface-hover border border-transparent"
                     )}
                   >
                     <item.icon className="w-5 h-5" />
                     <span className="font-medium text-sm">{item.label}</span>
                     {isActive && (
-                      <motion.div 
-                        layoutId="activeDot" 
-                        className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" 
+                      <motion.div
+                        layoutId="activeDot"
+                        className="ml-auto w-1.5 h-1.5 rounded-full bg-primary"
                       />
                     )}
                   </Link>
@@ -75,13 +76,13 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           <div className="p-4 mt-auto border-t border-border">
             <div className="bg-surface border border-border rounded-xl p-4 mb-4">
               <div className="flex items-center gap-3 mb-3">
-                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold">
-                    {session?.user?.name?.[0] || <User className="w-4 h-4" />}
-                 </div>
-                 <div className="overflow-hidden">
-                    <p className="text-sm font-semibold truncate text-foreground">{session?.user?.name || 'User'}</p>
-                    <p className="text-xs text-muted truncate">{session?.user?.email || 'Pro Plan'}</p>
-                 </div>
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold">
+                  {session?.user?.name?.[0] || <User className="w-4 h-4" />}
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-sm font-semibold truncate text-foreground">{session?.user?.name || 'User'}</p>
+                  <p className="text-xs text-muted truncate">{session?.user?.email || 'Pro Plan'}</p>
+                </div>
               </div>
             </div>
 

@@ -26,13 +26,13 @@ function AnalogTerminal() {
           <span className="text-neutral-400">$</span> jarvis init --analog
         </div>
         <div className="mb-2 text-neutral-500">
-          > Initializing analog precision protocol...
+          {'>'} Initializing analog precision protocol...
         </div>
         <div className="mb-2 text-neutral-500">
-          > Loading serif fonts... <span className="text-[#FF3B30]">DONE</span>
+          {'>'} Loading serif fonts... <span className="text-[#FF3B30]">DONE</span>
         </div>
         <div className="mb-2 text-neutral-500">
-          > Setting paper background... <span className="text-[#FF3B30]">DONE</span>
+          {'>'} Setting paper background... <span className="text-[#FF3B30]">DONE</span>
         </div>
         <div className="mt-4">
           <span className="text-neutral-400">$</span> _
@@ -67,14 +67,14 @@ export default function LandingPage() {
 
       <main className="flex-1 overflow-hidden">
         {/* Grid Lines Background */}
-        <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0" 
-             style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0"
+          style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         {/* Hero Section */}
         <section className="relative pt-40 pb-24 md:pt-56 md:pb-40 z-10">
           <div className="container mx-auto px-6 md:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              
+
               {/* Left Column: Typography */}
               <div className="lg:col-span-7">
                 <motion.div
@@ -87,18 +87,18 @@ export default function LandingPage() {
                     <span className="h-px w-12 bg-[#FF3B30]" />
                     <span className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-500">{t('versionBadge')}</span>
                   </div>
-                  
+
                   <h1 className="text-6xl md:text-8xl font-serif font-medium tracking-tight mb-8 leading-[0.9] text-neutral-900">
                     {t.rich('heroTitle', {
                       highlight: (chunks) => <span className="text-[#FF3B30] italic font-normal ml-2">{chunks}</span>,
                       br: () => <br />
                     })}
                   </h1>
-                  
+
                   <p className="text-xl text-neutral-600 mb-12 max-w-xl leading-relaxed font-light border-l-2 border-neutral-200 pl-6">
                     {t('heroDescription')}
                   </p>
-                  
+
                   <div className="flex flex-col sm:flex-row items-center gap-6">
                     <Link href="/register">
                       <Button size="lg" className="bg-[#FF3B30] hover:bg-[#D32F2F] text-white rounded-none h-14 px-10 text-lg font-medium tracking-wide shadow-none transition-transform active:translate-y-1">
@@ -158,7 +158,7 @@ export default function LandingPage() {
                 { icon: Globe, title: 'feature2Title', desc: 'feature2Desc' },
                 { icon: Shield, title: 'feature3Title', desc: 'feature3Desc' }
               ].map((feature, idx) => (
-                <motion.div 
+                <motion.div
                   key={idx}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -188,7 +188,7 @@ export default function LandingPage() {
             </h2>
             <div className="flex justify-center">
               <div className="bg-[#F4F3F0] p-2 border-2 border-neutral-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                 <CopyInstallButton />
+                <CopyInstallButton />
               </div>
             </div>
           </div>

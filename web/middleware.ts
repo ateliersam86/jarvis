@@ -15,6 +15,8 @@ export default auth((req) => {
         'jarvis.atelier-sam.fr': 'jarvis',
         'portfolio.atelier-sam.fr': 'atelier-sam',
         'esprit.atelier-sam.fr': 'esprit-chalet',
+        '192.168.1.72:9000': 'jarvis',
+        '192.168.1.72:9001': 'jarvis',
         'localhost:9000': 'jarvis',
         'localhost:3000': 'jarvis',
     };

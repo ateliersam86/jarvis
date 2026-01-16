@@ -57,10 +57,12 @@ export default function DashboardPage() {
                                 {t('welcome', { name: session?.user?.name?.split(' ')[0] || 'Commander' })}
                             </p>
                         </div>
-                        <Button className="shadow-lg shadow-primary/20">
-                            <Plus className="w-4 h-4 mr-2" />
-                            {t('newProject')}
-                        </Button>
+                        <Link href="/dashboard/projects?new=true">
+                            <Button className="shadow-lg shadow-primary/20">
+                                <Plus className="w-4 h-4 mr-2" />
+                                {t('newProject')}
+                            </Button>
+                        </Link>
                     </FadeInView>
 
                     {/* Stats */}
@@ -75,7 +77,7 @@ export default function DashboardPage() {
                             <FadeInView delay={0.2}>
                                 <div className="flex items-center justify-between mb-4">
                                     <h2 className="text-xl font-semibold tracking-tight">{t('recentProjects')}</h2>
-                                    <Link href="#" className="text-xs font-medium text-primary hover:text-primary/80 flex items-center gap-1">
+                                    <Link href="/dashboard/projects" className="text-xs font-medium text-primary hover:text-primary/80 flex items-center gap-1">
                                         {t('viewAll')} <ArrowUpRight className="w-3 h-3" />
                                     </Link>
                                 </div>

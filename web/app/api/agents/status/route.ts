@@ -16,12 +16,14 @@ interface RawTask {
 }
 
 export async function GET() {
-    const memoryBaseDir = path.join(process.cwd(), '.memory', 'projects');
+    // .memory is at project root (parent of /web)
+    const memoryBaseDir = path.join(process.cwd(), '..', '.memory', 'projects');
 
     try {
+
         // Dynamic project discovery from folder structure
         const projects = await fs.readdir(memoryBaseDir, { withFileTypes: true });
-        
+
         const agentStatuses = await Promise.all(
             projects
                 .filter(dirent => dirent.isDirectory())
@@ -31,9 +33,9 @@ export async function GET() {
 
                     // Dynamic agent discovery (all .json files except conductor_state)
                     const files = await fs.readdir(projectDir, { withFileTypes: true });
-                    const agentFiles = files.filter(f => 
-                        f.isFile() && 
-                        f.name.endsWith('.json') && 
+                    const agentFiles = files.filter(f =>
+                        f.isFile() &&
+                        f.name.endsWith('.json') &&
                         f.name !== 'conductor_state.json'
                     );
 
