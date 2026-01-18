@@ -1,196 +1,127 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Navbar } from '@/components/shared/Navbar'
 import { Footer } from '@/components/shared/Footer'
-import { CopyInstallButton } from '@/components/landing/CopyInstallButton'
 import { Button } from '@/components/ui/Button'
-import { ArrowRight, Cpu, Globe, Shield } from 'lucide-react'
+import { Settings, Cpu, Radio, Share2 } from 'lucide-react'
 import { Link } from '@/i18n/routing'
-import { useTranslations } from 'next-intl'
-
-// Simple Analog Terminal Component
-function AnalogTerminal() {
-  return (
-    <div className="w-full max-w-2xl mx-auto border-2 border-neutral-900 bg-white p-2 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-      <div className="flex items-center justify-between border-b-2 border-neutral-900 px-4 py-2 bg-neutral-100">
-        <div className="flex gap-2">
-          <div className="w-3 h-3 rounded-full border border-neutral-900 bg-white" />
-          <div className="w-3 h-3 rounded-full border border-neutral-900 bg-white" />
-        </div>
-        <div className="text-xs font-mono font-bold uppercase tracking-widest text-neutral-500">TERMINAL_01</div>
-      </div>
-      <div className="p-6 font-mono text-sm leading-relaxed text-neutral-800">
-        <div className="mb-2">
-          <span className="text-neutral-400">$</span> jarvis init --analog
-        </div>
-        <div className="mb-2 text-neutral-500">
-          {'>'} Initializing analog precision protocol...
-        </div>
-        <div className="mb-2 text-neutral-500">
-          {'>'} Loading serif fonts... <span className="text-[#FF3B30]">DONE</span>
-        </div>
-        <div className="mb-2 text-neutral-500">
-          {'>'} Setting paper background... <span className="text-[#FF3B30]">DONE</span>
-        </div>
-        <div className="mt-4">
-          <span className="text-neutral-400">$</span> _
-          <motion.span
-            animate={{ opacity: [0, 1] }}
-            transition={{ repeat: Infinity, duration: 0.8 }}
-            className="inline-block w-2 h-4 bg-[#FF3B30] align-middle ml-1"
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
 
 export default function LandingPage() {
-  const t = useTranslations('Landing')
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  })
-
-  const yHero = useTransform(scrollYProgress, [0, 0.2], [0, -20])
-  const opacityHero = useTransform(scrollYProgress, [0, 0.2], [1, 0.5])
-
   return (
-    <div className="min-h-screen flex flex-col bg-[#F4F3F0] text-neutral-900 font-sans selection:bg-[#FF3B30] selection:text-white" ref={containerRef}>
-      {/* Navbar wrapper to force light text if needed or just placement */}
-      <div className="relative z-50">
-        <Navbar />
-      </div>
+    <div className="min-h-screen bg-[#F5F5F0] text-neutral-900 font-sans selection:bg-[#E85A2C] selection:text-white">
+      <Navbar />
 
-      <main className="flex-1 overflow-hidden">
-        {/* Grid Lines Background */}
-        <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0"
-          style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-
-        {/* Hero Section */}
-        <section className="relative pt-40 pb-24 md:pt-56 md:pb-40 z-10">
-          <div className="container mx-auto px-6 md:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-
-              {/* Left Column: Typography */}
-              <div className="lg:col-span-7">
-                <motion.div
-                  style={{ y: yHero, opacity: opacityHero }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
+      <main className="flex flex-col">
+        {/* HERO SECTION */}
+        <section className="relative pt-32 pb-20 px-6 md:px-12 lg:px-24 overflow-hidden">
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+            {/* Text Content */}
+            <div className="space-y-8 z-10">
+              <h1 className="text-5xl md:text-7xl font-serif leading-[1.1] tracking-tight">
+                JARVIS: The Analog Soul of <span className="italic">AI Orchestration.</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-neutral-600 font-light max-w-lg leading-relaxed">
+                Intelligent systems. Human precision. Orchestrate the future with timeless clarity.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                <Button 
+                  className="bg-[#E85A2C] hover:bg-[#D44D25] text-white rounded-none px-8 py-6 text-lg tracking-wider font-medium shadow-lg transition-all"
                 >
-                  <div className="flex items-center gap-3 mb-8">
-                    <span className="h-px w-12 bg-[#FF3B30]" />
-                    <span className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-500">{t('versionBadge')}</span>
-                  </div>
+                  REQUEST ACCESS
+                </Button>
+                <div className="font-mono text-sm bg-neutral-200/50 px-4 py-3 rounded-none border border-neutral-300 text-neutral-700">
+                  $ jarvis --orchestrate "workflows.ai" --mode analog
+                </div>
+              </div>
+            </div>
 
-                  <h1 className="text-6xl md:text-8xl font-serif font-medium tracking-tight mb-8 leading-[0.9] text-neutral-900">
-                    {t.rich('heroTitle', {
-                      highlight: (chunks) => <span className="text-[#FF3B30] italic font-normal ml-2">{chunks}</span>,
-                      br: () => <br />
-                    })}
-                  </h1>
+            {/* Illustration - Vintage Machine / Steampunk Placeholder */}
+            <div className="relative h-[500px] w-full bg-neutral-200 border-2 border-neutral-900 p-4 shadow-[12px_12px_0px_0px_rgba(24,24,27,1)] flex items-center justify-center overflow-hidden">
+               {/* Abstract representation of a vintage machine */}
+               <div className="absolute inset-0 bg-neutral-300 opacity-20"></div>
+               <div className="relative z-10 text-center space-y-4">
+                  <motion.div 
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="w-32 h-32 mx-auto border-4 border-neutral-800 rounded-full flex items-center justify-center"
+                  >
+                    <Settings className="w-20 h-20 text-neutral-800" />
+                  </motion.div>
+                  <div className="text-neutral-500 font-mono text-xs uppercase tracking-[0.2em]">Analog Processor Unit</div>
+               </div>
+               
+               {/* Decorative elements */}
+               <div className="absolute top-4 left-4 w-3 h-3 bg-neutral-900 rounded-full"></div>
+               <div className="absolute top-4 right-4 w-3 h-3 bg-neutral-900 rounded-full"></div>
+               <div className="absolute bottom-4 left-4 w-3 h-3 bg-neutral-900 rounded-full"></div>
+               <div className="absolute bottom-4 right-4 w-3 h-3 bg-neutral-900 rounded-full"></div>
+            </div>
+          </div>
+        </section>
 
-                  <p className="text-xl text-neutral-600 mb-12 max-w-xl leading-relaxed font-light border-l-2 border-neutral-200 pl-6">
-                    {t('heroDescription')}
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row items-center gap-6">
-                    <Link href="/register">
-                      <Button size="lg" className="bg-[#FF3B30] hover:bg-[#D32F2F] text-white rounded-none h-14 px-10 text-lg font-medium tracking-wide shadow-none transition-transform active:translate-y-1">
-                        {t('startBuilding')}
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </Link>
-                    <Link href="/docs">
-                      <Button variant="ghost" size="lg" className="text-neutral-900 hover:bg-neutral-200 rounded-none h-14 px-8 text-lg font-medium border border-neutral-900">
-                        {t('readDocs')}
-                      </Button>
-                    </Link>
-                  </div>
-                </motion.div>
+        {/* PRECISION REDEFINED SECTION */}
+        <section className="py-24 px-6 md:px-12 lg:px-24 border-t border-neutral-300">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl font-serif mb-16 text-center">Precision, Redefined</h2>
+            
+            <div className="grid md:grid-cols-3 gap-12">
+              <div className="flex flex-col items-center text-center space-y-4 p-6 border border-transparent hover:border-neutral-300 transition-colors">
+                <div className="w-16 h-16 bg-white border-2 border-neutral-900 flex items-center justify-center rounded-full shadow-[4px_4px_0px_0px_rgba(232,90,44,1)] mb-4">
+                  <Share2 className="w-8 h-8 text-neutral-900" />
+                </div>
+                <h3 className="text-xl font-bold font-serif">Intelligent Routing</h3>
+                <p className="text-neutral-600 leading-relaxed">Directs data streams with mechanical efficiency.</p>
               </div>
 
-              {/* Right Column: Terminal */}
-              <div className="lg:col-span-5">
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                  className="relative"
-                >
-                  <AnalogTerminal />
-                  {/* Decorative Elements */}
-                  <div className="absolute -z-10 top-12 -right-12 w-full h-full border-2 border-neutral-200" />
-                </motion.div>
+              <div className="flex flex-col items-center text-center space-y-4 p-6 border border-transparent hover:border-neutral-300 transition-colors">
+                <div className="w-16 h-16 bg-white border-2 border-neutral-900 flex items-center justify-center rounded-full shadow-[4px_4px_0px_0px_rgba(232,90,44,1)] mb-4">
+                  <Cpu className="w-8 h-8 text-neutral-900" />
+                </div>
+                <h3 className="text-xl font-bold font-serif">Modular Synthesis</h3>
+                <p className="text-neutral-600 leading-relaxed">Components interlock with clockwork perfection.</p>
+              </div>
+
+              <div className="flex flex-col items-center text-center space-y-4 p-6 border border-transparent hover:border-neutral-300 transition-colors">
+                <div className="w-16 h-16 bg-white border-2 border-neutral-900 flex items-center justify-center rounded-full shadow-[4px_4px_0px_0px_rgba(232,90,44,1)] mb-4">
+                  <Radio className="w-8 h-8 text-neutral-900" />
+                </div>
+                <h3 className="text-xl font-bold font-serif">Tactile Feedback</h3>
+                <p className="text-neutral-600 leading-relaxed">Feel the pulse of your operations.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Trusted By - Minimalist */}
-        <section className="py-16 border-y border-neutral-200 bg-white/50 backdrop-blur-sm z-10 relative">
-          <div className="container mx-auto px-6 text-center">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-400 mb-8">{t('trustedBy')}</p>
-            <div className="flex flex-wrap justify-center items-center gap-16 md:gap-24 opacity-40 hover:opacity-100 transition-opacity duration-500">
-              {['Gemini', 'OpenAI', 'Anthropic', 'Mistral', 'Llama'].map((brand) => (
-                <span key={brand} className="text-2xl font-serif font-bold text-neutral-900">{brand}</span>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* BLUEPRINT SECTION */}
+        <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-y border-neutral-900">
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+             {/* Flowchart Diagram Placeholder */}
+             <div className="order-2 lg:order-1 relative bg-[#F5F5F0] p-8 border-2 border-neutral-900 h-96 flex items-center justify-center">
+                <div className="absolute top-0 left-0 bg-neutral-900 text-white text-xs px-2 py-1 font-mono">FIG 2.1</div>
+                
+                {/* CSS Flowchart */}
+                <div className="flex flex-col items-center gap-8 w-full max-w-sm transform scale-90 sm:scale-100">
+                   <div className="w-32 h-12 border-2 border-neutral-800 flex items-center justify-center font-mono text-sm bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">INPUT</div>
+                   <div className="h-8 w-px bg-neutral-800 relative after:content-[''] after:absolute after:bottom-0 after:-left-1 after:border-l-4 after:border-r-4 after:border-t-4 after:border-transparent after:border-t-neutral-800"></div>
+                   <div className="grid grid-cols-2 gap-8 w-full">
+                      <div className="border-2 border-neutral-800 p-2 text-center font-mono text-xs bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">PROCESS A</div>
+                      <div className="border-2 border-neutral-800 p-2 text-center font-mono text-xs bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">PROCESS B</div>
+                   </div>
+                   <div className="h-8 w-px bg-neutral-800"></div>
+                   <div className="w-32 h-12 border-2 border-neutral-800 rounded-full flex items-center justify-center font-mono text-sm bg-orange-100 shadow-[4px_4px_0px_0px_rgba(232,90,44,0.4)]">OUTPUT</div>
+                </div>
+             </div>
 
-        {/* Features - Editorial Layout */}
-        <section className="py-32 z-10 relative">
-          <div className="container mx-auto px-6">
-            <div className="mb-20">
-              <h2 className="text-4xl md:text-5xl font-serif mb-6">{t('featuresTitle')}</h2>
-              <div className="h-1 w-24 bg-[#FF3B30]" />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-neutral-200 pt-12">
-              {[
-                { icon: Cpu, title: 'feature1Title', desc: 'feature1Desc' },
-                { icon: Globe, title: 'feature2Title', desc: 'feature2Desc' },
-                { icon: Shield, title: 'feature3Title', desc: 'feature3Desc' }
-              ].map((feature, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="group"
-                >
-                  <div className="mb-6 text-neutral-900">
-                    <feature.icon strokeWidth={1.5} className="h-8 w-8" />
-                  </div>
-                  <h3 className="text-2xl font-medium mb-4 group-hover:text-[#FF3B30] transition-colors">{t(feature.title)}</h3>
-                  <p className="text-neutral-500 leading-relaxed">
-                    {t(feature.desc)}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA - Clean & Sharp */}
-        <section className="py-32 bg-white relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF3B30] to-orange-400" />
-          <div className="container mx-auto px-6 text-center relative z-10">
-            <h2 className="text-5xl md:text-7xl font-serif mb-12 tracking-tight text-neutral-900">
-              {t('ctaTitle')}
-            </h2>
-            <div className="flex justify-center">
-              <div className="bg-[#F4F3F0] p-2 border-2 border-neutral-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                <CopyInstallButton />
-              </div>
-            </div>
+             {/* Quote and Text */}
+             <div className="order-1 lg:order-2 space-y-8">
+                <h2 className="text-4xl font-serif">The Blueprint for Intelligence</h2>
+                <blockquote className="border-l-4 border-[#E85A2C] pl-6 py-2 italic text-2xl font-serif text-neutral-700 leading-normal">
+                  "Jarvis isnt just software; its a philosophy of control. A masterful tool."
+                </blockquote>
+                <cite className="block text-neutral-500 font-mono text-sm uppercase tracking-widest not-italic">— Architectural Digest</cite>
+             </div>
           </div>
         </section>
       </main>
