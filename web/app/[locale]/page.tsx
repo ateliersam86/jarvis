@@ -1,132 +1,243 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Navbar } from '@/components/shared/Navbar'
-import { Footer } from '@/components/shared/Footer'
-import { Button } from '@/components/ui/Button'
-import { Settings, Cpu, Radio, Share2 } from 'lucide-react'
 import { Link } from '@/i18n/routing'
+import { 
+  Terminal, 
+  Cpu, 
+  Activity, 
+  Layers, 
+  Settings, 
+  Grid3X3,
+  Globe,
+  Zap,
+  Box
+} from 'lucide-react'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#F5F5F0] text-neutral-900 font-sans selection:bg-[#E85A2C] selection:text-white">
-      <Navbar />
+    <div className="h-screen w-full bg-[#F5F5F0] text-[#1a1a1a] overflow-hidden font-serif selection:bg-[#FF5500] selection:text-white">
+      {/* Background Texture & Grid */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+           style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}></div>
+      <div className="absolute inset-0 pointer-events-none" 
+           style={{ 
+             backgroundImage: 'linear-gradient(#000000 1px, transparent 1px), linear-gradient(90deg, #000000 1px, transparent 1px)',
+             backgroundSize: '40px 40px',
+             opacity: 0.05
+           }}></div>
 
-      <main className="flex flex-col">
-        {/* HERO SECTION */}
-        <section className="relative pt-32 pb-20 px-6 md:px-12 lg:px-24 overflow-hidden">
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-            {/* Text Content */}
-            <div className="space-y-8 z-10">
-              <h1 className="text-5xl md:text-7xl font-serif leading-[1.1] tracking-tight">
-                JARVIS: The Analog Soul of <span className="italic">AI Orchestration.</span>
+      <div className="relative h-full w-full flex">
+        
+        {/* NAVIGATION RAIL (Fixed Left) */}
+        <aside className="w-20 h-full border-r border-black/10 flex flex-col items-center py-8 z-20 bg-[#F5F5F0]/80 backdrop-blur-sm">
+          <div className="w-10 h-10 border-2 border-[#1a1a1a] flex items-center justify-center mb-12">
+            <span className="font-bold font-mono text-xl">J</span>
+          </div>
+          
+          <nav className="flex-1 flex flex-col gap-8 w-full items-center">
+            <Link href="/" className="group relative w-10 h-10 flex items-center justify-center">
+              <div className="absolute inset-0 bg-[#FF5500] opacity-0 group-hover:opacity-10 transition-opacity rounded-md"></div>
+              <Grid3X3 className="w-5 h-5 text-[#FF5500]" />
+              <div className="absolute left-0 w-1 h-full bg-[#FF5500] rounded-r scale-y-0 group-hover:scale-y-100 transition-transform origin-center"></div>
+            </Link>
+            <button className="group relative w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-[#1a1a1a] transition-colors">
+              <Layers className="w-5 h-5" />
+            </button>
+            <button className="group relative w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-[#1a1a1a] transition-colors">
+              <Globe className="w-5 h-5" />
+            </button>
+          </nav>
+
+          <div className="mt-auto flex flex-col gap-6 items-center">
+             <div className="text-[10px] font-mono rotate-180 opacity-40" style={{ writingMode: 'vertical-rl' }}>
+                v3.0.0-beta
+             </div>
+             <Settings className="w-5 h-5 text-neutral-400" />
+          </div>
+        </aside>
+
+        {/* MAIN GRID LAYOUT */}
+        <main className="flex-1 grid grid-cols-12 h-full">
+          
+          {/* SECTION LEFT: THE MANIFESTO (3 Columns) */}
+          <section className="col-span-12 lg:col-span-3 border-r border-black/10 p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-2 opacity-50">
+               <span className="font-mono text-xs border border-black px-2 py-0.5 rounded-full">SECTION A-1</span>
+            </div>
+
+            <div className="mt-20 space-y-2">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-[0.9]">
+                Why<br />
+                <span className="italic font-serif">Jarvis?</span>
               </h1>
-              <p className="text-xl md:text-2xl text-neutral-600 font-light max-w-lg leading-relaxed">
-                Intelligent systems. Human precision. Orchestrate the future with timeless clarity.
+              <div className="w-12 h-1 bg-[#FF5500] mt-6 mb-8"></div>
+            </div>
+
+            <div className="relative z-10">
+              <p className="text-lg leading-relaxed text-neutral-700 font-medium max-w-xs">
+                In an era of digital noise, we return to the blueprint. 
+                <span className="block mt-4 text-neutral-500 text-base font-normal">
+                  Precision isn't just a metric; it's an aesthetic. Jarvis orchestrates your digital workforce with the elegance of a master architect.
+                </span>
               </p>
-              
-              <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                <Button 
-                  className="bg-[#E85A2C] hover:bg-[#D44D25] text-white rounded-none px-8 py-6 text-lg tracking-wider font-medium shadow-lg transition-all"
-                >
-                  REQUEST ACCESS
-                </Button>
-                <div className="font-mono text-sm bg-neutral-200/50 px-4 py-3 rounded-none border border-neutral-300 text-neutral-700">
-                  $ jarvis --orchestrate "workflows.ai" --mode analog
-                </div>
-              </div>
             </div>
 
-            {/* Illustration - Vintage Machine / Steampunk Placeholder */}
-            <div className="relative h-[500px] w-full bg-neutral-200 border-2 border-neutral-900 p-4 shadow-[12px_12px_0px_0px_rgba(24,24,27,1)] flex items-center justify-center overflow-hidden">
-               {/* Abstract representation of a vintage machine */}
-               <div className="absolute inset-0 bg-neutral-300 opacity-20"></div>
-               <div className="relative z-10 text-center space-y-4">
-                  <motion.div 
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="w-32 h-32 mx-auto border-4 border-neutral-800 rounded-full flex items-center justify-center"
-                  >
-                    <Settings className="w-20 h-20 text-neutral-800" />
-                  </motion.div>
-                  <div className="text-neutral-500 font-mono text-xs uppercase tracking-[0.2em]">Analog Processor Unit</div>
-               </div>
-               
-               {/* Decorative elements */}
-               <div className="absolute top-4 left-4 w-3 h-3 bg-neutral-900 rounded-full"></div>
-               <div className="absolute top-4 right-4 w-3 h-3 bg-neutral-900 rounded-full"></div>
-               <div className="absolute bottom-4 left-4 w-3 h-3 bg-neutral-900 rounded-full"></div>
-               <div className="absolute bottom-4 right-4 w-3 h-3 bg-neutral-900 rounded-full"></div>
+            <div className="hidden lg:block absolute bottom-8 right-8 opacity-10 pointer-events-none transform rotate-[-90deg] origin-bottom-right whitespace-nowrap text-9xl font-bold font-serif">
+               MANIFESTO
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* PRECISION REDEFINED SECTION */}
-        <section className="py-24 px-6 md:px-12 lg:px-24 border-t border-neutral-300">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl font-serif mb-16 text-center">Precision, Redefined</h2>
-            
-            <div className="grid md:grid-cols-3 gap-12">
-              <div className="flex flex-col items-center text-center space-y-4 p-6 border border-transparent hover:border-neutral-300 transition-colors">
-                <div className="w-16 h-16 bg-white border-2 border-neutral-900 flex items-center justify-center rounded-full shadow-[4px_4px_0px_0px_rgba(232,90,44,1)] mb-4">
-                  <Share2 className="w-8 h-8 text-neutral-900" />
-                </div>
-                <h3 className="text-xl font-bold font-serif">Intelligent Routing</h3>
-                <p className="text-neutral-600 leading-relaxed">Directs data streams with mechanical efficiency.</p>
-              </div>
+          {/* SECTION CENTER: THE HEART (5 Columns) */}
+          <section className="col-span-12 lg:col-span-6 border-r border-black/10 relative flex flex-col items-center justify-center p-8 overflow-hidden bg-[#F0F0EB]">
+             
+             {/* Decorative grid background specific to center */}
+             <div className="absolute inset-0" 
+                  style={{ 
+                    backgroundImage: 'radial-gradient(#1a1a1a 0.5px, transparent 0.5px)', 
+                    backgroundSize: '20px 20px', 
+                    opacity: 0.1 
+                  }}>
+             </div>
 
-              <div className="flex flex-col items-center text-center space-y-4 p-6 border border-transparent hover:border-neutral-300 transition-colors">
-                <div className="w-16 h-16 bg-white border-2 border-neutral-900 flex items-center justify-center rounded-full shadow-[4px_4px_0px_0px_rgba(232,90,44,1)] mb-4">
-                  <Cpu className="w-8 h-8 text-neutral-900" />
-                </div>
-                <h3 className="text-xl font-bold font-serif">Modular Synthesis</h3>
-                <p className="text-neutral-600 leading-relaxed">Components interlock with clockwork perfection.</p>
-              </div>
-
-              <div className="flex flex-col items-center text-center space-y-4 p-6 border border-transparent hover:border-neutral-300 transition-colors">
-                <div className="w-16 h-16 bg-white border-2 border-neutral-900 flex items-center justify-center rounded-full shadow-[4px_4px_0px_0px_rgba(232,90,44,1)] mb-4">
-                  <Radio className="w-8 h-8 text-neutral-900" />
-                </div>
-                <h3 className="text-xl font-bold font-serif">Tactile Feedback</h3>
-                <p className="text-neutral-600 leading-relaxed">Feel the pulse of your operations.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* BLUEPRINT SECTION */}
-        <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-y border-neutral-900">
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-             {/* Flowchart Diagram Placeholder */}
-             <div className="order-2 lg:order-1 relative bg-[#F5F5F0] p-8 border-2 border-neutral-900 h-96 flex items-center justify-center">
-                <div className="absolute top-0 left-0 bg-neutral-900 text-white text-xs px-2 py-1 font-mono">FIG 2.1</div>
+             <div className="relative z-10 w-full max-w-2xl aspect-square flex items-center justify-center">
                 
-                {/* CSS Flowchart */}
-                <div className="flex flex-col items-center gap-8 w-full max-w-sm transform scale-90 sm:scale-100">
-                   <div className="w-32 h-12 border-2 border-neutral-800 flex items-center justify-center font-mono text-sm bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">INPUT</div>
-                   <div className="h-8 w-px bg-neutral-800 relative after:content-[''] after:absolute after:bottom-0 after:-left-1 after:border-l-4 after:border-r-4 after:border-t-4 after:border-transparent after:border-t-neutral-800"></div>
-                   <div className="grid grid-cols-2 gap-8 w-full">
-                      <div className="border-2 border-neutral-800 p-2 text-center font-mono text-xs bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">PROCESS A</div>
-                      <div className="border-2 border-neutral-800 p-2 text-center font-mono text-xs bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">PROCESS B</div>
+                {/* The "Console" Circle */}
+                <motion.div 
+                   initial={{ opacity: 0, scale: 0.8 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   transition={{ duration: 1.2, ease: "easeOut" }}
+                   className="relative w-[500px] h-[500px] rounded-full border border-black/20 flex items-center justify-center"
+                >
+                   {/* Orbiting Elements */}
+                   <motion.div 
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0 rounded-full border border-dashed border-black/10"
+                   />
+                   <motion.div 
+                      animate={{ rotate: -360 }}
+                      transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-40 rounded-full border border-dotted border-black/30"
+                   />
+
+                   {/* Central Core */}
+                   <div className="relative z-20 flex flex-col items-center">
+                      <h2 className="text-8xl font-serif tracking-widest text-[#1a1a1a] z-20 relative">JARVIS</h2>
+                      <div className="text-[#FF5500] font-mono text-sm tracking-[0.5em] mt-2 uppercase">Orchestrator</div>
                    </div>
-                   <div className="h-8 w-px bg-neutral-800"></div>
-                   <div className="w-32 h-12 border-2 border-neutral-800 rounded-full flex items-center justify-center font-mono text-sm bg-orange-100 shadow-[4px_4px_0px_0px_rgba(232,90,44,0.4)]">OUTPUT</div>
+
+                   {/* Agents Nodes */}
+                   {/* Gemini */}
+                   <motion.div 
+                      className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
+                      animate={{ y: [0, -10, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                   >
+                      <div className="w-16 h-16 bg-white border border-black shadow-[4px_4px_0_0_#1a1a1a] flex items-center justify-center rounded-full z-10 relative">
+                         <Zap className="w-6 h-6 text-[#1a1a1a]" />
+                         <div className="absolute -bottom-8 left-1/2 w-px h-8 bg-black/20"></div>
+                      </div>
+                      <span className="font-mono text-xs bg-black text-white px-2 py-0.5">GEMINI</span>
+                   </motion.div>
+
+                   {/* Claude */}
+                   <motion.div 
+                      className="absolute bottom-10 left-10 flex flex-col items-center gap-2"
+                      animate={{ y: [0, 10, 0] }}
+                      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                   >
+                      <div className="w-14 h-14 bg-white border border-black shadow-[4px_4px_0_0_#1a1a1a] flex items-center justify-center rounded-full z-10 relative">
+                         <Box className="w-6 h-6 text-[#1a1a1a]" />
+                      </div>
+                      <span className="font-mono text-xs bg-white border border-black px-2 py-0.5">CLAUDE</span>
+                   </motion.div>
+
+                   {/* Codex */}
+                   <motion.div 
+                      className="absolute bottom-10 right-10 flex flex-col items-center gap-2"
+                      animate={{ y: [0, 10, 0] }}
+                      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                   >
+                      <div className="w-14 h-14 bg-white border border-black shadow-[4px_4px_0_0_#1a1a1a] flex items-center justify-center rounded-full z-10 relative">
+                         <Terminal className="w-6 h-6 text-[#1a1a1a]" />
+                      </div>
+                      <span className="font-mono text-xs bg-white border border-black px-2 py-0.5">CODEX</span>
+                   </motion.div>
+
+                </motion.div>
+             </div>
+
+             {/* Bottom Control Strip */}
+             <div className="absolute bottom-0 left-0 w-full border-t border-black/10 p-4 flex justify-between items-center bg-[#F5F5F0]/90 font-mono text-xs text-neutral-500">
+                <div className="flex gap-4">
+                   <span>SYS: ONLINE</span>
+                   <span className="text-[#FF5500]">● LIVE</span>
+                </div>
+                <div>
+                   LATENCY: 12ms
+                </div>
+             </div>
+          </section>
+
+          {/* SECTION RIGHT: METRICS (4 Columns) */}
+          <section className="col-span-12 lg:col-span-3 bg-[#F5F5F0] p-0 flex flex-col">
+             
+             {/* Header */}
+             <div className="p-6 border-b border-black/10">
+                <h3 className="font-mono text-sm uppercase tracking-widest text-neutral-400 mb-1">Live Telemetry</h3>
+                <div className="text-2xl font-serif">System Metrics</div>
+             </div>
+
+             {/* Teletype Stream */}
+             <div className="flex-1 overflow-hidden p-6 relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#F5F5F0] via-transparent to-[#F5F5F0] pointer-events-none z-10 opacity-50"></div>
+                <div className="font-mono text-xs space-y-3 text-neutral-600 opacity-80 h-full overflow-y-auto pb-20">
+                   {[...Array(15)].map((_, i) => (
+                      <div key={i} className="flex gap-3 items-start opacity-60 hover:opacity-100 transition-opacity cursor-default">
+                         <span className="text-[#FF5500] min-w-[20px]">{`>`}</span>
+                         <div>
+                            <span className="block text-neutral-400 text-[10px]">10:24:{30 + i}</span>
+                            <span className="block">Task executed: agent_swarm_{i+102} completed successfully.</span>
+                         </div>
+                      </div>
+                   ))}
                 </div>
              </div>
 
-             {/* Quote and Text */}
-             <div className="order-1 lg:order-2 space-y-8">
-                <h2 className="text-4xl font-serif">The Blueprint for Intelligence</h2>
-                <blockquote className="border-l-4 border-[#E85A2C] pl-6 py-2 italic text-2xl font-serif text-neutral-700 leading-normal">
-                  "Jarvis isnt just software; its a philosophy of control. A masterful tool."
-                </blockquote>
-                <cite className="block text-neutral-500 font-mono text-sm uppercase tracking-widest not-italic">— Architectural Digest</cite>
-             </div>
-          </div>
-        </section>
-      </main>
+             {/* Stats Cards */}
+             <div className="border-t border-black/10 p-6 space-y-6 bg-white/50">
+                
+                <div className="flex items-center justify-between">
+                   <div className="flex items-center gap-3">
+                      <Cpu className="w-5 h-5 text-neutral-400" />
+                      <span className="font-mono text-xs">CPU LOAD</span>
+                   </div>
+                   <span className="font-mono font-bold text-lg">34%</span>
+                </div>
+                <div className="w-full bg-black/5 h-1">
+                   <div className="bg-[#1a1a1a] h-full w-[34%]"></div>
+                </div>
 
-      <Footer />
+                <div className="flex items-center justify-between">
+                   <div className="flex items-center gap-3">
+                      <Activity className="w-5 h-5 text-neutral-400" />
+                      <span className="font-mono text-xs">ACTIVE AGENTS</span>
+                   </div>
+                   <span className="font-mono font-bold text-lg">3/3</span>
+                </div>
+
+                <div className="pt-4 border-t border-dashed border-black/20">
+                   <button className="w-full bg-[#1a1a1a] text-white font-mono text-xs uppercase py-3 hover:bg-[#FF5500] transition-colors">
+                      Initialize System
+                   </button>
+                </div>
+             </div>
+
+          </section>
+
+        </main>
+      </div>
     </div>
   )
 }
