@@ -47,19 +47,6 @@ jarvis chat
 > Optimise pour mobile
 ```
 
-```bash
-jarvis "Analyse ce projet et propose une architecture améliorée"
-```
-
-Ou utilisez le mode interactif :
-```bash
-jarvis chat
-> Crée une landing page moderne pour mon SaaS
-> Ajoute des animations subtiles
-> Optimise pour mobile
-```
-
-
 ### 3. Jarvis orchestre automatiquement
 
 ```
