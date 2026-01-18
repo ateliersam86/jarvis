@@ -30,8 +30,16 @@ Jarvis analyse votre demande et :
 ### 1. Installez le CLI
 
 ```bash
-npm install -g @jarvis/cli
-jarvis setup  # Détecte vos CLIs (Gemini, Claude, Codex)
+# Clonez le repo
+git clone https://github.com/ateliersam86/jarvis.git
+cd jarvis
+
+# Installez les dépendances
+npm install
+
+# Créez un alias (ajoutez à ~/.zshrc)
+echo 'alias jarvis="node ~/Jarvis/scripts/masterscript.mjs"' >> ~/.zshrc
+source ~/.zshrc
 ```
 
 ### 2. Parlez naturellement
@@ -47,6 +55,7 @@ jarvis chat
 > Ajoute des animations subtiles
 > Optimise pour mobile
 ```
+
 
 ### 3. Jarvis orchestre automatiquement
 

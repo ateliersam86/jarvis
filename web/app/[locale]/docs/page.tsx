@@ -63,11 +63,15 @@ export default function DocsPage() {
 
               <h2>Installation</h2>
               <p>
-                You can install the Jarvis CLI tool globally using npm or yarn. This will give you access to the `jarvis` command in your terminal.
+                Clone the repository and create an alias to use the Jarvis CLI in your terminal.
               </p>
               <CodeBlock
                 language="bash"
-                code="npm install -g @jarvis/cli"
+                code={`git clone https://github.com/ateliersam86/jarvis.git
+cd jarvis && npm install
+
+# Add alias to ~/.zshrc
+alias jarvis="node ~/Jarvis/scripts/masterscript.mjs"`}
               />
 
               <h2>Initializing a Project</h2>

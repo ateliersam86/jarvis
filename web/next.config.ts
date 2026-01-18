@@ -13,6 +13,26 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
 
+  // Exclude watcher directories from triggering hot reload
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        ignored: [
+          '**/node_modules/**',
+          '**/.git/**',
+          '**/.gemini/**',
+          '**/.memory/**',
+          '**/scripts/**',
+          '**/brain/**',
+          '**/logs/**',
+          '**/*.log',
+          '**/*.md',
+        ],
+      };
+    }
+    return config;
+  },
+
   // Security headers
   async headers() {
     return [
