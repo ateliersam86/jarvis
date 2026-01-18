@@ -970,10 +970,12 @@ async function delegate(prompt, options = {}) {
     try {
         let activePrompt = prompt;
 
-        // Plan-First Mode: Agent describes plan without executing
+        // Plan-First Mode: Agent describes plan, Orchestrator validates, then auto-executes
         if (options.planFirst) {
-            console.log('\n📋 PLAN-FIRST MODE: Agent will describe plan without executing...\n');
-            activePrompt = `PLAN ONLY - NE PAS EXÉCUTER:
+            console.log('\n📋 PLAN-FIRST MODE: Orchestrator validation enabled...\n');
+
+            // Step 1: Get plan from agent (without executing)
+            const planPrompt = `PLAN ONLY - NE PAS EXÉCUTER:
 
 ${prompt}
 
@@ -981,8 +983,65 @@ Décris précisément ce que tu vas faire:
 1. Les fichiers que tu vas modifier
 2. Les changements prévus dans chaque fichier
 3. L'ordre des opérations
+4. Les risques potentiels
 
-NE FAIS AUCUNE MODIFICATION - retourne uniquement ton plan d'action.`;
+NE FAIS AUCUNE MODIFICATION - retourne uniquement ton plan d'action structuré.`;
+
+            console.log('   📝 Step 1: Getting plan from agent...');
+            const planResult = await delegate(planPrompt, { ...options, planFirst: false, silent: true });
+
+            if (!planResult.success) {
+                console.error('   ❌ Failed to get plan from agent');
+                return planResult;
+            }
+
+            console.log('   ✅ Plan received');
+
+            // Step 2: Validate plan via Orchestrator (Claude Opus or available validator)
+            console.log('   🧠 Step 2: Orchestrator validating plan...');
+
+            const validationPrompt = `Tu es l'Orchestrateur (Opus). Valide ce plan d'action pour cohérence et sécurité.
+
+TÂCHE ORIGINALE: ${prompt}
+
+PLAN PROPOSÉ PAR L'AGENT:
+${planResult.output || planResult.response || 'No plan output'}
+
+VALIDATION REQUISE:
+1. Le plan correspond-il à la tâche demandée ?
+2. Y a-t-il des risques de perte de données ou d'erreurs ?
+3. L'ordre des opérations est-il logique ?
+
+Réponds UNIQUEMENT par:
+- "VALIDATED" si le plan est cohérent et peut être exécuté
+- "REJECTED: [raison]" si le plan pose problème
+
+Un seul mot: VALIDATED ou REJECTED.`;
+
+            // Use Claude for validation (orchestrator role)
+            const validationResult = await delegate(validationPrompt, {
+                ...options,
+                planFirst: false,
+                model: 'claude:sonnet',
+                silent: true
+            });
+
+            const validationOutput = (validationResult.output || validationResult.response || '').trim();
+            const isValidated = validationOutput.toUpperCase().includes('VALIDATED');
+
+            if (!isValidated) {
+                console.log(`   ❌ Plan REJECTED by Orchestrator`);
+                console.log(`   Reason: ${validationOutput}`);
+                return { success: false, error: `Plan rejected: ${validationOutput}` };
+            }
+
+            console.log('   ✅ Plan VALIDATED by Orchestrator');
+
+            // Step 3: Execute original prompt (now validated)
+            console.log('   🚀 Step 3: Auto-executing validated task...\n');
+
+            // Remove planFirst to actually execute
+            return await delegate(prompt, { ...options, planFirst: false });
         }
 
         // Context Injection: Include specified files in prompt
