@@ -1059,9 +1059,34 @@ Un seul mot: VALIDATED ou REJECTED.`;
             }
 
             if (!isValidated) {
-                console.log(`   ❌ Plan REJECTED by Orchestrator`);
-                console.log(`   Reason: ${validationOutput}`);
-                return { success: false, error: `Plan rejected: ${validationOutput}` };
+                console.log(`   ⚠️ Plan needs clarification`);
+                console.log(`   Feedback: ${validationOutput}`);
+
+                // Retry with clarified prompt (max 2 retries)
+                const maxRetries = 2;
+                let retryCount = options._planFirstRetry || 0;
+
+                if (retryCount < maxRetries) {
+                    console.log(`   🔄 Retry ${retryCount + 1}/${maxRetries}: Clarifying task for agent...`);
+
+                    // Create clarified prompt with orchestrator feedback
+                    const clarifiedPrompt = `${prompt}
+
+⚠️ CLARIFICATION DE L'ORCHESTRATEUR:
+${validationOutput}
+
+Assure-toi de bien comprendre la demande et de proposer un plan qui correspond exactement à ce qui est demandé.`;
+
+                    // Retry with clarified prompt
+                    return await delegate(clarifiedPrompt, {
+                        ...options,
+                        planFirst: true,
+                        _planFirstRetry: retryCount + 1
+                    });
+                } else {
+                    console.log(`   ❌ Max retries reached - Plan REJECTED`);
+                    return { success: false, error: `Plan rejected after ${maxRetries} retries: ${validationOutput}` };
+                }
             }
 
             console.log('   ✅ Plan VALIDATED by Orchestrator');
