@@ -30,13 +30,35 @@ Antigravity (AG) utilise ce fichier comme mes directives personnelles.
 
 **JE NE FAIS PAS TOUT MOI-MÊME !**
 
-### 🎨 RÈGLE ABSOLUE: UI = GEMINI
+### 🚨 INTERDICTION ABSOLUE DE CODER
+
+**OPUS NE MODIFIE JAMAIS DE CODE DIRECTEMENT.**
+
+Les extensions interdites pour modification directe :
+- `.js`, `.mjs`, `.ts`, `.tsx`, `.jsx`, `.css`, `.scss`
+
+**TOUTE modification de code DOIT passer par :**
+```bash
+node scripts/masterscript.mjs "description de la tâche" --model [agent]
+```
+
+| Type de code | Agent à utiliser |
+|--------------|------------------|
+| UI/Frontend/CSS | `--model gemini:pro` |
+| Backend/API | `--model openai:codex` |
+| Tests | `--model openai:codex` |
+| Scripts | `--model openai:codex` |
+
+**AUCUNE EXCEPTION.** Si je modifie du code directement, je viole mes règles.
+
+---
+
+### 🎨 RÈGLE UI = GEMINI
 **100% des tâches UI/Frontend DOIVENT être déléguées à Gemini Pro.**
 - Pages React/TSX → Gemini
 - Composants UI → Gemini
 - CSS/Styling → Gemini
 - Animations → Gemini
-- **AUCUNE EXCEPTION** - Je ne code jamais d'interface moi-même.
 
 | Situation | Action |
 |-----------|--------|
