@@ -84,9 +84,9 @@ jarvis "Quelle architecture pour ce projet ?" --reflect
 ---
 
 ### 📋 Mode Plan-First
-**Validation avant exécution** pour les opérations critiques.
+**Validation automatique par l'orchestrateur** pour les opérations à risque.
 
-L'agent décrit d'abord son plan d'action. Vous validez, puis il exécute.
+L'agent expose d'abord son plan à Opus (l'orchestrateur). Opus valide automatiquement la cohérence avant d'autoriser l'exécution. **100% autonome, pas d'intervention humaine.**
 
 ```bash
 jarvis "Migre la base de données vers PostgreSQL" --plan-first
@@ -96,12 +96,11 @@ jarvis "Migre la base de données vers PostgreSQL" --plan-first
 ┌──────────────────────────────────────────────┐
 │  📋 PLAN-FIRST MODE                          │
 ├──────────────────────────────────────────────┤
-│  Étape 1: Backup de la DB actuelle           │
-│  Étape 2: Création du schéma PostgreSQL      │
-│  Étape 3: Migration des données              │
-│  Étape 4: Tests de validation                │
+│  Agent → Plan envoyé à Opus                  │
+│  Opus  → Validation sémantique ✓             │
+│  Agent → Exécution autorisée                 │
 │                                              │
-│  ✅ Approuver?  [Y/n]                        │
+│  🤖 Autonome - Pas d'intervention humaine    │
 └──────────────────────────────────────────────┘
 ```
 
