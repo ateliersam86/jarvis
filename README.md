@@ -1,152 +1,155 @@
-# 🧠 Jarvis - Multi-Agent AI Orchestrator
+# 🧠 Jarvis
 
-> **Parlez naturellement, Jarvis orchestre intelligemment.**
+### L'Orchestrateur Multi-Agent pour une IA qui vous comprend
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)](https://jarvis.atelier-sam.fr)
+[![npm](https://img.shields.io/npm/v/jarvis-orchestrator?color=orange)](https://www.npmjs.com/package/jarvis-orchestrator)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Dashboard](https://img.shields.io/badge/dashboard-online-success)](https://jarvis.atelier-sam.fr)
 
 ---
 
-## ⚡ La Puissance de l'Orchestration
-
-**Dites simplement ce que vous voulez accomplir.**
-
-```
-"Refactore le module d'authentification et ajoute des tests"
-```
-
-Jarvis analyse votre demande et :
-- 🎯 **Décompose** la tâche en sous-tâches logiques
-- 🔀 **Délègue** chaque partie à l'agent le plus adapté
-- ⚡ **Parallélise** quand c'est possible pour aller plus vite
-- ✅ **Agrège** les résultats en une réponse cohérente
-
-**Vous parlez, Jarvis réfléchit et agit.**
-
----
-
-## 🚀 Comment ça marche ?
-
-### 1. Installez le CLI
+## 🚀 Installation
 
 ```bash
 npm install -g jarvis-orchestrator
 ```
 
-### 2. Parlez naturellement
+---
+
+## ✨ Utilisation
 
 ```bash
-jarvis "Analyse ce projet et propose une architecture améliorée"
+jarvis "Refactore ce module et ajoute des tests"
 ```
 
-Ou utilisez le mode interactif :
+C'est tout. Jarvis analyse, décompose, délègue et synthétise.
+
+---
+
+## 🎯 Les 4 Modes
+
+### 🔹 Mode Direct (défaut)
+Exécution simple avec l'agent le plus adapté.
+
 ```bash
-jarvis chat
-> Crée une landing page moderne pour mon SaaS
-> Ajoute des animations subtiles
-> Optimise pour mobile
-```
-
-### 3. Jarvis orchestre automatiquement
-
-```
-┌─────────────────────────────────────────────────────┐
-│  🧠 JARVIS ORCHESTRATION                            │
-├─────────────────────────────────────────────────────┤
-│  Analyse: "Landing page SaaS + animations + mobile" │
-│                                                     │
-│  → Sous-tâche 1: Structure HTML/Layout → Gemini    │
-│  → Sous-tâche 2: Animations CSS        → Gemini    │
-│  → Sous-tâche 3: Responsive design     → Claude    │
-│                                                     │
-│  Mode: Swarm (parallèle) - 3 agents actifs         │
-└─────────────────────────────────────────────────────┘
+jarvis "Analyse ce fichier et suggère des améliorations"
 ```
 
 ---
 
-## 🐝 Mode Swarm (Parallélisation)
+### 🐝 Mode Swarm
+**Parallélisation multi-agents** pour les tâches complexes.
 
-Pour les tâches complexes, Jarvis active automatiquement le mode Swarm :
-
-- **Plusieurs agents travaillent en parallèle**
-- **Chaque agent sur sa spécialité** (UI, logique, tests...)
-- **Résultats fusionnés intelligemment**
+Jarvis décompose automatiquement votre demande en sous-tâches et les exécute simultanément sur plusieurs agents.
 
 ```bash
-# Force le mode swarm pour une tâche
-jarvis "Redesign complet du site" --swarm
+jarvis "Redesign complet du dashboard" --swarm
+```
+
+```
+┌──────────────────────────────────────────────┐
+│  🐝 SWARM MODE                               │
+├──────────────────────────────────────────────┤
+│  → Agent 1: Layout & Structure    [Gemini]   │
+│  → Agent 2: Styling & Animations  [Gemini]   │
+│  → Agent 3: Logic & State         [Claude]   │
+│                                              │
+│  ⚡ Exécution parallèle - 3x plus rapide    │
+└──────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🎯 Délégation Intelligente
+### 🪞 Mode Reflect
+**Consensus multi-agents** pour les décisions importantes.
 
-| Type de tâche | Agent optimal | Pourquoi |
-|:---|:---|:---|
-| UI, CSS, design | Gemini | Rapide, créatif |
-| Architecture, logique | Claude | Analytique, précis |
-| Tests, debug | Codex | Technique, rigoureux |
+Interroge 2-3 agents en parallèle, compare leurs réponses, et synthétise le meilleur de chacun.
 
-Jarvis choisit automatiquement. Ou forcez manuellement :
 ```bash
-jarvis "..." --model gemini:pro
-jarvis "..." --model claude:sonnet
+jarvis "Quelle architecture pour ce projet ?" --reflect
+```
+
+```
+┌──────────────────────────────────────────────┐
+│  🪞 REFLECT MODE                             │
+├──────────────────────────────────────────────┤
+│  Agent 1: Microservices + Event-driven       │
+│  Agent 2: Monolithe modulaire               │
+│  Agent 3: Serverless + Edge                 │
+│                                              │
+│  📊 Synthèse: Points communs + divergences   │
+└──────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🛠️ Commandes CLI
+### 📋 Mode Plan-First
+**Validation avant exécution** pour les opérations critiques.
 
-### Commandes de base
+L'agent décrit d'abord son plan d'action. Vous validez, puis il exécute.
+
 ```bash
-jarvis setup                    # Installe/configure les CLIs AI
-jarvis status                   # État des agents + quotas restants
-jarvis chat                     # Mode conversation interactif
-jarvis "votre demande"          # Exécution directe
+jarvis "Migre la base de données vers PostgreSQL" --plan-first
 ```
 
-### Modes avancés
-```bash
-# 🐝 Swarm - Parallélisation multi-agents
-jarvis "redesign complet" --swarm
-
-# 🪞 Reflect - Consensus multi-agents (compare réponses)
-jarvis "architecture question" --reflect --agents=3
-
-# 📋 Plan-First - Validation avant exécution
-jarvis "refactor module" --plan-first
-
-# 📦 Context Injection - Injecte du contexte fichier
-jarvis "ajoute loading state" --include src/Stats.tsx,src/types.ts
 ```
-
-### Modèles disponibles
-```bash
---model gemini:flash     # Rapide (défaut)
---model gemini:pro       # Pro standard
---model claude:sonnet    # Équilibré  
---model claude:opus      # Intelligence max
---model openai:codex     # Tests/Debug
+┌──────────────────────────────────────────────┐
+│  📋 PLAN-FIRST MODE                          │
+├──────────────────────────────────────────────┤
+│  Étape 1: Backup de la DB actuelle           │
+│  Étape 2: Création du schéma PostgreSQL      │
+│  Étape 3: Migration des données              │
+│  Étape 4: Tests de validation                │
+│                                              │
+│  ✅ Approuver?  [Y/n]                        │
+└──────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔗 Intégration GitHub
+## 🔧 Options Avancées
 
-Créez des issues GitHub directement depuis le dashboard Jarvis :
-- Lien automatique entre tâches Jarvis et issues GitHub
-- Synchronisation bidirectionnelle du statut
+### Injection de Contexte
+Donnez plus de contexte à l'agent en incluant des fichiers :
+
+```bash
+jarvis "Ajoute un loading state" --include src/Stats.tsx,src/types.ts
+```
+
+### Choix du Modèle
+Forcez un modèle spécifique :
+
+```bash
+jarvis "..." --model gemini:pro     # Gemini Pro
+jarvis "..." --model claude:opus    # Claude Opus (max intelligence)
+jarvis "..." --model openai:codex   # Codex (debug/tests)
+```
+
+### Commandes Utilitaires
+
+| Commande | Description |
+|----------|-------------|
+| `jarvis status` | État des agents + quotas |
+| `jarvis setup` | Configure les CLIs AI |
+| `jarvis chat` | Mode conversation |
 
 ---
 
-## 📊 Dashboard (Optionnel)
+## 🤖 Agents Supportés
 
-Suivez vos projets et quotas sur [jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr)
+| Agent | Spécialité | Quand l'utiliser |
+|-------|------------|------------------|
+| **Gemini** | UI, Design, Créativité | Pages, composants, CSS |
+| **Claude** | Architecture, Logique | Refactoring, patterns |
+| **Codex** | Tests, Debug | Tests unitaires, debug |
 
-<p align="center">
-  <img src="./assets/dashboard-preview.png" alt="Jarvis Dashboard" width="100%">
-</p>
+Jarvis choisit automatiquement le meilleur agent selon votre demande.
+
+---
+
+## 📊 Dashboard
+
+Suivez vos projets, agents et quotas sur **[jarvis.atelier-sam.fr](https://jarvis.atelier-sam.fr)**
 
 ---
 
@@ -162,12 +165,12 @@ Suivez vos projets et quotas sur [jarvis.atelier-sam.fr](https://jarvis.atelier-
 
 ## 📝 License
 
-MIT - [LICENSE](./LICENSE)
+MIT
 
 ---
 
 <div align="center">
-  <sub>🏔️❤️ En train de faire une côte, vive l'aventure 🏔️❤️</sub>
+  <sub>🏔️❤️ Vive l'aventure 🏔️❤️</sub>
   <br>
-  <sub>par Sam Sam</sub>
+  <sub>par <a href="https://atelier-sam.fr">Sam</a></sub>
 </div>
