@@ -1,7 +1,7 @@
 {
-  "name": "@atelier-sam/jarvis-sdk",
+  "name": "jarvis-orchestrator",
   "version": "1.0.0",
-  "description": "🤖 Jarvis SDK - AI Orchestration CLI for any project",
+  "description": "🤖 Jarvis - Multi-Agent AI Orchestrator CLI",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/jarvis"
+    "url": "https://github.com/ateliersam86/jarvis"
   },
   "engines": {
     "node": ">=18.0.0"

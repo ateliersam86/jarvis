@@ -63,15 +63,11 @@ export default function DocsPage() {
 
               <h2>Installation</h2>
               <p>
-                Clone the repository and create an alias to use the Jarvis CLI in your terminal.
+                Install the Jarvis CLI globally using npm.
               </p>
               <CodeBlock
                 language="bash"
-                code={`git clone https://github.com/ateliersam86/jarvis.git
-cd jarvis && npm install
-
-# Add alias to ~/.zshrc
-alias jarvis="node ~/Jarvis/scripts/masterscript.mjs"`}
+                code="npm install -g jarvis-orchestrator"
               />
 
               <h2>Initializing a Project</h2>

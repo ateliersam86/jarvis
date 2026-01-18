@@ -30,19 +30,22 @@ Jarvis analyse votre demande et :
 ### 1. Installez le CLI
 
 ```bash
-# Clonez le repo
-git clone https://github.com/ateliersam86/jarvis.git
-cd jarvis
-
-# Installez les dépendances
-npm install
-
-# Créez un alias (ajoutez à ~/.zshrc)
-echo 'alias jarvis="node ~/Jarvis/scripts/masterscript.mjs"' >> ~/.zshrc
-source ~/.zshrc
+npm install -g jarvis-orchestrator
 ```
 
 ### 2. Parlez naturellement
+
+```bash
+jarvis "Analyse ce projet et propose une architecture améliorée"
+```
+
+Ou utilisez le mode interactif :
+```bash
+jarvis chat
+> Crée une landing page moderne pour mon SaaS
+> Ajoute des animations subtiles
+> Optimise pour mobile
+```
 
 ```bash
 jarvis "Analyse ce projet et propose une architecture améliorée"
